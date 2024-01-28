@@ -2,3 +2,4 @@
 The task is about the drone used for detecting and spraying
 
 hello! Yang
+for ex tring...
