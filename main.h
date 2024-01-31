@@ -8,7 +8,7 @@
 #include <string.h>
 
 #define WELCOME 0
-#define SIGH_IN 1
+#define LOGIN 1
 #define SIGH_UP 2
 #define HOME 3
 #define FIELD 4
