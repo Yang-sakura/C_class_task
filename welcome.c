@@ -3,6 +3,8 @@
 
 void welcome_screen(void)
 {
+    setbkcolor(BLACK);
+    cleardevice();
     printbox(30,360,290,460,WHITE,1,5,5);
     printbox(350,360,610,460,WHITE,1,5,5);
     setcolor(DARKGRAY);
@@ -23,8 +25,6 @@ void put_title(int *color)
         *color = 1;
     }
 }
-
-
 
 int welcome_page(void)
 {   
