@@ -10,6 +10,7 @@
 #include <conio.h>
 #include <dos.h>
 #include <time.h>
+
 #include "hz.h"
 #include "mouse.h"
 
@@ -51,7 +52,16 @@
 #define NINE 0x0a39
 #define ZERO 0x0b30
 
+// typedef struct userinfo
+// {
+// 	char user[15];	   //用户名
+// 	char password[20]; //密码
+// } INFO;
+extern int wid;
+extern int gap;
 
+void printline(int x,int y,int len,int flag,int COLOR);
+//x,y是第一个小方块左上角起始点，flag=0横着向右，flag=1竖着向左，len记录画多少个,COLOR是画线颜色
 
 
 #endif
