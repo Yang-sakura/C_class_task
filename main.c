@@ -52,9 +52,9 @@ void main()
 }
 
 /* ************************
-function:
-description:
-create:
+function:printline
+description:画像素风线函数
+create:24/1/31
 input:int x,int y,int len,int n,int flag,int COLOR
       x,y是第一个小方块左上角起始点，flag=0横着向右，flag=1竖着向左，len记录每个块有多长，n记录有多少格
 output:void
