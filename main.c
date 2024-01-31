@@ -1,9 +1,6 @@
 #include "main.h"
 #include "public.h"
 
-int wid=5;
-int gap=5;
-
 void main()
 {
     int gdriver = VGA;
@@ -54,22 +51,31 @@ void main()
       closegraph();
 }
 
-void printline(int x,int y,int len,int flag,int COLOR)//x,y是第一个小方块左上角起始点，flag=0横着向右，flag=1竖着向左，len记录画多少个
+/* ************************
+function:
+description:
+create:
+input:int x,int y,int len,int n,int flag,int COLOR
+      x,y是第一个小方块左上角起始点，flag=0横着向右，flag=1竖着向左，len记录每个块有多长，n记录有多少格
+output:void
+************************* */
+void printline(int x,int y,int len,int n,int flag,int COLOR)
 {
-   //wid每格长度,gap小方格之间间隙
-    setfillstyle(SOLID_FILL,COLOR);
-    while(len)
-    {
-        bar(x,y,x+wid,y+wid);
-        len--;
-        if(flag==0){
-            x+=wid;
-            x+=gap;
-        }
-        else{
-            y+=wid;
-            y+=gap;
-        }
-    }
+   //wid每格宽度，每格长度为len倍的宽度,gap为每格之间间隙
+   int t;
+   setfillstyle(SOLID_FILL,COLOR);
+   while(n)
+   {
+      t=len;
+      while(t){
+         bar(x,y,x+wid,y+wid);
+         if(flag==0) x+=wid;
+         else y+=wid;
+         t--;
+      }
+      n--;
+      if(flag==0) x+=gap;
+      else y+=gap;
+   }
 
 }
