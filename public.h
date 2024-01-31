@@ -57,10 +57,8 @@
 // 	char user[15];	   //用户名
 // 	char password[20]; //密码
 // } INFO;
-#define wid 5
-#define gap 5
 
-void printline(int x,int y,int len,int n,int flag,int COLOR);
+void printline(int x,int y,int len,int n,int flag,int COLOR,int wid,int gap);
 //x,y是第一个小方块左上角起始点，flag=0横着向右，flag=1竖着向左，len每格长度是宽度的多少倍数，n记录画多少个,COLOR是画线颜色
 
 
