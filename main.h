@@ -15,5 +15,6 @@
 #define DRONE 5
 #define PESTICIDE 6
 #define DETECTOR 7
+#define QUIT 8
 
 #endif
