@@ -51,48 +51,48 @@ void drone_wing(int* drone_flag,int x,int y)
 {      
     if((*drone_flag)==0)
     {
-        printline(x-25,y-5,1,10,0,WHITE,5,0);
-        printline(x-30,y,1,5,0,WHITE,5,0);
-        printline(x-35,y+5,1,3,0,WHITE,5,0);
-        printline(x-40,y+10,1,3,0,WHITE,5,0);
-        printline(x-40,y+15,1,2,0,WHITE,5,0);
-        printline(x-40,y+20,1,1,0,WHITE,5,0);
-        printline(x+5,y-10,1,5,0,WHITE,5,0);
-        printline(x+15,y-15,1,3,0,WHITE,5,0);
-        printline(x+20,y-20,1,2,0,WHITE,5,0);
-        printline(x+25,y-25,1,1,0,WHITE,5,0);
+        printline(x-25,y-5,1,10,0,LIGHTGRAY,5,0);
+        printline(x-30,y,1,5,0,LIGHTGRAY,5,0);
+        printline(x-35,y+5,1,3,0,LIGHTGRAY,5,0);
+        printline(x-40,y+10,1,3,0,LIGHTGRAY,5,0);
+        printline(x-40,y+15,1,2,0,LIGHTGRAY,5,0);
+        printline(x-40,y+20,1,1,0,LIGHTGRAY,5,0);
+        printline(x+5,y-10,1,5,0,LIGHTGRAY,5,0);
+        printline(x+15,y-15,1,3,0,LIGHTGRAY,5,0);
+        printline(x+20,y-20,1,2,0,LIGHTGRAY,5,0);
+        printline(x+25,y-25,1,1,0,LIGHTGRAY,5,0);
         (*drone_flag)=1;
         return;
     }
     else if((*drone_flag)==1)
     {
-        printline(x-15,y-5,1,3,0,WHITE,5,0);
-        printline(x-20,y,1,4,0,WHITE,5,0);
-        printline(x-20,y+5,1,3,0,WHITE,5,0);
-        printline(x-25,y+10,1,3,0,WHITE,5,0);
-        printline(x-25,y+15,1,2,0,WHITE,5,0);
-        printline(x-30,y+20,1,2,0,WHITE,5,0);
-        printline(x-30,y+20,1,1,0,WHITE,5,0);
-        printline(x,y-10,1,3,0,WHITE,5,0);
-        printline(x+5,y-15,1,4,0,WHITE,5,0);
-        printline(x+10,y-20,1,3,0,WHITE,5,0);
-        printline(x+15,y-25,1,2,0,WHITE,5,0);
-        printline(x+20,y-30,1,1,0,WHITE,5,0);
+        printline(x-15,y-5,1,3,0,LIGHTGRAY,5,0);
+        printline(x-20,y,1,4,0,LIGHTGRAY,5,0);
+        printline(x-20,y+5,1,3,0,LIGHTGRAY,5,0);
+        printline(x-25,y+10,1,3,0,LIGHTGRAY,5,0);
+        printline(x-25,y+15,1,2,0,LIGHTGRAY,5,0);
+        printline(x-30,y+20,1,2,0,LIGHTGRAY,5,0);
+        printline(x-30,y+20,1,1,0,LIGHTGRAY,5,0);
+        printline(x,y-10,1,3,0,LIGHTGRAY,5,0);
+        printline(x+5,y-15,1,4,0,LIGHTGRAY,5,0);
+        printline(x+10,y-20,1,3,0,LIGHTGRAY,5,0);
+        printline(x+15,y-25,1,2,0,LIGHTGRAY,5,0);
+        printline(x+20,y-30,1,1,0,LIGHTGRAY,5,0);
         (*drone_flag)=2;
         return;       
     }
     else if((*drone_flag)==2)
     {
-        printline(x-5,y-5,1,1,0,WHITE,5,0);
-        printline(x-10,y-10,1,3,0,WHITE,5,0);
-        printline(x-15,y-15,1,4,0,WHITE,5,0);
-        printline(x-20,y-20,1,4,0,WHITE,5,0);
-        printline(x-30,y-25,1,5,0,WHITE,5,0);
-        printline(x,y,1,2,0,WHITE,5,0);
-        printline(x,y+5,1,3,0,WHITE,5,0);
-        printline(x+5,y+10,1,3,0,WHITE,5,0);
-        printline(x+10,y+15,1,4,0,WHITE,5,0);
-        printline(x+15,y+20,1,5,0,WHITE,5,0);
+        printline(x-5,y-5,1,1,0,LIGHTGRAY,5,0);
+        printline(x-10,y-10,1,3,0,LIGHTGRAY,5,0);
+        printline(x-15,y-15,1,4,0,LIGHTGRAY,5,0);
+        printline(x-20,y-20,1,4,0,LIGHTGRAY,5,0);
+        printline(x-30,y-25,1,5,0,LIGHTGRAY,5,0);
+        printline(x,y,1,2,0,LIGHTGRAY,5,0);
+        printline(x,y+5,1,3,0,LIGHTGRAY,5,0);
+        printline(x+5,y+10,1,3,0,LIGHTGRAY,5,0);
+        printline(x+10,y+15,1,4,0,LIGHTGRAY,5,0);
+        printline(x+15,y+20,1,5,0,LIGHTGRAY,5,0);
         (*drone_flag)=0;
         return;
     }
@@ -107,6 +107,7 @@ int welcome_page(void)
     int drone_flag = 2;
     int time = 0;
     mouseinit();
+    setbkcolor(BLACK);
     welcome_screen();
     drone();
     while(1)
