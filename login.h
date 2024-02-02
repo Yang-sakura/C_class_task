@@ -3,8 +3,9 @@
 
 int login_page(void);
 void login_bkpaint(void);//画登录页面背景
-void back_button_light(void);
-void buttons_recover(void);
+void signup_button_recover(void);
 void signup_button_light(void);
+void put_flower(int x,int y,int pix,int COLOR);
 
 #endif
+
