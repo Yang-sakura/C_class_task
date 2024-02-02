@@ -58,8 +58,6 @@ void back_button(int flag)
     }
     else if(flag==LIGHT)
     {
-        setfillstyle(SOLID_FILL, WHITE);
-        bar(590,0,635,45);
         printbox(595,5,630,40,BLUE,1,5,4);
         setcolor(BLUE);
         settextstyle(DEFAULT_FONT   , HORIZ_DIR,3);
@@ -67,12 +65,6 @@ void back_button(int flag)
     }
     else if(flag==RECOVER)
     {
-        clrmous(MouseX, MouseY);
-        delay(10);
-
-        setfillstyle(SOLID_FILL, WHITE);
-        bar(590,0,635,45);
-
         back_button(PAINT);
     }
     else {
