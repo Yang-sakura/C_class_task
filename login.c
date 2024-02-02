@@ -3,11 +3,9 @@
 
 void login_bkpaint(void)//画登录页面背景
 {
-    // 设置背景色
     setbkcolor(WHITE);
     cleardevice();
 
-    // 设置字体样式、方向和大小
     setcolor(BLUE);
     settextstyle(DEFAULT_FONT   , HORIZ_DIR,3);
     outtextxy(70, 100, "Please log in here...");
@@ -19,39 +17,20 @@ void login_bkpaint(void)//画登录页面背景
     outtextxy(80, 170, "user     :");
     outtextxy(80, 240, "password :");
 
-
     printbox(255,155,560,205,DARKGRAY,2,5,5);
     printbox(255,225,560,275,DARKGRAY,2,5,5);
 
-    printbox(595,5,630,40,DARKGRAY,1,5,4);//右上角退出
-    setcolor(DARKGRAY);
-    settextstyle(DEFAULT_FONT   , HORIZ_DIR,3);
-    outtextxy(602,10, "x");
+    back_button(PAINT);
+
+    put_flower(105,425,5,CYAN);
+    put_flower(155,425,5,GREEN);
+    put_flower(515,425,10,BLUE);
 
 }
-void back_button_light(void)
-{
-    setfillstyle(SOLID_FILL, WHITE);
-    bar(590,0,635,45);
-    printbox(595,5,630,40,BLUE,1,5,4);
-    setcolor(BLUE);
-    settextstyle(DEFAULT_FONT   , HORIZ_DIR,3);
-    outtextxy(602,10, "x");
-}
-void buttons_recover(void)
+void signup_button_recover(void)
 {
     clrmous(MouseX, MouseY);
 	delay(10);
-
-    setfillstyle(SOLID_FILL, WHITE);
-    bar(590,0,635,45);
-    bar(240,400,400,435);
-
-    printbox(595,5,630,40,DARKGRAY,1,5,4);
-    setcolor(DARKGRAY);
-    settextstyle(DEFAULT_FONT   , HORIZ_DIR,3);
-    outtextxy(602,10, "x");
-
     setcolor(BLUE);
     settextstyle(DEFAULT_FONT   , HORIZ_DIR,2);
     outtextxy(250, 410, "-sign up-");
@@ -63,6 +42,25 @@ void signup_button_light(void)
     setcolor(CYAN);
     settextstyle(DEFAULT_FONT   , HORIZ_DIR,2);
     outtextxy(250, 410, "-sign up-");
+}
+void put_flower(int x,int y,int pix,int COLOR)
+{
+    // void printline(int x,int y,int len,int n,int flag,int COLOR,int wid,int gap);
+    printline(x,y-pix*9,1,9,1,COLOR,pix,0);
+    printline(x-2*pix,y-pix*6,1,5,0,COLOR,pix,0);
+    printline(x-2*pix,y-pix*5,1,5,0,COLOR,pix,0);
+    printline(x-2*pix,y-pix*10,1,4,1,COLOR,pix,0);
+    printline(x-3*pix,y-pix*9,1,3,1,COLOR,pix,0);
+    printline(x+2*pix,y-pix*10,1,4,1,COLOR,pix,0);
+    printline(x+3*pix,y-pix*9,1,3,1,COLOR,pix,0);
+    printline(x,y-pix*8,1,3,0,COLOR,pix,0);
+    printline(x-4*pix,y-pix*4,1,2,1,COLOR,pix,0);
+    printline(x-3*pix,y-pix*3,1,2,1,COLOR,pix,0);
+    printline(x+4*pix,y-pix*4,1,2,1,COLOR,pix,0);
+    printline(x+3*pix,y-pix*3,1,2,1,COLOR,pix,0);
+    printline(x-2*pix,y-pix*2,1,5,0,COLOR,pix,0);
+    printline(x-2*pix,y-pix*1,1,5,0,COLOR,pix,0);
+    printline(x-pix,y-pix*7,1,3,1,COLOR,pix,0);
 }
 int login_page(void)
 {
@@ -87,7 +85,7 @@ int login_page(void)
         else if( mouse_press(265,405,375,425)==1 )//跳转注册页面(2)
         {
             cleardevice();
-            return 2;
+            return SIGNUP;
         }
         else if( mouse_press(595,5,630,40)==2 )
         {
@@ -95,20 +93,21 @@ int login_page(void)
             if( place==0 ) 
             {
                 place=2;
-                back_button_light();
+                back_button(LIGHT);
             }
         }
         else if( mouse_press(595,5,630,40)==1 )//跳转welcome页面
         {
             cleardevice();
-            return 0;
+            return WELCOME;
         }
         else {
             if(place!=0)
             {
                 MouseS=0;
                 place=0;
-                buttons_recover();
+                signup_button_recover();
+                back_button(RECOVER);
             }
         }
     }
