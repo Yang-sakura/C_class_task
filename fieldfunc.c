@@ -3,6 +3,7 @@
 
 void fieldfunc_screen()
 {
+    int i;
     printline(100,0,1,480,1,DARKGRAY,5,5);
     setcolor(DARKGRAY);
     settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
@@ -16,40 +17,55 @@ void fieldfunc_screen()
     line(630,470,620,468);
     line(630,470,620,472);
     setlinestyle(DOTTED_LINE,0,NORM_WIDTH);
-    line(240,50,240,470);
-    line(370,50,370,470);
-    line(500,50,500,470);
-    line(630,50,630,470);
-    line(110,340,630,340);
-    line(110,210,630,210);
-    line(110,80,630,80);
+    for(i=0;i<26;i++)
+    {
+        line(110+i*20,50,110+i*20,470);
+    }
+    for(i=0;i<21;i++)
+    {
+        line(110,470-i*20,630,470-i*20);
+    }
 
     back_button(PAINT);
 }
 
 void fieldfunc_page()
 {
-    int record[105][85];
+    int record[21][26];
+    int flag = 0;
+    int (*precord)[26] = record;
+    int i;
+    FILE *fp;
     clrmous(MouseX,MouseY);
     cleardevice();
     fieldfunc_screen();
     while(1)
     {
         newmouse(&MouseX,&MouseY,&press);
-        record_field(MouseX,MouseY,record);
+        if(mouse_press(110,50,630,470)==1)
+        {
+            clrmous(MouseX,MouseY);
+            setfillstyle(SOLID_FILL,DARKGRAY);
+            bar(110+20*((MouseX - 110)/20),470-20*((470-MouseY)/20+1),110+20*((MouseX - 110)/20)+20,470-20*((470-MouseY)/20+1)+20);
+            record[(MouseX - 110)/20][(470-MouseY)/20] = 1;
+            
+
+        }
+        if((fp = fopen("c:\\code\\source\\file\\field.dat","wb"))!=NULL)
+            {
+                for(i=0;i<21;i++)
+                {
+                    fwrite(precord[i],sizeof(int),26,fp);
+                }
+            }
+            fclose(fp);
+
+        if(mouse_press(595,5,630,40)==1)
+        exit(1);
+        
+        
+        
+        
     }
 }
 
-void record_field(int MouseX,int MouseY,int **record)
-{
-    int cal_x,cal_y;      //cal_x,cal_y代表直角坐标系中的坐标
-    int pix_x,pix_y;      //pix_x,pix_y代表像素坐标系中的坐标
-
-    cal_x = MouseX - 110;
-    cal_y = 470 - MouseY;
-    pix_x = (cal_x/20);
-    pix_y = (cal_y/20);
-    record[pix_x][pix_y] = 1;
-    setfillstyle(SOLID_FILL,BLACK);
-    bar(pix_x,pix_y,pix_x+20,pix_y+20);
-}
