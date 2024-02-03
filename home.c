@@ -28,7 +28,6 @@ void home_screen(void)
     setcolor(DARKGRAY);
     settextstyle(DEFAULT_FONT , HORIZ_DIR,3);
     outtextxy(602,10, "x");
-
 }
 
 
@@ -44,52 +43,73 @@ int home_page()
         newmouse(&MouseX,&MouseY,&press);
         if(mouse_press(100,90,310,190)==2)
         {   
-            MouseS = 1;
-            flag = 1;
-            num[1] = 1;
-            home_button_light(flag);
+            if(flag!=1)
+            {
+                MouseS = 1;
+                flag = 1;
+                num[1] = 1;
+                home_button_light(flag);
+            }
         }
         else if(mouse_press(330,90,540,190)==2)
         {   
-            MouseS = 1;
-            flag = 2;
-            num[2] = 2;
-            home_button_light(flag);
+            if(flag!=2)
+            {
+                MouseS = 1;
+                flag = 2;
+                num[2] = 2;
+                home_button_light(flag);
+            }
         }
         else if(mouse_press(100,230,310,330)==2)
         {   
-            MouseS = 1;
-            flag = 3;
-            num[3] = 3;
-            home_button_light(flag);
+            if(flag!=3)
+            {
+                MouseS = 1;
+                flag = 3;
+                num[3] = 3;
+                home_button_light(flag);
+            }
         }
         else if(mouse_press(330,230,540,330)==2)
         {   
-            MouseS = 1;
-            flag = 4;
-            num[4] = 4;
-            home_button_light(flag);
+            if(flag!=4)
+            {
+                MouseS = 1;
+                flag = 4;
+                num[4] = 4;
+                home_button_light(flag);
+            }
         }
         else if(mouse_press(100,370,310,470)==2)
         {   
+            if(flag!=5)
+            {
             MouseS = 1;
             flag = 5;
             num[5] = 5;
             home_button_light(flag);
+            }
         }
         else if(mouse_press(330,370,540,470)==2)
         {   
-            MouseS = 1;
-            flag = 6;
-            num[6] = 6;
-            home_button_light(flag);
+            if(flag!=6)
+            {
+                MouseS = 1;
+                flag = 6;
+                num[6] = 6;
+                home_button_light(flag);
+            }
         }
         else if(mouse_press(595,5,630,40)==2)
         {
-            MouseS = 1;
-            flag = 7;
-            num[7] = 7;
-            back_button(LIGHT);
+            if(flag!=7)
+            {
+                MouseS = 1;
+                flag = 7;
+                num[7] = 7;
+                back_button(LIGHT);
+            }
         }
         else
         {
@@ -99,30 +119,37 @@ int home_page()
 
         if(mouse_press(100,90,310,190)==1)
         {   
+            cleardevice();
             return 4;
         }
         else if(mouse_press(330,90,540,190)==1)
         {   
+            cleardevice();
             return 5;
         }
         else if(mouse_press(100,230,310,330)==1)
         {   
+            cleardevice();
             return 6;
         }
         else if(mouse_press(330,230,540,330)==1)
         {   
+            cleardevice();
             return 7;
         }
         else if(mouse_press(100,370,310,470)==1)
         {   
+            cleardevice();
             return 9;
         }
         else if(mouse_press(330,370,540,470)==1)
         {   
+            cleardevice();
             return 8;
         }
         else if(mouse_press(595,5,630,40)==1)
         {   
+            cleardevice();
             return 0;
         }
 
@@ -168,6 +195,7 @@ int home_page()
 
 void home_button_light(int flag)
 {
+    clrmous(MouseX,MouseY);
     if(flag==1)
     {
         printbox(100,90,310,190,YELLOW,1,5,4);
@@ -215,6 +243,7 @@ void home_button_light(int flag)
 
 void home_button_recovery(int num)
 {
+    clrmous(MouseX,MouseY);
     printbox(100,90,310,190,DARKGRAY,1,5,4);
     printbox(330,90,540,190,DARKGRAY,1,5,4);
     printbox(100,230,310,330,DARKGRAY,1,5,4);
