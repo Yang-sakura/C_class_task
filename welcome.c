@@ -1,5 +1,6 @@
 #include "welcome.h"
 #include "public.h"
+#include "main.h"
 
 void welcome_screen(void)
 {  
@@ -114,6 +115,7 @@ int welcome_page(void)
     {   
         if(time%250==0)
         {
+            clrmous(MouseX,MouseY);
             setfillstyle(SOLID_FILL,BLACK);
             bar(0,100,640,340);
             drone();
@@ -121,7 +123,7 @@ int welcome_page(void)
             drone_wing(&drone_flag,400,140);
             drone_wing(&drone_flag,240,300);
             drone_wing(&drone_flag,400,300);
-            newmouse(&MouseX,&MouseY,&press);
+            
         }
 
         time++;
@@ -129,17 +131,23 @@ int welcome_page(void)
         put_title(&colorset);
         if(mouse_press(30,360,290,460)==2)
         {   
-            MouseS = 1;
-            flag = 1;
-            num1 = 1;
-            welcome_buttons_light(flag);
+            if(flag!=1)
+            {
+                MouseS = 1;
+                flag = 1;
+                num1 = 1;
+                welcome_buttons_light(flag);
+            }
         }
         else if(mouse_press(350,360,610,460)==2)
         {
-            MouseS = 1;
-            flag = 2;
-            num2 = 2;
-            welcome_buttons_light(flag);
+            if(flag!=2)
+            {
+                MouseS = 1;
+                flag = 2;
+                num2 = 2;
+                welcome_buttons_light(flag);
+            }
         }
         else
         {
@@ -154,7 +162,7 @@ int welcome_page(void)
         }
         else if(mouse_press(350,360,610,460)==1)
         {
-            return 8;
+            return QUIT;
         }
 
         if(flag!=1&&num1==1)
@@ -172,6 +180,7 @@ int welcome_page(void)
 
 void welcome_buttons_light(int flag)
 {
+    clrmous(MouseX,MouseY);
     if(flag==1)
     {
         printbox(30,360,290,460,YELLOW,1,5,5);
@@ -190,6 +199,7 @@ void welcome_buttons_light(int flag)
 
 void welcome_buttons_recovery(int num)
 {
+    clrmous(MouseX,MouseY);
     if(num == 1)
     {
         printbox(30,360,290,460,WHITE,1,5,5);
