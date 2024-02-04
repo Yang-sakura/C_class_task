@@ -1,4 +1,4 @@
-l#include "public.h"
+#include "public.h"
 #include "logfunc.h"
 
 int check(INFO *user)
@@ -106,11 +106,11 @@ void temp_input(char *temp,int x,int y)
 {
     char t;
     int i=0,k;
-    int maxi=16;
+    int maxi=17;
     int w,h;//255,155,560,205 y:40
     // x=266;
     // y=171;
-    w=18;
+    w=16;
     h=20;
     
     clrmous(MouseX,MouseY);
@@ -121,8 +121,8 @@ void temp_input(char *temp,int x,int y)
     settextstyle(DEFAULT_FONT , HORIZ_DIR,2);
     settextjustify(LEFT_TEXT, TOP_TEXT);
 
-    // i=strlen(temp);
-    // outtextxy(x,y,temp);
+    i=strlen(temp);
+    outtextxy(x,y,temp);
 
     line(x+i*w,y,x+i*w,y+h);
 
@@ -149,27 +149,28 @@ void temp_input(char *temp,int x,int y)
                     *(temp+i)=t;
                     *(temp+i+1)='\0';
                     setfillstyle(SOLID_FILL, WHITE);  
-                    bar(x+i*w-1,y-5,x+i*w+1,y+h+5);
-                    outtextxy(x+i*18,y,temp+i);
+                    bar(x,y-5,x+maxi*w,y+h+5);//清空输入区
+                    outtextxy(x,y,temp);
                     i++;
                     line(x+i*w,y,x+i*w,y+h);
                 }
                 else if(i>0)
                 {
-                    setfillstyle(SOLID_FILL, WHITE);
-                    bar(x+i*w-1,y-5,x+i*w+1,y+h+5);
-                    bar(x+i*w-w,y-5,x+i*w,y+h+5);//清空上一个字符
                     i--;
-                    line(x+i*w,y,x+i*w,y+h);
                     *(temp+i)='\0';
                     *(temp+i+1)='\0';
+                    setfillstyle(SOLID_FILL, WHITE);
+                    bar(x,y-5,x+maxi*w,y+h+5);//清空输入区
+                    outtextxy(x,y,temp);
+                    line(x+i*w,y,x+i*w,y+h);
+                    
                 }
 
             }
         }
         else if(i>=maxi)
         {
-            if(t==' '||t=='\n'||t=='\r'||t==033)
+            if(t==' '||t=='\n'||t=='\r'||t==033)//退出键
             {
                 setfillstyle(SOLID_FILL, WHITE);
                 bar(x+i*w-1,y-5,x+i*w+1,y+h+5);
@@ -179,12 +180,13 @@ void temp_input(char *temp,int x,int y)
             {
                 if(t=='\b'&&i>0)
                 {
-                    setfillstyle(SOLID_FILL, WHITE);
-                    bar(x+i*w-1,y-5,x+i*w+1,y+h+5);
-                    bar(x+i*w-w,y-5,x+i*w,y+h+5);
                     i--;
-                    line(x+i*w,y,x+i*w,y+h);
                     *(temp+i)='\0';
+                    setfillstyle(SOLID_FILL, WHITE);
+                    bar(x,y-5,x+maxi*w,y+h+5);//清空输入区
+                    outtextxy(x,y,temp);
+                    line(x+i*w,y,x+i*w,y+h);
+                    
                 }
             }
         }
