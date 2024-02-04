@@ -1,10 +1,12 @@
 #include "login.h"
 #include "public.h"
+#include "logfunc.h"
 
 void login_bkpaint(void)//画登录页面背景
 {
     setbkcolor(WHITE);
     cleardevice();
+    clrmous(MouseX,MouseY);
 
     setcolor(BLUE);
     settextstyle(DEFAULT_FONT   , HORIZ_DIR,3);
@@ -16,29 +18,47 @@ void login_bkpaint(void)//画登录页面背景
     settextstyle(DEFAULT_FONT   , HORIZ_DIR,2);
     outtextxy(80, 170, "user     :");
     outtextxy(80, 240, "password :");
-
+    
     printbox(255,155,560,205,DARKGRAY,2,5,5);
     printbox(255,225,560,275,DARKGRAY,2,5,5);
+
+    printbox(320-40,300,320+40,300+40,DARKGRAY,2,5,5);
+    setcolor(DARKGRAY);
+    settextstyle(DEFAULT_FONT   , HORIZ_DIR,2);
+    outtextxy(306, 312, "OK");
 
     back_button(PAINT);
 
     put_flower(105,425,5,CYAN);
     put_flower(155,425,5,GREEN);
     put_flower(515,425,10,BLUE);
-
+}
+void ok_button_light(void)
+{
+    clrmous(MouseX,MouseY);
+    printbox(320-40,300,320+40,300+40,BLUE,2,5,5);
+    setcolor(BLUE);
+    settextstyle(DEFAULT_FONT   , HORIZ_DIR,2);
+    outtextxy(306, 312, "OK");
+}
+void ok_button_recover(void)
+{
+    clrmous(MouseX,MouseY);
+    printbox(320-40,300,320+40,300+40,DARKGRAY,2,5,5);
+    setcolor(DARKGRAY);
+    settextstyle(DEFAULT_FONT   , HORIZ_DIR,2);
+    outtextxy(306, 312, "OK");
 }
 void signup_button_recover(void)
 {
     clrmous(MouseX, MouseY);
-	delay(10);
     setcolor(BLUE);
     settextstyle(DEFAULT_FONT   , HORIZ_DIR,2);
     outtextxy(250, 410, "-sign up-");
 }
 void signup_button_light(void)
 {
-    setfillstyle(SOLID_FILL, WHITE);
-    bar(240,400,400,435);
+    clrmous(MouseX,MouseY);
     setcolor(CYAN);
     settextstyle(DEFAULT_FONT   , HORIZ_DIR,2);
     outtextxy(250, 410, "-sign up-");
@@ -62,9 +82,10 @@ void put_flower(int x,int y,int pix,int COLOR)
     printline(x-2*pix,y-pix*1,1,5,0,COLOR,pix,0);
     printline(x-pix,y-pix*7,1,3,1,COLOR,pix,0);
 }
-int login_page(void)
+int login_page(INFO *temp)
 {
-    int place=0;
+    int place=0;//鼠标在的位置
+    INFO *user = (INFO *)malloc(sizeof(INFO));
 
     login_bkpaint();
     mouseinit();
@@ -78,28 +99,77 @@ int login_page(void)
             if(place == 0)
             {
                 MouseS = 1;
-                place = 1;
+                place = 1;//signup按钮(265,405,375,425)
                 signup_button_light();
             }
         }
         else if( mouse_press(265,405,375,425)==1 )//跳转注册页面(2)
         {
+            setbkcolor(WHITE);
             cleardevice();
-            return SIGNUP;
+            newmouse(&MouseX, &MouseY, &press);
+            clrmous(MouseX,MouseY);
+            return SIGHUP;
         }
-        else if( mouse_press(595,5,630,40)==2 )
+        else if( mouse_press(595,5,630,40)==2 )//退出按钮未按
         {
             MouseS = 1;
             if( place==0 ) 
             {
-                place=2;
+                place=2;//back按钮(595,5,630,40)
                 back_button(LIGHT);
             }
         }
-        else if( mouse_press(595,5,630,40)==1 )//跳转welcome页面
+        else if( mouse_press(595,5,630,40)==1 )//退出按钮按下,跳转welcome页面
         {
+            if( user!=NULL ) {
+                free(user);
+            }
+            
             cleardevice();
             return WELCOME;
+        }
+        else if( mouse_press(280,300,360,340)==2 )//ok未按
+        {
+            if(place == 0)
+            {
+                MouseS = 1;
+                place = 3;//ok按钮(280,300,360,340)
+                ok_button_light();
+            }
+        }
+        else if( mouse_press(280,300,360,340)==1 )//ok按下
+        {
+            if ( check(user)==1 )
+            {
+                *temp=*user;
+                free(user);
+                return HOME;
+            }
+        }
+        else if( mouse_press(255,155,560,205)==2 )//用户名输入框未按
+        {
+            if(place==0)
+            {
+                MouseS = 2;
+                place = 4;//用户名输入框(255,155,560,205)
+            }
+        }
+        else if( mouse_press(255,155,560,205)==1 )//用户名输入框按下
+        {
+            temp_input(user->name,266,170);
+        }
+        else if( mouse_press(255,225,560,275)==2 )//密码输入框未按
+        {
+            if(place==0)
+            {
+                MouseS = 2;
+                place = 5;//密码输入框(255,225,560,275)
+            }
+        }
+        else if( mouse_press(255,225,560,275)==1 )//密码输入框按下
+        {
+            temp_input(user->password,266,240);
         }
         else {
             if(place!=0)
@@ -107,6 +177,7 @@ int login_page(void)
                 MouseS=0;
                 place=0;
                 signup_button_recover();
+                ok_button_recover();
                 back_button(RECOVER);
             }
         }
