@@ -1,18 +1,7 @@
 #ifndef _PUBLIC_H_
 #define _PUBLIC_H_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <graphics.h>
-#include <math.h>
-#include <bios.h>
-#include <conio.h>
-#include <dos.h>
-#include <time.h>
 
-#include "hz.h"
-#include "mouse.h"
 
 #define NUM0 0x5230
 #define NUM1 0x4f31
@@ -77,5 +66,18 @@ typedef struct userinfo
     char name[18];
     char password[18];
 } INFO;
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <graphics.h>
+#include <math.h>
+#include <bios.h>
+#include <conio.h>
+#include <dos.h>
+#include <time.h>
+
+#include "hz.h"
+#include "mouse.h"
 
 #endif
