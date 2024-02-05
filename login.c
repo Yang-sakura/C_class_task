@@ -90,6 +90,7 @@ int login_page(INFO *temp)
         memset(user,0,sizeof(INFO));
     }
     login_bkpaint();
+    delay(60);
     mouseinit();
 
     if(temp != NULL) {
@@ -147,6 +148,7 @@ int login_page(INFO *temp)
         }
         else if( mouse_press(280,300,360,340)==1 )//ok按下
         {
+            if( user->name[0]=='\0' || user->password[0]=='\0') continue;
             if ( check(user)==1 )
             {
                 *temp=*user;
