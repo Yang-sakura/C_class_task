@@ -7,6 +7,7 @@ void quit_page(void)
     int i=0,time=0,color=2;
     char string[8][10]={"T","TH","THA","THAN","THANK","THANKY","THANKYO","THANKYOU"};
     char (*pstr)[10] = string;
+    cleardevice();
     setbkcolor(BLACK);
     do{
         setcolor(color);
