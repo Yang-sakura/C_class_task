@@ -35,6 +35,7 @@ int home_page()
 {
     int flag = 0;
     int num[8] = {0,0,0,0,0,0,0,0};
+    cleardevice();
     setbkcolor(WHITE);
     mouseinit();
     home_screen();
