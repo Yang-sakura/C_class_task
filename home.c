@@ -1,5 +1,5 @@
-#include "home.h"
 #include "public.h"
+#include "home.h"
 #include "main.h"
 
 void home_screen(void)
@@ -31,7 +31,7 @@ void home_screen(void)
 }
 
 
-int home_page()
+int home_page(INFO *temp)
 {
     int flag = 0;
     int num[8] = {0,0,0,0,0,0,0,0};
@@ -120,38 +120,31 @@ int home_page()
 
         if(mouse_press(100,90,310,190)==1)
         {   
-            cleardevice();
-            return 4;
+            return FIELD;
         }
         else if(mouse_press(330,90,540,190)==1)
         {   
-            cleardevice();
-            return 5;
+            return DRONE;
         }
         else if(mouse_press(100,230,310,330)==1)
         {   
-            cleardevice();
-            return 6;
+            return PESTICIDE;
         }
         else if(mouse_press(330,230,540,330)==1)
         {   
-            cleardevice();
-            return 7;
+            return DETECTOR;
         }
         else if(mouse_press(100,370,310,470)==1)
         {   
-            cleardevice();
-            return 9;
+            return README;
         }
         else if(mouse_press(330,370,540,470)==1)
         {   
-            cleardevice();
-            return 8;
+            return QUIT;
         }
         else if(mouse_press(595,5,630,40)==1)
         {   
-            cleardevice();
-            return 0;
+            return LOGIN;
         }
 
         if(flag!=1&&num[1]==1)
