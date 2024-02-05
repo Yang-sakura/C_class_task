@@ -86,9 +86,16 @@ int login_page(INFO *temp)
 {
     int place=0;//鼠标在的位置
     INFO *user = (INFO *)malloc(sizeof(INFO));
-
+    if(user != NULL) {
+        memset(user,0,sizeof(INFO));
+    }
     login_bkpaint();
     mouseinit();
+
+    if(temp != NULL) {
+        memset(temp,0,sizeof(INFO));
+    }
+
 
     while(1)
     {
@@ -109,7 +116,7 @@ int login_page(INFO *temp)
             cleardevice();
             newmouse(&MouseX, &MouseY, &press);
             clrmous(MouseX,MouseY);
-            return SIGHUP;
+            return SIGNUP;
         }
         else if( mouse_press(595,5,630,40)==2 )//退出按钮未按
         {
