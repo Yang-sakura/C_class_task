@@ -109,6 +109,7 @@ int welcome_page(void)
     int time = 0;
     mouseinit();
     setbkcolor(BLACK);
+    cleardevice();
     welcome_screen();
     drone();
     while(1)
