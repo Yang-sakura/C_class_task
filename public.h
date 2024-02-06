@@ -2,7 +2,6 @@
 #define _PUBLIC_H_
 
 
-
 #define NUM0 0x5230
 #define NUM1 0x4f31
 #define NUM2 0x5032
@@ -55,6 +54,7 @@
 #define PAINT 0
 #define RECOVER 1
 #define LIGHT 2
+// #define DELETE 3
 
 void printline(int x,int y,int len,int n,int flag,int COLOR,int wid,int gap);
 //x,y是第一个小方块左上角起始点，flag=0横着向右，flag=1竖着向下，len每格长度是宽度的多少倍数，n记录画多少个,COLOR是画线颜色
@@ -76,6 +76,7 @@ typedef struct userinfo
 #include <conio.h>
 #include <dos.h>
 #include <time.h>
+#include "draw.h"
 
 #include "hz.h"
 #include "mouse.h"
