@@ -40,13 +40,26 @@ void field_screen()
 
 int field_page(INFO* temp)
 {
+    static int time = 0;
     int flag = 0;
     int num[5];
-    cleardevice();
-    setbkcolor(WHITE);
-    field_screen();
-    mouseinit();
-    
+    if(time == 0)        //程序启动首次进入
+    {
+        cleardevice();
+        setbkcolor(WHITE);
+        field_screen();
+        mouseinit();
+        time++;
+    }
+    if(time!=0)          //选定农田后不再清空农田区域
+    {
+        clrmous(MouseX,MouseY);
+        setfillstyle(SOLID_FILL,WHITE);
+        bar(0,0,95,480);
+        field_screen();
+        mouseinit();
+        time++;
+    }
     while(1)
     {
         newmouse(&MouseX,&MouseY,&press);
