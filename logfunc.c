@@ -48,10 +48,9 @@ void temp_input(char *temp,int x,int y)
     char t;
     int i=0,key,j;
     int maxi=17;
-    int w,h;
+    int w=16 , h=20 ;
     int scan_code,ascii;
-    w=16;
-    h=20;
+    int cursor = 0 ;
     
     clrmous(MouseX,MouseY);
 
@@ -61,10 +60,10 @@ void temp_input(char *temp,int x,int y)
     settextstyle(DEFAULT_FONT , HORIZ_DIR,2);
     settextjustify(LEFT_TEXT, TOP_TEXT);
 
-    i=strlen(temp);
+    i = strlen(temp);
+    cursor = i;
     outtextxy(x,y,temp);
-
-    line(x+i*w,y,x+i*w,y+h);
+    line(x+cursor*w,y,x+cursor*w,y+h);
 
     while(bioskey(1))//清空键盘缓冲区中的所有按键事件
     {
@@ -72,75 +71,94 @@ void temp_input(char *temp,int x,int y)
     }
     while(1)
     {
-        // key=bioskey(0);
-        // ascii=key & 0x00FF;
-        // scan_code=key>>8;
-        // //0x4B: 左箭头键  0x4D: 右箭头键
-        // if(scan_code==0x4B)//左箭头键
-        // {
+        key=bioskey(0);
+        ascii = key & 0x00FF;
+        scan_code = key>>8;
 
-        //     continue;
-        // }
-        // if(scan_code==0x4D)//右箭头键
-        // {
-
-        //     continue;
-        // }
-        t=bioskey(0);
-
-        if(i<maxi)
+        if(scan_code==0x4B)//左箭头键
         {
-            if(t==' '||t=='\n'||t=='\r'||t==033)
-            //033：esc 012:'\n' 013:'\r' 040:' '
+            if( cursor>0 ) {
+                cursor--;
+                bar(x,y-5,x+maxi*w,y+h+5);
+                outtextxy(x,y,temp);
+                line(x+cursor*w,y,x+cursor*w,y+h);
+            }
+            continue;
+        }
+        if(scan_code==0x4D)//右箭头键
+        {
+            if( cursor <i ) {
+                cursor++;
+                bar(x,y-5,x+maxi*w,y+h+5);
+                outtextxy(x,y,temp);
+                line(x+cursor*w,y,x+cursor*w,y+h);
+            }
+            continue;
+        }
+
+        if(i < maxi)
+        {
+            if(ascii==' ' || ascii=='\n' || ascii=='\r' || ascii==27)//处理空格、换行、回车和ESC键
             {
                 setfillstyle(SOLID_FILL, WHITE);
-                bar(x+i*w-1,y-5,x+i*w+1,y+h+5);//清空光标
+                bar(x+cursor*w-1,y-5,x+cursor*w+1,y+h+5);//清空光标
                 break;
             }
             else 
             {
-                if(t!='\b')
+                if(ascii !='\b') 
                 {
-                    *(temp+i)=t;
-                    *(temp+i+1)='\0';
-                    setfillstyle(SOLID_FILL, WHITE);  
-                    bar(x,y-5,x+maxi*w,y+h+5);//清空输入区
-                    outtextxy(x,y,temp);
-                    i++;
-                    line(x+i*w,y,x+i*w,y+h);
+                    if( i<maxi ) 
+                    {
+                        for(j=i;j>=cursor;j--) {
+                            temp[j+1]=temp[j];
+                        }
+                        temp[cursor]=ascii;
+                        cursor++;
+                        i++;
+                    }
                 }
-                else if(i>0)
+                else if(ascii=='\b')
                 {
-                    i--;
-                    *(temp+i)='\0';
-                    *(temp+i+1)='\0';
-                    setfillstyle(SOLID_FILL, WHITE);
-                    bar(x,y-5,x+maxi*w,y+h+5);//清空输入区
-                    outtextxy(x,y,temp);
-                    line(x+i*w,y,x+i*w,y+h);
-                    
+                    if( cursor>0 )  //从光标位置开始删除字符
+                    {
+                        for(j=cursor;j<i;j++) {
+                            temp[j-1]=temp[j];
+                        }
+                        temp[i-1]='\0';
+                        cursor--;
+                        i--;
+                    }
                 }
+                bar(x,y-5,x+maxi*w,y+h+5);
+                outtextxy(x,y,temp);
+                line(x+cursor*w,y,x+cursor*w,y+h);
             }
         }
         else if(i>=maxi)
         {
-            if(t==' '||t=='\n'||t=='\r'||t==033)//退出键
+            if(ascii==' ' || ascii=='\n' || ascii=='\r' || ascii==27)//退出键
             {
                 setfillstyle(SOLID_FILL, WHITE);
-                bar(x+i*w-1,y-5,x+i*w+1,y+h+5);
+                bar(x+cursor*w-1,y-5,x+cursor*w+1,y+h+5);
                 break;
             }
             else 
             {
-                if(t=='\b'&&i>0)
+                if(ascii=='\b' )
                 {
-                    i--;
-                    *(temp+i)='\0';
-                    setfillstyle(SOLID_FILL, WHITE);
-                    bar(x,y-5,x+maxi*w,y+h+5);//清空输入区
+                    if( cursor>0 )  //从光标位置开始删除字符
+                    {
+                        for(j=cursor;j<i;j++) {
+                            temp[j-1]=temp[j];
+                        }
+                        temp[i-1]='\0';
+                        cursor--;
+                        i--;
+                    }
+                    bar(x,y-5,x+maxi*w,y+h+5);
                     outtextxy(x,y,temp);
-                    line(x+i*w,y,x+i*w,y+h);
-                    
+                    line(x+cursor*w,y,x+cursor*w,y+h);
                 }
             }
         }
