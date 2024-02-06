@@ -4,6 +4,8 @@
 #include "login.h"
 #include "welcome.h"
 #include "signup.h"
+#include "home.h"
+#include "field.h"
 
 #define WELCOME 0
 #define LOGIN 1
@@ -14,5 +16,6 @@
 #define PESTICIDE 6
 #define DETECTOR 7
 #define QUIT 8
+#define README 9
 
 #endif
