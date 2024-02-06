@@ -2,7 +2,7 @@
 #include "public.h"
 #include "main.h"
 
-void fieldfunc_screen()
+void draw_field_screen()
 {
     back_button(PAINT);
 
@@ -10,7 +10,7 @@ void fieldfunc_screen()
     put_rubber(12,150,DARKGRAY,5);
 }
 
-void fieldfunc_page(char *name)
+int draw_field_page(char *name)
 {
     int record[21][26];
     int mode = 0;
@@ -37,7 +37,7 @@ void fieldfunc_page(char *name)
     clrmous(MouseX,MouseY);
     setfillstyle(SOLID_FILL,WHITE);
     bar(0,0,95,480);
-    fieldfunc_screen();
+    draw_field_screen();
     mouseinit();
     while(1)
     {
@@ -92,10 +92,7 @@ void fieldfunc_page(char *name)
         else if(mouse_press(595,5,630,40)==1)        //退出点击
         {
             clrmous(MouseX,MouseY);
-            setcolor(WHITE);
-            setfillstyle(SOLID_FILL,WHITE);
-            bar(0,0,95,480);
-            field_page(name);
+            return FIELD;
         }
         else
         {
@@ -181,7 +178,7 @@ void fieldfunc_page(char *name)
                     clrmous(MouseX,MouseY);
                     setfillstyle(SOLID_FILL,WHITE);
                     bar(0,0,95,480);
-                    fieldfunc_page(name);
+                    break;
                 }
                 else 
                 {
@@ -193,6 +190,7 @@ void fieldfunc_page(char *name)
                     }
                 }
             }
+            return DRAW_FIELD;
         }
 
         if(mode ==2)   //mode2代表擦除模式
@@ -255,7 +253,7 @@ void fieldfunc_page(char *name)
                     clrmous(MouseX,MouseY);
                     setfillstyle(SOLID_FILL,WHITE);
                     bar(0,0,95,480);
-                    fieldfunc_page(name);
+                    break;
                 }
                 else 
                 {
@@ -267,6 +265,7 @@ void fieldfunc_page(char *name)
                     }
                 }
             }
+            return DRAW_FIELD;
         }
          
     }
