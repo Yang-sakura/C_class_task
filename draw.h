@@ -7,7 +7,7 @@ void put_sprout(int x,int y,int COLOR,int pix);
 void put_field(int x,int y,int LIGHTCOLOR,int DARKCOLOR,int pix);
 void put_house(int x,int y,int DARKCOLOR,int LIGHTCOLOR,int pix);
 void put_flower(int x,int y,int pix,int COLOR);
-void put_shovel(int x,int y)；
+void put_shovel(int x,int y);
 
 #endif
 
