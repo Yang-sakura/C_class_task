@@ -75,7 +75,7 @@ void temp_input(char *temp,int x,int y)
         ascii = key & 0x00FF;
         scan_code = key>>8;
 
-        if(scan_code==0x4B)//左箭头键
+        if(scan_code==0x4B && ascii != '4')//左箭头键
         {
             if( cursor>0 ) {
                 cursor--;
@@ -85,7 +85,7 @@ void temp_input(char *temp,int x,int y)
             }
             continue;
         }
-        if(scan_code==0x4D)//右箭头键
+        if(scan_code==0x4D && ascii != '6')//右箭头键
         {
             if( cursor <i ) {
                 cursor++;
