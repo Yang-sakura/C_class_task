@@ -40,26 +40,14 @@ void field_screen()
 
 int field_page(INFO* temp)
 {
-    static int time = 0;
+    
     int flag = 0;
     int num[5];
-    if(time == 0)        //程序启动首次进入
-    {
-        cleardevice();
-        setbkcolor(WHITE);
-        field_screen();
-        mouseinit();
-        time++;
-    }
-    if(time!=0)          //选定农田后不再清空农田区域
-    {
-        clrmous(MouseX,MouseY);
-        setfillstyle(SOLID_FILL,WHITE);
-        bar(0,0,95,480);
-        field_screen();
-        mouseinit();
-        time++;
-    }
+    cleardevice();
+    setbkcolor(WHITE);
+    field_screen();
+    mouseinit();
+     
     while(1)
     {
         newmouse(&MouseX,&MouseY,&press);
@@ -115,7 +103,7 @@ int field_page(INFO* temp)
 
         if(mouse_press(25,50,70,95)==1)      //绘制农田点击
         {
-            fieldfunc_page(temp->name);
+            return DRAW_FIELD;
         }
         else if(mouse_press(25,150,70,195)==1)
         {
