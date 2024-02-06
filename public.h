@@ -42,7 +42,7 @@
 
 #define WELCOME 0
 #define LOGIN 1
-#define SIGHUP 2
+#define SIGNUP 2
 #define HOME 3
 #define FIELD 4
 #define DRONE 5
@@ -54,7 +54,6 @@
 #define PAINT 0
 #define RECOVER 1
 #define LIGHT 2
-// #define DELETE 3
 
 void printline(int x,int y,int len,int n,int flag,int COLOR,int wid,int gap);
 //x,y是第一个小方块左上角起始点，flag=0横着向右，flag=1竖着向下，len每格长度是宽度的多少倍数，n记录画多少个,COLOR是画线颜色
@@ -67,6 +66,7 @@ typedef struct userinfo
     char password[18];
 } INFO;
 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -76,9 +76,13 @@ typedef struct userinfo
 #include <conio.h>
 #include <dos.h>
 #include <time.h>
-#include "draw.h"
+#include <io.h>
+#include <direct.h>
 
 #include "hz.h"
 #include "mouse.h"
+#include "draw.h"
+
+
 
 #endif
