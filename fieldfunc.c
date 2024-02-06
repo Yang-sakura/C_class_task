@@ -8,14 +8,27 @@ void draw_field_screen()
 
     put_pencil(12,50,DARKGRAY,DARKGRAY,LIGHTGRAY,5);
     put_rubber(12,150,DARKGRAY,5);
+    put_file(12,260,DARKGRAY,LIGHTGRAY,5);
+}
+
+void open_file()
+{
+    setfillstyle(SOLID_FILL,LIGHTBLUE);
+    bar(110,50,630,400);
+    printline(110,50,1,104,0,BLUE,5,0);
+    printline(110,395,1,104,0,BLUE,5,0);
+    printline(110,50,1,70,1,BLUE,5,0);
+    printline(625,50,1,70,1,BLUE,5,0);
 }
 
 int draw_field_page(char *name)
 {
     int record[21][26];
+    unsigned file_size;
+    void *filebuffer;
     int mode = 0;
     int num[5];
-    int flag = 0;
+    int flag = 0,file_flag=0;
     int pencil_flag = 0,rubber_flag = 0;
     int (*precord)[26] = record;
     int i;
@@ -78,6 +91,44 @@ int draw_field_page(char *name)
             MouseS = 0;
             clrmous(MouseX,MouseY);
         }
+        else if(mouse_press(12,260,77,310)==2)       //文件夹未点击
+        {
+            if(flag!=3)
+            {
+                MouseS = 1;
+                flag = 3;
+                num[3]=1;
+                clrmous(MouseX,MouseY);
+                put_file(12,260,BLUE,LIGHTBLUE,5);
+            }
+        }
+        else if(mouse_press(12,260,77,310)==1)
+        {
+            if(file_flag == 0)
+            {
+                file_size = imagesize(110,50,630,400);
+                filebuffer = malloc(file_size);
+                if(filebuffer != NULL)
+                {
+                    getimage(110,50,630,400,filebuffer);
+                }
+                else
+                {
+                    perror("ERROR IN REMEMBERING!");
+                    delay(3000);
+                    exit(1);
+                }
+                open_file();
+                mode =3;
+                file_flag = 1;
+            }
+            else if(file_flag == 1)
+            {
+                putimage(110,50,filebuffer,COPY_PUT);
+                free(filebuffer);
+            }
+            
+        }
         else if(mouse_press(595,5,630,40)==2)        //退出未点击
         {
             if(flag!=4)
@@ -115,6 +166,12 @@ int draw_field_page(char *name)
             clrmous(MouseX,MouseY);
             put_rubber(12,150,DARKGRAY,5);
             num[2] = 0;
+        }
+        else if(flag!=3&&num[3]==1)
+        {
+            clrmous(MouseX,MouseY);
+            put_file(12,260,DARKGRAY,LIGHTGRAY,5);
+            num[3] = 0;
         }
         else if(flag!=4&&num[4]==1)
         {
@@ -295,6 +352,4 @@ void put_ok_button(int flag)
         put_ok_button(PAINT);
     }
 }
-
-
 
