@@ -21,7 +21,7 @@ void main()
                page = login_page(temp);//1
                break;
 
-            case SIGNUP :
+            case SIGHUP :
                page = signup_page();//2
                break;
 
@@ -44,6 +44,10 @@ void main()
             case DETECTOR :
                page = 1;
                break; 
+            
+            case DRAW_FIELD:
+               page = draw_field_page(temp->name);
+               break;
 			default :
 				exit(1);
         }
