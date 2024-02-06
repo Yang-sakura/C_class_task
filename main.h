@@ -6,6 +6,7 @@
 #include "signup.h"
 #include "home.h"
 #include "field.h"
+#include "fieldfunc.h"
 
 #define WELCOME 0
 #define LOGIN 1
@@ -17,5 +18,6 @@
 #define DETECTOR 7
 #define QUIT 8
 #define README 9
+#define DRAW_FIELD 10
 
 #endif
