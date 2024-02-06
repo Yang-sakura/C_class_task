@@ -6,6 +6,7 @@ void main()
     int gdriver = VGA;
     int gmode = VGAHI;
     int page = 0;
+    INFO *temp;
     initgraph(&gdriver,&gmode,"c:\\borlandc\\bgi");
 
     while(1)
@@ -17,19 +18,19 @@ void main()
                break;
 
             case LOGIN :
-               page = login_page();//1
+               page = login_page(temp);//1
                break;
 
-            case SIGH_UP :
+            case SIGHUP :
                page = signup_page();//2
                break;
 
             case HOME :
-               page = 1;
+               page = home_page(temp);
                break;
 
             case FIELD :
-               page = 1;
+               page = field_page(temp);
                break;
 
             case DRONE :
