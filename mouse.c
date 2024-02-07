@@ -127,6 +127,56 @@ void mouse(int x, int y)
 		line(x + 5, y - 1, x + 5, y + 15);
 	}
 	break;
+	case 4://铅笔
+	{
+		setcolor(DARKGRAY);
+    	setlinestyle(0,0,1);
+    	line(x-1,y-2,x+2,y-2);
+    	line(x-1,y-1,x+1,y-1);
+    	line(x-1,y,x,y);
+    	putpixel(x-1,y+1,DARKGRAY);
+
+		setcolor(BROWN);
+		setlinestyle(0,0,1);
+		line(x+2,y-1,x+3,y-1);
+		line(x+1,y,x+4,y);
+		line(x,y+1,x+5,y+1);
+		line(x,y+2,x+6,y+2);
+		line(x+1,y+3,x+7,y+3);
+		line(x+2,y+4,x+8,y+4);
+		line(x+3,y+5,x+9,y+5);
+		line(x+4,y+6,x+9,y+6);
+		line(x+5,y+7,x+8,y+7);
+		line(x+6,y+8,x+7,y+8);
+
+		putpixel(x+10,y+6,LIGHTGRAY);
+		setcolor(LIGHTGRAY);
+		setlinestyle(0,0,1);
+		line(x+9,y+7,x+11,y+7);
+		line(x+8,y+8,x+11,y+8);
+		line(x+7,y+9,x+10,y+9);
+		line(x+8,y+10,x+9,y+10);
+	}
+	break;
+	case 5: //橡皮
+	{
+		putpixel(x+3,y-2,LIGHTGRAY);
+		setlinestyle(0,0,1);
+		setcolor(LIGHTGRAY);
+		line(x+2,y-1,x+4,y-1);
+		line(x+1,y,x+5,y);
+		line(x,y+1,x+6,y+1);
+		line(x-1,y+2,x+7,y+2);
+		line(x,y+3,x+8,y+3);
+		line(x+1,y+4,x+9,y+4);
+		line(x+2,y+5,x+10,y+5);
+		line(x+3,y+6,x+11,y+6);
+		line(x+4,y+7,x+10,y+7);
+		line(x+5,y+8,x+9,y+8);
+		line(x+6,y+9,x+8,y+9);
+		putpixel(x+7,y+10,LIGHTGRAY);
+	}
+	break;
 	default: //默认鼠标
 	{
 		setlinestyle(0, 0, 1);
@@ -216,6 +266,7 @@ DESCRIPTION: 鼠标状态发生变化则更新鼠标
 INPUT: nx,ny,nbuttons
 RETURN: 无
 ********************************************/
+
 void newmouse(int *nx, int *ny, int *nbuttons)
 {
 	int xn, yn, buttonsn;
@@ -227,8 +278,8 @@ void newmouse(int *nx, int *ny, int *nbuttons)
 	if (buttons0 == *nbuttons)
 		*nbuttons = 0; //使得能连续按键
 	if (xn == x0 && yn == y0 && buttonsn == buttons0)
-		return;		 //鼠标状态不变则直接返回S
-	clrmous(x0, y0); //说明鼠标状态发生了改变
+		return;		 	//鼠标状态不变则直接返回S
+	clrmous(x0, y0); 	//说明鼠标状态发生了改变
 	save_bk_mou(*nx, *ny);
 	drawmous(*nx, *ny);
 }
