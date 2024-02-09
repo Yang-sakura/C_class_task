@@ -7,6 +7,7 @@ void main()
     int gmode = VGAHI;
     int page = 0;
     INFO *temp;
+    char *now_field;
     initgraph(&gdriver,&gmode,"c:\\borlandc\\bgi");
 
     while(1)
@@ -46,7 +47,7 @@ void main()
                break; 
             
             case DRAW_FIELD:
-               page = draw_field_page(temp->name);
+               page = draw_field_page(temp->name,now_field);
                break;
 			default :
 				exit(1);
