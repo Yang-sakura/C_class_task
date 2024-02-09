@@ -90,7 +90,7 @@ int signup_page(void)
         }
         else if( mouse_press(255,155,560,205)==1 )//用户名输入框按下
         {
-            temp_input(user->name , 266,170);
+            temp_input(user->name , 266,170,17,16,20,WHITE,2);
         }
         else if( mouse_press(255,225,560,275)==2 )//密码输入框未按
         {
@@ -103,7 +103,7 @@ int signup_page(void)
         else if( mouse_press(255,225,560,275)==1 )//密码输入框按下
         {
             if( user->name[0] == '\0' ) continue;
-            temp_input(user->password ,266,240);
+            temp_input(user->password ,266,240,17,16,20,WHITE,2);
         }
         else {
             if(place!=0)
