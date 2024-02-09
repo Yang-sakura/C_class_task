@@ -2,7 +2,7 @@
 #define _LOGFUNC_H_
 
 int check(INFO *user);
-void temp_input(char *temp,int x,int y);
+void temp_input(char *temp,int x,int y,int maxi,int w,int h,int COLOR1,int size);
 int userinfo_input(INFO *user,int *state1,int *state2);
 void password_warning(char *s);
 void title_warning(char *s,int PAGE);
