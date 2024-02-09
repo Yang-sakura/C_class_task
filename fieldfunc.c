@@ -1,5 +1,5 @@
-#include "fieldfunc.h"
 #include "public.h"
+#include "fieldfunc.h"
 #include "main.h"
 
 void draw_field_screen()
@@ -13,25 +13,38 @@ void draw_field_screen()
 
 void open_file()
 {
+    clrmous(MouseX,MouseY);
     setfillstyle(SOLID_FILL,LIGHTBLUE);
     bar(110,50,630,400);
     printline(110,50,1,104,0,BLUE,5,0);
     printline(110,395,1,104,0,BLUE,5,0);
     printline(110,50,1,70,1,BLUE,5,0);
     printline(625,50,1,70,1,BLUE,5,0);
+    printline(110,95,1,104,0,BLUE,5,0);
+    printline(110,145,1,104,0,BLUE,5,0);
+    printline(110,195,1,104,0,BLUE,5,0);
+    printline(110,245,1,104,0,BLUE,5,0);
+    printline(110,295,1,104,0,BLUE,5,0);
+    printline(110,345,1,104,0,BLUE,5,0);
+    printline(110,395,1,104,0,BLUE,5,0);
+    settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
+    outtextxy(118,65,"CREATE A FIELD.");
+    
 }
 
-int draw_field_page(char *name)
+int draw_field_page(char *name,char *now_field)
 {
+    struct ffblk ffblk;
+    int done;
+    char (*fieldfilename)[80];
     int record[21][26];
-    unsigned file_size;
-    void *filebuffer;
     int mode = 0;
     int num[5];
-    int flag = 0,file_flag=0;
-    int pencil_flag = 0,rubber_flag = 0;
+    int filenum[5];
+    int flag = 0;
+    int pencil_flag = 0,rubber_flag = 0,file_flag = 0;
     int (*precord)[26] = record;
-    int i;
+    int i=0;
     FILE *fp;
     char string[80] = "c:\\DATA\\";
     char filename[80];
@@ -102,32 +115,11 @@ int draw_field_page(char *name)
                 put_file(12,260,BLUE,LIGHTBLUE,5);
             }
         }
-        else if(mouse_press(12,260,77,310)==1)
+        else if(mouse_press(12,260,77,310)==1)     //文件夹点击
         {
-            if(file_flag == 0)
-            {
-                file_size = imagesize(110,50,630,400);
-                filebuffer = malloc(file_size);
-                if(filebuffer != NULL)
-                {
-                    getimage(110,50,630,400,filebuffer);
-                }
-                else
-                {
-                    perror("ERROR IN REMEMBERING!");
-                    delay(3000);
-                    exit(1);
-                }
-                open_file();
-                mode =3;
-                file_flag = 1;
-            }
-            else if(file_flag == 1)
-            {
-                putimage(110,50,filebuffer,COPY_PUT);
-                free(filebuffer);
-            }
-            
+            mode =3;
+            MouseS = 0;
+            clrmous(MouseX,MouseY);
         }
         else if(mouse_press(595,5,630,40)==2)        //退出未点击
         {
@@ -203,7 +195,7 @@ int draw_field_page(char *name)
                     clrmous(MouseX,MouseY);
                     setfillstyle(SOLID_FILL,DARKGRAY);
                     bar(110+20*((MouseX - 110)/20),470-20*((470-MouseY)/20+1),110+20*((MouseX - 110)/20)+20,470-20*((470-MouseY)/20+1)+20);
-                    record[(MouseX - 110)/20][(470-MouseY)/20] = 1;               
+                    record[(470-MouseY)/20][(MouseX - 110)/20] = 1;               
                 }
                 else if(mouse_press(5,400,95,470)==2)      //处于ok区域未点击
                 {
@@ -278,7 +270,7 @@ int draw_field_page(char *name)
                     line(110+20*((MouseX - 110)/20),470-20*((470-MouseY)/20+1),110+20*((MouseX - 110)/20)+20,470-20*((470-MouseY)/20+1));
                     line(110+20*((MouseX - 110)/20),470-20*((470-MouseY)/20+1)+20,110+20*((MouseX - 110)/20)+20,470-20*((470-MouseY)/20+1)+20);
                     line(110+20*((MouseX - 110)/20)+20,470-20*((470-MouseY)/20+1)+20,110+20*((MouseX - 110)/20)+20,470-20*((470-MouseY)/20+1));
-                    record[(MouseX - 110)/20][(470-MouseY)/20] = 0;               
+                    record[(470-MouseY)/20][(MouseX - 110)/20] = 0;               
                 }
                 else if(mouse_press(5,400,95,470)==2)      //处于ok区域未点击
                 {
@@ -324,6 +316,65 @@ int draw_field_page(char *name)
             }
             return DRAW_FIELD;
         }
+
+        if(mode == 3)
+        {
+            open_file();
+            put_file(12,260,BLUE,LIGHTBLUE,5);
+            setfillstyle(SOLID_FILL,WHITE);
+            bar(595,5,630,40);
+            strcat(string,"\\*.*");
+            // done = findfirst(string,&ffblk,0);
+            // while(!done)
+            // {
+            //     strcpy(fieldfilename[i],ffblk.ff_name);
+            //     settextstyle(DEFAULT_FONT,HORIZ_DIR,5);
+            //     outtextxy(110,50,ffblk.ff_name);
+            //     done = findnext(&ffblk);
+            //     i++;
+            // }
+            while(1)
+            {
+                newmouse(&MouseX,&MouseY,&press);
+                if(mouse_press(115,55,625,95)==2)            //创建农田未点击
+                {
+                    if(file_flag!=1)
+                    {
+                        MouseS = 1;
+                        file_flag = 1;
+                        filenum[1] = 1;
+                        clrmous(MouseX,MouseY);
+                        setcolor(CYAN);
+                        settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
+                        outtextxy(118,65,"CREATE A FIELD.");
+                    }
+                }
+                else if(mouse_press(115,55,625,95)==1)         //创建农田点击
+                {
+                    setfillstyle(SOLID_FILL,LIGHTBLUE);
+                    bar(115,55,625,95);
+                    temp_input(now_field,118,63,23,22,25,LIGHTBLUE,4);
+                }
+                else
+                {
+                    if(file_flag!=0)
+                    {
+                        MouseS = 0;
+                        file_flag = 0;
+                    }
+                }
+
+                if(file_flag!=1&&filenum[1]==1)
+                {
+                    clrmous(MouseX,MouseY);
+                    setcolor(DARKGRAY);
+                    settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
+                    outtextxy(118,65,"CREATE A FIELD.");
+                    filenum[1]=0;
+                }
+                
+            }
+        }
          
     }
 }
@@ -352,4 +403,6 @@ void put_ok_button(int flag)
         put_ok_button(PAINT);
     }
 }
+
+
 
