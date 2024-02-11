@@ -151,12 +151,13 @@ int house_page(char *username,char *nowfield)
                 }
                 else if( mouse_press(110,50,630,470)==1 )//处于画图区域并且点击
                 {
+                    if(house != 0) continue;
                     clrmous(MouseX,MouseY);
                     i = (470-MouseY)/20;
                     j = (MouseX - 110)/20;
                     i_recent = i ;
                     j_recent = j ;
-                    if( record[i][j] == 1 && house == 0)
+                    if( record[i][j] == 1 )
                     {
                         x = 110+j*20 ;
                         y = 470-i*20-20 ;//左上角
