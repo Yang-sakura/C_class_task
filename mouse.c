@@ -177,6 +177,72 @@ void mouse(int x, int y)
 		putpixel(x+7,y+10,LIGHTGRAY);
 	}
 	break;
+
+	case 6 : //树苗
+	{
+		setcolor(GREEN);
+		setlinestyle(SOLID_LINE,0,NORM_WIDTH);
+		line(x-1,y-2,x,y-2);
+		line(x-1,y-1,x+1,y-1);
+		line(x-1,y,x+2,y);
+		line(x,y+1,x+6,y+1);
+		line(x+1,y+2,x+5,y+2);
+		line(x+3,y+2,x+3,y+6);
+
+		line(x+6,y-2,x+7,y-2);
+		line(x+5,y-1,x+7,y-1);
+		line(x+4,y,x+7,y);
+
+	}
+	break;
+
+	case 7 : //铲子
+	{
+		setcolor(LIGHTGRAY);
+		setlinestyle(SOLID_LINE,0,NORM_WIDTH);
+		line(x-1,y-2,x+2,y-2);
+		line(x-1,y-1,x+3,y-1);
+		line(x-1,y,x+4,y);
+		line(x-1,y+1,x+3,y+1);
+		line(x,y+2,x+2,y+2);
+		putpixel(x+1,y+3,LIGHTGRAY);
+
+		setcolor(BROWN);
+		line(x+3,y+2,x+4,y+2);
+
+		line(x+3,y+3,x+5,y+3);//x-1 y-2
+		line(x+4,y+4,x+6,y+4);
+		line(x+5,y+5,x+7,y+5);
+		line(x+6,y+6,x+8,y+6);
+		line(x+7,y+7,x+9,y+7);
+
+		line(x+8,y+8,x+11,y+8);
+		line(x+9,y+9,x+10,y+9);
+		line(x+8,y+10,x+9,y+10);
+		putpixel(x+11,y+7,BROWN);
+	}
+	break;
+
+	case 8 : //旗子
+	{
+		setcolor(LIGHTGRAY);
+		setlinestyle(SOLID_LINE,0,NORM_WIDTH);
+		line(x+4,y,x+4,y+13);
+		line(x+5,y,x+5,y+13);
+		line(x+2,y+14,x+8,y+14);
+		line(x,y+15,x+10,y+15);
+		line(x,y+16,x+10,y+16);
+
+		setcolor(RED);
+		line(x+6,y,x+6,y+6);
+		line(x+7,y+1,x+7,y+6);
+		line(x+8,y+2,x+8,y+6);
+		line(x+9,y+3,x+9,y+6);
+		line(x+10,y+4,x+10,y+6);
+		line(x+11,y+5,x+11,y+6);
+	}
+	break;
+	
 	default: //默认鼠标
 	{
 		setlinestyle(0, 0, 1);
