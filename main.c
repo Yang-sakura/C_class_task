@@ -22,7 +22,7 @@ void main()
                page = login_page(temp);//1
                break;
 
-            case SIGHUP :
+            case SIGNUP :
                page = signup_page();//2
                break;
 
