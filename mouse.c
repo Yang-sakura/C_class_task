@@ -51,13 +51,10 @@ void mouseinit() //初始化
 		regs.x.dx = ymax;
 		int86(51, &regs, &regs);
 	}
-	// MouseS = 0;
-	// MouseX = 320, MouseY = 240;
+	MouseS = 0;
+	MouseX = 320, MouseY = 240;
 	save_bk_mou(320, 240);
 	mouse(MouseX, MouseY);
-	// MouseX = 613, MouseY = 23;
-	// save_bk_mou(MouseX, MouseY);
-	// mouse(MouseX, MouseY);
 	flag = 1;
 }
 
@@ -113,7 +110,6 @@ void mouse(int x, int y)
 		line(x + 1, y + 13, x - 1, y + 9);
 	}
 	break;
-
 	case 2: //光标
 	{
 		setcolor(DARKGRAY);
@@ -123,7 +119,6 @@ void mouse(int x, int y)
 		line(x + 5, y - 1, x + 5, y + 15);
 	}
 	break;
-
 	case 3: //十字
 	{
 		setcolor(WHITE);
@@ -132,15 +127,14 @@ void mouse(int x, int y)
 		line(x + 5, y - 1, x + 5, y + 15);
 	}
 	break;
-
 	case 4://铅笔
 	{
-		setcolor(LIGHTGRAY);
+		setcolor(DARKGRAY);
     	setlinestyle(0,0,1);
     	line(x-1,y-2,x+2,y-2);
     	line(x-1,y-1,x+1,y-1);
     	line(x-1,y,x,y);
-    	putpixel(x-1,y+1,LIGHTGRAY);
+    	putpixel(x-1,y+1,DARKGRAY);
 
 		setcolor(BROWN);
 		setlinestyle(0,0,1);
@@ -164,7 +158,6 @@ void mouse(int x, int y)
 		line(x+8,y+10,x+9,y+10);
 	}
 	break;
-
 	case 5: //橡皮
 	{
 		putpixel(x+3,y-2,LIGHTGRAY);
@@ -182,6 +175,37 @@ void mouse(int x, int y)
 		line(x+5,y+8,x+9,y+8);
 		line(x+6,y+9,x+8,y+9);
 		putpixel(x+7,y+10,LIGHTGRAY);
+	}
+	break;
+	default: //默认鼠标
+	{
+		setlinestyle(0, 0, 1);
+		setcolor(WHITE);
+		line(x, y, x, y + 13);
+		line(x + 1, y + 1, x + 1, y + 12);
+		line(x + 2, y + 2, x + 2, y + 11);
+		line(x + 3, y + 3, x + 3, y + 10);
+		line(x + 4, y + 4, x + 4, y + 12);
+		line(x + 5, y + 5, x + 5, y + 9);
+		line(x + 5, y + 11, x + 5, y + 14);
+		line(x + 6, y + 6, x + 6, y + 9);
+		line(x + 6, y + 13, x + 6, y + 15);
+		line(x + 7, y + 7, x + 7, y + 9);
+		line(x + 8, y + 8, x + 8, y + 9);
+		line(x + 9, y + 9, x + 9, y + 9);
+		setcolor(DARKGRAY);
+		line(x - 1, y - 1, x - 1, y + 14);
+		line(x - 1, y + 14, x + 3, y + 11);
+		line(x + 3, y + 11, x + 3, y + 12);
+		line(x + 3, y + 12, x + 4, y + 13);
+		line(x + 4, y + 13, x + 4, y + 14);
+		line(x + 4, y + 14, x + 7, y + 17);
+		line(x + 7, y + 17, x + 7, y + 13);
+		line(x + 7, y + 13, x + 6, y + 12);
+		line(x + 6, y + 12, x + 6, y + 11);
+		line(x + 6, y + 11, x + 5, y + 10);
+		line(x + 5, y + 10, x + 11, y + 10);
+		line(x + 11, y + 10, x - 1, y - 2);
 	}
 	break;
 
@@ -227,38 +251,6 @@ void mouse(int x, int y)
 		line(x+9,y+9,x+10,y+9);
 		line(x+8,y+10,x+9,y+10);
 		putpixel(x+11,y+7,BROWN);
-	}
-	break;
-
-	default: //默认鼠标
-	{
-		setlinestyle(0, 0, 1);
-		setcolor(WHITE);
-		line(x, y, x, y + 13);
-		line(x + 1, y + 1, x + 1, y + 12);
-		line(x + 2, y + 2, x + 2, y + 11);
-		line(x + 3, y + 3, x + 3, y + 10);
-		line(x + 4, y + 4, x + 4, y + 12);
-		line(x + 5, y + 5, x + 5, y + 9);
-		line(x + 5, y + 11, x + 5, y + 14);
-		line(x + 6, y + 6, x + 6, y + 9);
-		line(x + 6, y + 13, x + 6, y + 15);
-		line(x + 7, y + 7, x + 7, y + 9);
-		line(x + 8, y + 8, x + 8, y + 9);
-		line(x + 9, y + 9, x + 9, y + 9);
-		setcolor(DARKGRAY);
-		line(x - 1, y - 1, x - 1, y + 14);
-		line(x - 1, y + 14, x + 3, y + 11);
-		line(x + 3, y + 11, x + 3, y + 12);
-		line(x + 3, y + 12, x + 4, y + 13);
-		line(x + 4, y + 13, x + 4, y + 14);
-		line(x + 4, y + 14, x + 7, y + 17);
-		line(x + 7, y + 17, x + 7, y + 13);
-		line(x + 7, y + 13, x + 6, y + 12);
-		line(x + 6, y + 12, x + 6, y + 11);
-		line(x + 6, y + 11, x + 5, y + 10);
-		line(x + 5, y + 10, x + 11, y + 10);
-		line(x + 11, y + 10, x - 1, y - 2);
 	}
 	break;
 	}
@@ -319,6 +311,7 @@ DESCRIPTION: 鼠标状态发生变化则更新鼠标
 INPUT: nx,ny,nbuttons
 RETURN: 无
 ********************************************/
+
 void newmouse(int *nx, int *ny, int *nbuttons)
 {
 	int xn, yn, buttonsn;
@@ -330,8 +323,8 @@ void newmouse(int *nx, int *ny, int *nbuttons)
 	if (buttons0 == *nbuttons)
 		*nbuttons = 0; //使得能连续按键
 	if (xn == x0 && yn == y0 && buttonsn == buttons0)
-		return;		 //鼠标状态不变则直接返回S
-	clrmous(x0, y0); //说明鼠标状态发生了改变
+		return;		 	//鼠标状态不变则直接返回S
+	clrmous(x0, y0); 	//说明鼠标状态发生了改变
 	save_bk_mou(*nx, *ny);
 	drawmous(*nx, *ny);
 }
