@@ -119,31 +119,24 @@ void put_flower(int x,int y,int pix,int COLOR)
     printline(x-2*pix,y-pix*1,1,5,0,COLOR,pix,0);
     printline(x-pix,y-pix*7,1,3,1,COLOR,pix,0);
 }
-
-void put_shovel(int x,int y)
+void put_shovel(int x,int y,int pix,int COLOR1,int COLOR2)
 {
-    setcolor(DARKGRAY);
-    setlinestyle(SOLID_LINE,0,NORM_WIDTH);
-    line(x-1,y-2,x+2,y-2);
-    line(x-1,y-1,x+3,y-1);
-    line(x-1,y,x+4,y);
-    line(x-1,y+1,x+3,y+1);
-    line(x,y+2,x+2,y+2);
-    putpixel(x+1,y+3,DARKGRAY);
+    printline(x,y,1,5,0,COLOR1,pix,0);
+    printline(x,y+pix,1,6,0,COLOR1,pix,0);
+    printline(x,y+2*pix,1,7,0,COLOR1,pix,0);
+    printline(x,y+3*pix,1,7,0,COLOR1,pix,0);
+    printline(x,y+4*pix,1,6,0,COLOR1,pix,0);
+    printline(x+pix,y+5*pix,1,4,0,COLOR1,pix,0);
+    printline(x+2*pix,y+6*pix,1,2,0,COLOR1,pix,0);
 
-    setcolor(BROWN);
-    line(x+3,y+2,x+4,y+2);
+    printline(x+5*pix,y+5*pix,1,2,0,COLOR2,pix,0);
+    printline(x+5*pix,y+6*pix,1,3,0,COLOR2,pix,0);
+    printline(x+6*pix,y+7*pix,1,3,0,COLOR2,pix,0);
+    printline(x+7*pix,y+8*pix,1,3,0,COLOR2,pix,0);
+    printline(x+8*pix,y+9*pix,1,3,0,COLOR2,pix,0);
+    printline(x+9*pix,y+10*pix,1,3,0,COLOR2,pix,0);
 
-    line(x+3,y+3,x+5,y+3);//x-1 y-2
-    line(x+4,y+4,x+6,y+4);
-    line(x+5,y+5,x+7,y+5);
-    line(x+6,y+6,x+8,y+6);
-    line(x+7,y+7,x+9,y+7);
-
-    line(x+8,y+8,x+11,y+8);
-    line(x+9,y+9,x+10,y+9);
-    line(x+8,y+10,x+9,y+10);
-    putpixel(x+11,y+7,BROWN);
-
+    printline(x+10*pix,y+11*pix,1,2,0,COLOR2,pix,0);
+    printline(x+8*pix,y+12*pix,1,3,0,COLOR2,pix,0);
+    printline(x+12*pix,y+9*pix,1,3,1,COLOR2,pix,0);
 }
-
