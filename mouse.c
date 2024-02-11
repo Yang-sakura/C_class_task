@@ -223,6 +223,26 @@ void mouse(int x, int y)
 	}
 	break;
 
+	case 8 : //旗子
+	{
+		setcolor(LIGHTGRAY);
+		setlinestyle(SOLID_LINE,0,NORM_WIDTH);
+		line(x+4,y,x+4,y+13);
+		line(x+5,y,x+5,y+13);
+		line(x+2,y+14,x+8,y+14);
+		line(x,y+15,x+10,y+15);
+		line(x,y+16,x+10,y+16);
+
+		setcolor(RED);
+		line(x+6,y,x+6,y+6);
+		line(x+7,y+1,x+7,y+6);
+		line(x+8,y+2,x+8,y+6);
+		line(x+9,y+3,x+9,y+6);
+		line(x+10,y+4,x+10,y+6);
+		line(x+11,y+5,x+11,y+6);
+	}
+	break;
+
 	default: //默认鼠标
 	{
 		setlinestyle(0, 0, 1);
