@@ -64,25 +64,6 @@ void signup_button_light(void)
     settextstyle(DEFAULT_FONT   , HORIZ_DIR,2);
     outtextxy(250, 410, "-sign up-");
 }
-void put_flower(int x,int y,int pix,int COLOR)
-{
-    // void printline(int x,int y,int len,int n,int flag,int COLOR,int wid,int gap);
-    printline(x,y-pix*9,1,9,1,COLOR,pix,0);
-    printline(x-2*pix,y-pix*6,1,5,0,COLOR,pix,0);
-    printline(x-2*pix,y-pix*5,1,5,0,COLOR,pix,0);
-    printline(x-2*pix,y-pix*10,1,4,1,COLOR,pix,0);
-    printline(x-3*pix,y-pix*9,1,3,1,COLOR,pix,0);
-    printline(x+2*pix,y-pix*10,1,4,1,COLOR,pix,0);
-    printline(x+3*pix,y-pix*9,1,3,1,COLOR,pix,0);
-    printline(x,y-pix*8,1,3,0,COLOR,pix,0);
-    printline(x-4*pix,y-pix*4,1,2,1,COLOR,pix,0);
-    printline(x-3*pix,y-pix*3,1,2,1,COLOR,pix,0);
-    printline(x+4*pix,y-pix*4,1,2,1,COLOR,pix,0);
-    printline(x+3*pix,y-pix*3,1,2,1,COLOR,pix,0);
-    printline(x-2*pix,y-pix*2,1,5,0,COLOR,pix,0);
-    printline(x-2*pix,y-pix*1,1,5,0,COLOR,pix,0);
-    printline(x-pix,y-pix*7,1,3,1,COLOR,pix,0);
-}
 int login_page(INFO *temp)
 {
     int place=0;//鼠标在的位置
