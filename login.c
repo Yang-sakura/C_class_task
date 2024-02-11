@@ -1,7 +1,6 @@
 #include "login.h"
 #include "public.h"
 #include "logfunc.h"
-#include "main.h"
 
 void login_bkpaint(void)//画登录页面背景
 {
@@ -72,13 +71,11 @@ int login_page(INFO *temp)
         memset(user,0,sizeof(INFO));
     }
     login_bkpaint();
-    delay(60);
     mouseinit();
 
     if(temp != NULL) {
         memset(temp,0,sizeof(INFO));
     }
-
 
     while(1)
     {
@@ -99,7 +96,7 @@ int login_page(INFO *temp)
             cleardevice();
             newmouse(&MouseX, &MouseY, &press);
             clrmous(MouseX,MouseY);
-            return SIGHUP;
+            return SIGNUP;
         }
         else if( mouse_press(595,5,630,40)==2 )//退出按钮未按
         {
@@ -160,6 +157,7 @@ int login_page(INFO *temp)
         }
         else if( mouse_press(255,225,560,275)==1 )//密码输入框按下
         {
+            if( user->name[0]=='\0' ) continue;
             temp_input(user->password,266,240,17,16,20,WHITE,2);
         }
         else {
