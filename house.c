@@ -3,6 +3,10 @@
 
 void house_screen(int record[21][26] ,char *nowfield)
 {
+    setbkcolor(WHITE);
+    cleardevice();
+    clrmous(MouseX,MouseY);
+
     paint_field(record ,nowfield);
 
     put_house(25,50,DARKGRAY,LIGHTGRAY,5);
@@ -46,16 +50,16 @@ int house_page(char *username,char *nowfield)
     int num[5];
     int house_flag=0 ,house=0;
     int x,y;
-    // char path[50]="C:\\DATA\\";
-    char path[50]="C:\\DATA\\QWQ\\FIELD\\field.dat";
+    char path[50]="C:\\DATA\\";
+    // char path[50]="C:\\DATA\\QWQ\\FIELD\\field.dat";
     int i,j,i_recent,j_recent;
     FILE *fp;
 
     memset(record , 0 , sizeof(record));
 
-    // strcat(path,username);
-    // strcat(path,"\\FIELD\\");
-    // strcat(path,nowfield);
+    strcat(path,username);
+    strcat(path,"\\FIELD\\");
+    strcat(path,nowfield);
 
     if ( (fp = fopen(path,"rb")) != NULL )
     {
@@ -244,6 +248,4 @@ int house_page(char *username,char *nowfield)
             }
         }
     }
-
-
 }
