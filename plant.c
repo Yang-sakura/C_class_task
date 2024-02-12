@@ -56,6 +56,10 @@ void paint_field( int record[21][26] ,char *nowfield)
 }
 void plant_screen( int record[21][26] ,char *nowfield)
 {
+    setbkcolor(WHITE);
+    cleardevice();
+    clrmous(MouseX,MouseY);
+
     paint_field(record ,nowfield);
 
     put_sprout(12,50,DARKGRAY,7);
@@ -70,16 +74,16 @@ int plant_page(char *username,char *nowfield)
     int num[5];
     int sprout_flag=0 ,shovel_flag=0 ;
     int x,y;
-    // char path[50]="C:\\DATA\\";
-    char path[50]="C:\\DATA\\QWQ\\FIELD\\field.dat";
+    char path[50]="C:\\DATA\\";
+    // char path[50]="C:\\DATA\\QWQ\\FIELD\\field.dat";
     int i,j;
     FILE *fp;
 
     memset(record , 0 , sizeof(record));
 
-    // strcat(path,username);
-    // strcat(path,"\\FIELD\\");
-    // strcat(path,nowfield);
+    strcat(path,username);
+    strcat(path,"\\FIELD\\");
+    strcat(path,nowfield);
 
     if ( (fp = fopen(path,"rb")) != NULL )
     {
@@ -331,9 +335,5 @@ int plant_page(char *username,char *nowfield)
 
             }
         }
-
     }
-
-
-
 }
