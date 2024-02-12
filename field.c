@@ -38,13 +38,43 @@ void field_screen()
 }
 
 
-int field_page(INFO* temp)
+int field_page(INFO* temp,char* now_field)
 {
     
     int flag = 0;
     int num[5];
+    int record[21][26];
+    char string[80] = "c:\\DATA\\";
+    int i;
+    FILE * fp;
     cleardevice();
     setbkcolor(WHITE);
+
+    memset(record,0,sizeof(record));
+
+    clrmous(MouseX,MouseY);
+    if(strlen(now_field)!=0)
+    {
+        strcat(string,temp->name);
+        strcat(string,"\\FIELD\\");
+        strcat(string,now_field);
+
+        if ( (fp = fopen(string,"rb")) != NULL )
+        {
+            for(i=0; i<21 ;i++ )
+            {
+                fread( record[i],sizeof(int), 26 ,fp);
+            }
+        }
+        else 
+        {
+            perror("error in opening fieldfile!");
+        }
+        fclose(fp);
+        paint_field(record ,now_field);
+
+    }
+
     field_screen();
     mouseinit();
      
@@ -103,6 +133,8 @@ int field_page(INFO* temp)
 
         if(mouse_press(25,50,70,95)==1)      //绘制农田点击
         {
+            clrmous(MouseX,MouseY);
+            cleardevice();
             return DRAW_FIELD;
         }
         else if(mouse_press(25,150,70,195)==1)
