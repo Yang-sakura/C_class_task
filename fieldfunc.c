@@ -70,7 +70,7 @@ int draw_field_page(char *name,char *now_field)
     int pencil_flag = 0,rubber_flag = 0,file_flag = 0;
     int (*precord)[26] = record;
     int i=0;
-    int page=0;
+    int page=0,pagemax=0;
     FILE *fp;
     char string[80] = "c:\\DATA\\";
     char stringall[80],stringnow[80];
@@ -92,11 +92,12 @@ int draw_field_page(char *name,char *now_field)
     }
 
     clrmous(MouseX,MouseY);
+    cleardevice();
+    
     if(strlen(now_field)!=0)
     {
         strcpy(stringnow,string);
-        strcat(stringnow,name);
-        strcat(stringnow,"\\FIELD\\");
+        strcat(stringnow,"\\");
         strcat(stringnow,now_field);
 
         if ( (fp = fopen(stringnow,"rb")) != NULL )
@@ -387,11 +388,14 @@ int draw_field_page(char *name,char *now_field)
             bar(595,5,630,40);
             strcpy(stringall,string);
             strcat(stringall,"\\*.*");
+            memset(fieldfilename,0,sizeof(fieldfilename));
             while(1)
             {
                 newmouse(&MouseX,&MouseY,&press);
                 if(filetime == 1)
                 {
+                    file_number = 0;
+                    i=0;
                     done = findfirst(stringall,&ffblk,0);
                     while(!done)
                     {
@@ -400,25 +404,23 @@ int draw_field_page(char *name,char *now_field)
                         i++;
                         file_number++;
                     }
+                    open_file();
+                    setcolor(DARKGRAY);
+                    settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
+                    pagemax = file_number/5;
+                    if((file_number-5*page)>=0)
+                    {
+                        for(i=0;i<5;i++)
+                        {
+                            clrmous(MouseX,MouseY);
+                            outtextxy(118,60+50*(i+1),fieldfilename[i+page*5]);
+                        }
+                    }
                     filetime = 0;
                 }
 
-                setcolor(DARKGRAY);
-                settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
-                if(file_number>=5)
-                {
-                    for(i=0;i<5;i++)
-                    {
-                        outtextxy(118,60+50*(i+1),fieldfilename[i+page]);
-                    }
-                }
-                else 
-                {
-                    for(i=0;i<file_number;i++)
-                    {
-                        outtextxy(118,60+50*(i+1),fieldfilename[i]);
-                    }
-                }
+                
+                
 
 
 
@@ -482,7 +484,12 @@ int draw_field_page(char *name,char *now_field)
                 }
                 else if(mouse_press(120,353,200,393)==1)
                 {
-                    page--;
+                    delay(50);
+                    if(page>=1)
+                    {
+                        page--;
+                        filetime = 1;
+                    }
                 }
                 else if(mouse_press(540,353,620,393)==2)
                 {
@@ -497,7 +504,12 @@ int draw_field_page(char *name,char *now_field)
                 }
                 else if(mouse_press(540,353,620,393)==1)
                 {
-                    page++;
+                    delay(50);
+                    if(page<pagemax)
+                    {
+                        page++;
+                        filetime = 1;
+                    }
                 }
                 else
                 {
@@ -507,6 +519,16 @@ int draw_field_page(char *name,char *now_field)
                         file_flag = 0;
                     }
                 }
+
+                // if(page<=0)
+                // {
+                //     page = 0;
+                // }
+                // else if(page>=(file_number/5))
+                // {
+                //     page = (file_number/5);
+                // }
+
 
                 if(file_flag!=1&&filenum[1]==1)
                 {
