@@ -265,7 +265,10 @@ int draw_field_page(char *name,char *now_field)
                     MouseS = 0;
                     mode = 0;
 
-                    if((fp = fopen("c:\\DATA\\yang\\FIELD\\field.dat","wb"))!=NULL)
+                    strcpy(stringnow,string);
+                    strcat(stringnow,"\\");
+                    strcat(stringnow,now_field);
+                    if((fp = fopen(stringnow,"wb"))!=NULL)
                     {
                         for(i=0;i<21;i++)
                         {
@@ -340,7 +343,10 @@ int draw_field_page(char *name,char *now_field)
                     MouseS = 0;
                     mode = 0;
 
-                    if((fp = fopen("c:\\DATA\\yang\\FIELD\\field.dat","wb"))!=NULL)
+                    strcpy(stringnow,string);
+                    strcat(stringnow,"\\");
+                    strcat(stringnow,now_field);
+                    if((fp = fopen(stringnow,"wb"))!=NULL)
                     {
                         for(i=0;i<21;i++)
                         {
