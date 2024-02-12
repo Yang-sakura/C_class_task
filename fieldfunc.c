@@ -529,6 +529,7 @@ int draw_field_page(char *name,char *now_field)
                     strcpy(now_field,fieldfilename[0+page*5]);
                     clrmous(MouseX,MouseY);
                     cleardevice();
+                    mode = 0;
                     return DRAW_FIELD;
                 }
                 else if(mouse_press(115,150,625,195)==2)
@@ -549,6 +550,7 @@ int draw_field_page(char *name,char *now_field)
                     strcpy(now_field,fieldfilename[1+page*5]);
                     clrmous(MouseX,MouseY);
                     cleardevice();
+                    mode = 0;
                     return DRAW_FIELD;
                 }
                 else if(mouse_press(115,200,625,245)==2)
@@ -569,6 +571,7 @@ int draw_field_page(char *name,char *now_field)
                     strcpy(now_field,fieldfilename[2+page*5]);
                     clrmous(MouseX,MouseY);
                     cleardevice();
+                    mode = 0;
                     return DRAW_FIELD;
                 }
                 else if(mouse_press(115,250,625,295)==2)
@@ -589,6 +592,7 @@ int draw_field_page(char *name,char *now_field)
                     strcpy(now_field,fieldfilename[3+page*5]);
                     clrmous(MouseX,MouseY);
                     cleardevice();
+                    mode = 0;
                     return DRAW_FIELD;
                 }
                 else if(mouse_press(115,300,625,345)==2)
@@ -609,6 +613,25 @@ int draw_field_page(char *name,char *now_field)
                     strcpy(now_field,fieldfilename[4+page*5]);
                     clrmous(MouseX,MouseY);
                     cleardevice();
+                    mode = 0;
+                    return DRAW_FIELD;
+                }
+                else if(mouse_press(12,260,77,310)==2)       //文件夹未点击
+                {
+                    if(file_flag!=9)
+                    {
+                        MouseS = 1;
+                        file_flag = 9;
+                        filenum[9]=1;
+                        clrmous(MouseX,MouseY);
+                        put_file(12,260,DARKGRAY,LIGHTGRAY,5);
+                    }
+                }
+                else if(mouse_press(12,260,77,310)==1)       //文件夹点击
+                {
+                    clrmous(MouseX,MouseY);
+                    cleardevice();
+                    mode = 0;
                     return DRAW_FIELD;
                 }
                 else
@@ -680,6 +703,12 @@ int draw_field_page(char *name,char *now_field)
                     settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
                     outtextxy(118,60+50*(4+1),fieldfilename[4+page*5]);
                     filenum[8]=0;
+                }
+                else if(file_flag!=9&&filenum[9]==1)
+                {
+                    clrmous(MouseX,MouseY);
+                    put_file(12,260,BLUE,LIGHTBLUE,5);
+                    filenum[9]=0;
                 }
                 
             }
