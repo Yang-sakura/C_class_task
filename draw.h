@@ -7,5 +7,6 @@ void put_sprout(int x,int y,int COLOR,int pix);
 void put_field(int x,int y,int LIGHTCOLOR,int DARKCOLOR,int pix);
 void put_house(int x,int y,int DARKCOLOR,int LIGHTCOLOR,int pix);
 void put_file(int x,int y,int DARKCOLOR,int LIGHTCOLOR,int pix);
-
+void put_arrow(int x,int y,int COLOR,int pix,int flag);
+void put_shovel(int x,int y,int pix,int COLOR1,int COLOR2);
 #endif
