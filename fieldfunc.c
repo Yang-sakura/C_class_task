@@ -511,6 +511,106 @@ int draw_field_page(char *name,char *now_field)
                         filetime = 1;
                     }
                 }
+                else if(mouse_press(115,100,625,145)==2)
+                {
+                    if(file_flag!=4)
+                    {
+                        MouseS = 1;
+                        file_flag = 4;
+                        filenum[4] = 1;
+                        clrmous(MouseX,MouseY);
+                        setcolor(CYAN);
+                        settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
+                        outtextxy(118,60+50*(0+1),fieldfilename[0+page*5]);
+                    }
+                }
+                else if(mouse_press(115,100,625,145)==1)
+                {
+                    strcpy(now_field,fieldfilename[0+page*5]);
+                    clrmous(MouseX,MouseY);
+                    cleardevice();
+                    return DRAW_FIELD;
+                }
+                else if(mouse_press(115,150,625,195)==2)
+                {
+                    if(file_flag!=5)
+                    {
+                        MouseS = 1;
+                        file_flag = 5;
+                        filenum[5] = 1;
+                        clrmous(MouseX,MouseY);
+                        setcolor(CYAN);
+                        settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
+                        outtextxy(118,60+50*(1+1),fieldfilename[1+page*5]);
+                    }
+                }
+                else if(mouse_press(115,150,625,195)==1)
+                {
+                    strcpy(now_field,fieldfilename[1+page*5]);
+                    clrmous(MouseX,MouseY);
+                    cleardevice();
+                    return DRAW_FIELD;
+                }
+                else if(mouse_press(115,200,625,245)==2)
+                {
+                    if(file_flag!=6)
+                    {
+                        MouseS = 1;
+                        file_flag = 6;
+                        filenum[6] = 1;
+                        clrmous(MouseX,MouseY);
+                        setcolor(CYAN);
+                        settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
+                        outtextxy(118,60+50*(2+1),fieldfilename[2+page*5]);
+                    }
+                }
+                else if(mouse_press(115,200,625,245)==1)
+                {
+                    strcpy(now_field,fieldfilename[2+page*5]);
+                    clrmous(MouseX,MouseY);
+                    cleardevice();
+                    return DRAW_FIELD;
+                }
+                else if(mouse_press(115,250,625,295)==2)
+                {
+                    if(file_flag!=7)
+                    {
+                        MouseS = 1;
+                        file_flag = 7;
+                        filenum[7] = 1;
+                        clrmous(MouseX,MouseY);
+                        setcolor(CYAN);
+                        settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
+                        outtextxy(118,60+50*(3+1),fieldfilename[3+page*5]);
+                    }
+                }
+                else if(mouse_press(115,250,625,295)==1)
+                {
+                    strcpy(now_field,fieldfilename[3+page*5]);
+                    clrmous(MouseX,MouseY);
+                    cleardevice();
+                    return DRAW_FIELD;
+                }
+                else if(mouse_press(115,300,625,345)==2)
+                {
+                    if(file_flag!=8)
+                    {
+                        MouseS = 1;
+                        file_flag = 8;
+                        filenum[8] = 1;
+                        clrmous(MouseX,MouseY);
+                        setcolor(CYAN);
+                        settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
+                        outtextxy(118,60+50*(4+1),fieldfilename[4+page*5]);
+                    }
+                }
+                else if(mouse_press(115,300,625,345)==1)
+                {
+                    strcpy(now_field,fieldfilename[4+page*5]);
+                    clrmous(MouseX,MouseY);
+                    cleardevice();
+                    return DRAW_FIELD;
+                }
                 else
                 {
                     if(file_flag!=0)
@@ -519,15 +619,6 @@ int draw_field_page(char *name,char *now_field)
                         file_flag = 0;
                     }
                 }
-
-                // if(page<=0)
-                // {
-                //     page = 0;
-                // }
-                // else if(page>=(file_number/5))
-                // {
-                //     page = (file_number/5);
-                // }
 
 
                 if(file_flag!=1&&filenum[1]==1)
@@ -549,6 +640,46 @@ int draw_field_page(char *name,char *now_field)
                     clrmous(MouseX,MouseY);
                     put_arrow(540,353,DARKGRAY,5,2);
                     filenum[3]=0;
+                }
+                else if(file_flag!=4&&filenum[4]==1)
+                {
+                    clrmous(MouseX,MouseY);
+                    setcolor(DARKGRAY);
+                    settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
+                    outtextxy(118,60+50*(0+1),fieldfilename[0+page*5]);
+                    filenum[4]=0;
+                }
+                else if(file_flag!=5&&filenum[5]==1)
+                {
+                    clrmous(MouseX,MouseY);
+                    setcolor(DARKGRAY);
+                    settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
+                    outtextxy(118,60+50*(1+1),fieldfilename[1+page*5]);
+                    filenum[5]=0;
+                }
+                else if(file_flag!=6&&filenum[6]==1)
+                {
+                    clrmous(MouseX,MouseY);
+                    setcolor(DARKGRAY);
+                    settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
+                    outtextxy(118,60+50*(2+1),fieldfilename[2+page*5]);
+                    filenum[6]=0;
+                }
+                else if(file_flag!=7&&filenum[7]==1)
+                {
+                    clrmous(MouseX,MouseY);
+                    setcolor(DARKGRAY);
+                    settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
+                    outtextxy(118,60+50*(3+1),fieldfilename[3+page*5]);
+                    filenum[7]=0;
+                }
+                else if(file_flag!=8&&filenum[8]==1)
+                {
+                    clrmous(MouseX,MouseY);
+                    setcolor(DARKGRAY);
+                    settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
+                    outtextxy(118,60+50*(4+1),fieldfilename[4+page*5]);
+                    filenum[8]=0;
                 }
                 
             }
