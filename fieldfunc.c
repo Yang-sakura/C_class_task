@@ -4,7 +4,29 @@
 
 void draw_field_screen()
 {
+    int i;
     back_button(PAINT);
+
+    printline(100,0,1,480,1,DARKGRAY,5,5);
+    setcolor(DARKGRAY);
+    settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
+    outtextxy(110,10,"NAME:");
+    setlinestyle(SOLID_LINE,0,THICK_WIDTH);
+    line(110,50,110,470);
+    line(110,470,630,470);
+    line(110,50,108,60);
+    line(110,50,112,60);
+    line(630,470,620,468);
+    line(630,470,620,472);
+    setlinestyle(DOTTED_LINE,0,NORM_WIDTH);
+    for(i=0;i<26;i++)
+    {
+        line(110+i*20,50,110+i*20,470);
+    }
+    for(i=0;i<21;i++)
+    {
+        line(110,470-i*20,630,470-i*20);
+    }
 
     put_pencil(12,50,DARKGRAY,DARKGRAY,LIGHTGRAY,5);
     put_rubber(12,150,DARKGRAY,5);
@@ -30,26 +52,35 @@ void open_file()
     settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
     outtextxy(118,65,"CREATE A FIELD.");
     
+    put_arrow(120,353,DARKGRAY,5,1);
+    put_arrow(540,353,DARKGRAY,5,2);
 }
 
 int draw_field_page(char *name,char *now_field)
 {
-    struct ffblk ffblk;
+    struct ffblk ffblk;        
     int done;
     char (*fieldfilename)[80];
     int record[21][26];
     int mode = 0;
+    int filetime = 1,file_number=0;
     int num[5];
     int filenum[5];
     int flag = 0;
     int pencil_flag = 0,rubber_flag = 0,file_flag = 0;
     int (*precord)[26] = record;
     int i=0;
+    int page=0;
     FILE *fp;
     char string[80] = "c:\\DATA\\";
+    char stringall[80],stringnow[80];
     char filename[80];
+    char null[80] = {'\0'};
     strcat(string,name);
     strcat(string,"\\FIELD");
+
+    memset(record , 0 , sizeof(record));
+
     if(access(string,0)==-1)  //协助创建农田文件夹
     {
         if(mkdir(string)!=0)
@@ -61,8 +92,31 @@ int draw_field_page(char *name,char *now_field)
     }
 
     clrmous(MouseX,MouseY);
-    setfillstyle(SOLID_FILL,WHITE);
-    bar(0,0,95,480);
+    if(strlen(now_field)!=0)
+    {
+        strcpy(stringnow,string);
+        strcat(stringnow,name);
+        strcat(stringnow,"\\FIELD\\");
+        strcat(stringnow,now_field);
+
+        if ( (fp = fopen(stringnow,"rb")) != NULL )
+        {
+            for(i=0; i<21 ;i++ )
+            {
+                fread( record[i],sizeof(int), 26 ,fp);
+            }
+        }
+        else 
+        {
+            perror("error in opening fieldfile!");
+        }
+        fclose(fp);
+        paint_field(record ,now_field);
+
+    }
+
+    
+
     draw_field_screen();
     mouseinit();
     while(1)
@@ -320,22 +374,49 @@ int draw_field_page(char *name,char *now_field)
         if(mode == 3)
         {
             open_file();
+            put_arrow(120,353,DARKGRAY,5,1);
+            put_arrow(540,353,DARKGRAY,5,2);
             put_file(12,260,BLUE,LIGHTBLUE,5);
             setfillstyle(SOLID_FILL,WHITE);
             bar(595,5,630,40);
-            strcat(string,"\\*.*");
-            // done = findfirst(string,&ffblk,0);
-            // while(!done)
-            // {
-            //     strcpy(fieldfilename[i],ffblk.ff_name);
-            //     settextstyle(DEFAULT_FONT,HORIZ_DIR,5);
-            //     outtextxy(110,50,ffblk.ff_name);
-            //     done = findnext(&ffblk);
-            //     i++;
-            // }
+            strcpy(stringall,string);
+            strcat(stringall,"\\*.*");
             while(1)
             {
                 newmouse(&MouseX,&MouseY,&press);
+                if(filetime == 1)
+                {
+                    done = findfirst(stringall,&ffblk,0);
+                    while(!done)
+                    {
+                        strcpy(fieldfilename[i],ffblk.ff_name);
+                        done = findnext(&ffblk);
+                        i++;
+                        file_number++;
+                    }
+                    filetime = 0;
+                }
+
+                setcolor(DARKGRAY);
+                settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
+                if(file_number>=5)
+                {
+                    for(i=0;i<5;i++)
+                    {
+                        outtextxy(118,60+50*(i+1),fieldfilename[i+page]);
+                    }
+                }
+                else 
+                {
+                    for(i=0;i<file_number;i++)
+                    {
+                        outtextxy(118,60+50*(i+1),fieldfilename[i]);
+                    }
+                }
+
+
+
+
                 if(mouse_press(115,55,625,95)==2)            //创建农田未点击
                 {
                     if(file_flag!=1)
@@ -351,9 +432,66 @@ int draw_field_page(char *name,char *now_field)
                 }
                 else if(mouse_press(115,55,625,95)==1)         //创建农田点击
                 {
+                    clrmous(MouseX,MouseY);
                     setfillstyle(SOLID_FILL,LIGHTBLUE);
-                    bar(115,55,625,95);
-                    temp_input(now_field,118,63,23,22,25,LIGHTBLUE,4);
+                    bar(116,55,625,95);
+                    temp_input(now_field,118,63,15,33,25,LIGHTBLUE,4);
+                    setfillstyle(SOLID_FILL,LIGHTBLUE);
+                    bar(116,55,625,95);
+                    if(strlen(now_field)!=0)
+                    {
+                        strcpy(stringnow,string);
+                        strcat(stringnow,"\\");
+                        strcat(now_field,".dat");
+                        strcat(stringnow,now_field);
+                        
+                        if((fp = fopen(stringnow,"wb"))!= NULL)
+                        {
+                            for(i=0;i<21;i++)
+                            {
+                                fwrite(precord[i],sizeof(int),26,fp);
+                            }
+                        }
+                        else
+                        {
+                            perror("ERROR IN CREATING!");
+                            delay(3000);
+                            exit(1);
+                        }
+                        fclose(fp);
+                        filetime = 1;
+                        return DRAW_FIELD;
+                    }
+                }
+                else if(mouse_press(120,353,200,393)==2)
+                {
+                    if(file_flag!=2)
+                    {
+                        MouseS = 1;
+                        file_flag = 2;
+                        filenum[2] = 1;
+                        clrmous(MouseX,MouseY);
+                        put_arrow(120,353,CYAN,5,1);
+                    }
+                }
+                else if(mouse_press(120,353,200,393)==1)
+                {
+                    page--;
+                }
+                else if(mouse_press(540,353,620,393)==2)
+                {
+                    if(file_flag!=3)
+                    {
+                        MouseS = 1;
+                        file_flag = 3;
+                        filenum[3] = 1;
+                        clrmous(MouseX,MouseY);
+                        put_arrow(540,353,CYAN,5,2);
+                    }
+                }
+                else if(mouse_press(540,353,620,393)==1)
+                {
+                    page++;
                 }
                 else
                 {
@@ -371,6 +509,18 @@ int draw_field_page(char *name,char *now_field)
                     settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
                     outtextxy(118,65,"CREATE A FIELD.");
                     filenum[1]=0;
+                }
+                else if(file_flag!=2&&filenum[2]==1)
+                {
+                    clrmous(MouseX,MouseY);
+                    put_arrow(120,353,DARKGRAY,5,1);
+                    filenum[2]=0;
+                }
+                else if(file_flag!=3&&filenum[3]==1)
+                {
+                    clrmous(MouseX,MouseY);
+                    put_arrow(540,353,DARKGRAY,5,2);
+                    filenum[3]=0;
                 }
                 
             }
