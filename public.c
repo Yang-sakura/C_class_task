@@ -49,6 +49,7 @@ void printbox(int x1,int y1,int x2,int y2,int COLOR,int len,int wid,int gap)
 
 void back_button(int flag)
 {
+    clrmous(MouseX,MouseY);
     if(flag==PAINT)
     {
         printbox(595,5,630,40,DARKGRAY,1,5,4);
@@ -67,9 +68,64 @@ void back_button(int flag)
     {
         back_button(PAINT);
     }
+    // else if(flag==DELETE)
+    // {
+    //     setwritemode(XOR_PUT);
+    //     back_button(PAINT);
+    // }
     else {
         printf("flag error!");
         delay(3000);
         exit(1);
     }
 }
+
+void string_limitation(char *string , int len)
+{
+    int i;
+    char cpystring[80];
+    strcpy(cpystring,string);
+    for(i=0;i<(len-1);i++)
+    {
+        string[i] = cpystring[i];
+    }
+    string[i+1] = '~';
+    string[i+2] = '\0';
+}
+
+void warning(char *msg,int nx,int ny,int lettersize)
+{
+    int size;
+    void *warning_buffer;
+    int time = 0;
+    size = imagesize(180,220,460,300);
+    warning_buffer = malloc(size);
+    if(warning_buffer!=NULL)
+        getimage(180,220,460,300,warning_buffer);
+    else
+    {
+        perror("ERROR IN WARNING!");
+        delay(3000);
+        exit(1);
+    }
+
+    setfillstyle(SOLID_FILL,LIGHTBLUE);
+    bar(180,220,460,300);
+    setfillstyle(SOLID_FILL,BLUE);
+    bar(180,220,460,225);
+    bar(180,220,185,300);
+    bar(180,295,460,300);
+    bar(455,220,460,300);
+    setcolor(WHITE);
+    settextstyle(DEFAULT_FONT,HORIZ_DIR,lettersize);
+    outtextxy(nx,ny,msg);
+    while(time<30)
+    {
+        delay(100);
+        time++;
+    }
+    putimage(180,220,warning_buffer,COPY_PUT);
+    free(warning_buffer);
+
+}
+
