@@ -60,7 +60,7 @@ int draw_field_page(char *name,char *now_field)
 {
     struct ffblk ffblk;        
     int done;
-    char (*fieldfilename)[80];
+    char fieldfilename[60][20];
     int record[21][26];
     int mode = 0;
     int filetime = 1,file_number=0;
@@ -400,6 +400,7 @@ int draw_field_page(char *name,char *now_field)
                     while(!done)
                     {
                         strcpy(fieldfilename[i],ffblk.ff_name);
+                        string_limitation(fieldfilename[i],15);
                         done = findnext(&ffblk);
                         i++;
                         file_number++;
@@ -408,6 +409,10 @@ int draw_field_page(char *name,char *now_field)
                     setcolor(DARKGRAY);
                     settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
                     pagemax = file_number/5;
+                    if(file_number%5==0)
+                    {
+                        pagemax -=1;
+                    }
                     if((file_number-5*page)>=0)
                     {
                         for(i=0;i<5;i++)
@@ -418,12 +423,6 @@ int draw_field_page(char *name,char *now_field)
                     }
                     filetime = 0;
                 }
-
-                
-                
-
-
-
 
                 if(mouse_press(115,55,625,95)==2)            //创建农田未点击
                 {
@@ -443,9 +442,10 @@ int draw_field_page(char *name,char *now_field)
                     clrmous(MouseX,MouseY);
                     setfillstyle(SOLID_FILL,LIGHTBLUE);
                     bar(116,55,625,95);
-                    temp_input(now_field,118,63,15,33,25,LIGHTBLUE,4);
+                    temp_input(null,118,63,15,33,25,LIGHTBLUE,4);
                     setfillstyle(SOLID_FILL,LIGHTBLUE);
                     bar(116,55,625,95);
+                    strcpy(now_field,null);
                     if(strlen(now_field)!=0)
                     {
                         strcpy(stringnow,string);
@@ -510,6 +510,7 @@ int draw_field_page(char *name,char *now_field)
                         page++;
                         filetime = 1;
                     }
+                    
                 }
                 else if(mouse_press(115,100,625,145)==2)
                 {
