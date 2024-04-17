@@ -129,6 +129,15 @@ void warning(char *msg,int nx,int ny,int lettersize)
 
 }
 
+/* ************************
+function:drop_down_menu
+description:
+create:
+input:int x,int y,int wide,int h,int n,int lettersize,char **msgs,int lightcolor,int darkcolor,char *record
+      x,y 开始展开的格子左上角坐标 wide:菜单格子宽度 h: 单位格子高度 n：展开有几格 lettersize:字体大小 msgs:内容 color:dark:边框线 light:格子背景色 record:保存点击的东西
+note:调用该函数后delay(100);最后改成的东西存在record中，需要重新打印在该格子中  自动向下展开，若下方屏幕范围不够则向上展开，但开始展开的点不变，故会掩盖原来的格子
+output:void
+************************* */
 void drop_down_menu(int x,int y,int wide,int h,int n,int lettersize,char **msgs,int lightcolor,int darkcolor,char *record)
 {
     int i;
@@ -142,10 +151,10 @@ void drop_down_menu(int x,int y,int wide,int h,int n,int lettersize,char **msgs,
     
     if(y+n*h<470)            //判断是否超出屏幕
     {
-        size = imagesize(x,y,x+wide,y+n*h);
+        size = imagesize(x,y,x+wide,y+n*h+5);
         drop_down_buffer = malloc(size);
         if(drop_down_buffer!=NULL)
-            getimage(x,y,x+wide,y+n*h,drop_down_buffer);
+            getimage(x,y,x+wide,y+n*h+5,drop_down_buffer);
         else
         {
             perror("ERROR IN REMEMBERING");
@@ -166,54 +175,52 @@ void drop_down_menu(int x,int y,int wide,int h,int n,int lettersize,char **msgs,
         {
             outtextxy(x+10,y+i*h+10,msgs[i]);
         }
+        
         while(1)
         {
+            place=0;
             newmouse(&MouseX,&MouseY,&press);
             for(i=0;i<n;i++)
             {
-                place = 0;
-                newmouse(&MouseX,&MouseY,&press);
-                for(i=0;i<n;i++)
+                if(mouse_press(x,y+i*h,x+wide,y+(i+1)*h)==2)
                 {
-                    if(mouse_press(x,y,x+wide,y+i*h)==2)
+                    if(flag!=i)
                     {
-                        if(flag!=i)
-                        {
-                            MouseS = 1;
-                            flag = i;
-                            num[i] = 1;
-                            clrmous(MouseX,MouseY);
-                            setcolor(YELLOW);
-                            settextstyle(DEFAULT_FONT,HORIZ_DIR,lettersize);
-                            outtextxy(x+10,y+i*h+10,msgs[i]);
-                        }
-                        place = 1;
-                    }
-                    else if(mouse_press(x,y,x+wide,y+i*h)==1)
-                    {
-                        strcpy(record,msgs[i]);
-                        putimage(x,y,drop_down_buffer,COPY_PUT);
-                        free(drop_down_buffer);
-                        place = 2;
-                        break;
-                    }
-
-                    if(flag!=i&&num[i]==1)
-                    {
-                        setcolor(DARKGRAY);
+                        MouseS = 1;
+                        flag = i;
+                        num[i] = 1;
+                        clrmous(MouseX,MouseY);
+                        setcolor(CYAN);
                         settextstyle(DEFAULT_FONT,HORIZ_DIR,lettersize);
                         outtextxy(x+10,y+i*h+10,msgs[i]);
                     }
+                    place = 1;
                 }
-                if(place == 0)
+                else if(mouse_press(x,y+i*h,x+wide,y+(i+1)*h)==1)
                 {
-                    MouseS = 0;
-                    flag = n+1;
-                }
-                else if(place == 2)
-                {
+                    strcpy(record,msgs[i]);
+                    clrmous(MouseX,MouseY);
+                    putimage(x,y,drop_down_buffer,COPY_PUT);
+                    free(drop_down_buffer);
+                    place = 2;
                     break;
                 }
+            
+                if(flag!=i&&num[i]==1)
+                {
+                    setcolor(DARKGRAY);
+                    settextstyle(DEFAULT_FONT,HORIZ_DIR,lettersize);
+                    outtextxy(x+10,y+i*h+10,msgs[i]);
+                }
+            }   
+            if(place == 0)
+            {
+                MouseS = 0;
+                flag = n+1;
+            }
+            else if(place == 2)
+            {
+                break;
             }
         }
     }
