@@ -9,7 +9,7 @@ void move_drone1(int record[21][26], int x1,int y1,int x2,int y2 )
     int i,j,step;
     double step_x,step_y,x,y ;
     step = max( abs(x2-x1),abs(y2-y1));
-    step /= 1.5;//速度修改
+    // step /= 1.5;//速度修改
     step_x = (x2-x1) / (float)step;
     step_y = (y2-y1) / (float)step;
     x = x1;
@@ -72,11 +72,16 @@ void simulate( int record[21][26] ,char *nowfield )
     int i,j,k;
 
 }
-void simulate_handmode(int record[21][26] , Point *route )
+void simulate_handmode(int record[21][26] , int route[100][2] )
 {
-    int i;
-    for(i=0 ; route[i+1].x!=0 ; i++)
+    int i=0;
+    while(route[i+1][0])
     {
-        move_drone1(record,route[i].x,route[i].y,route[i+1].x,route[i+1].y);
+        setfillstyle(SOLID_FILL,LIGHTBLUE);
+        bar(10+i*10,10+i*10,10+(i+1)*10,10+(i+1)*10);
+        move_drone1(record,route[i][0],route[i][1],route[i+1][0],route[i+1][1]);
+        i++;
     }
+    setfillstyle(SOLID_FILL,RED);
+        bar(400,400,405,405);
 }
