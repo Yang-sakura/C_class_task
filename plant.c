@@ -50,6 +50,13 @@ void paint_field( int record[21][26] ,char *nowfield)
                 //右下角 (110 + j * 20 + 20, 470 - i * 20)
                 put_sprout(x,y,GREEN,2);
             }
+            else if( record[i][j]==3 )
+            {
+                x = 110 + j*20 ;
+                y = 470-i*20-20 ;//左上角
+                //右下角 (110 + j * 20 + 20, 470 - i * 20)
+                put_house(x,y,BROWN,CYAN,2);
+            }
             
         }
     }
