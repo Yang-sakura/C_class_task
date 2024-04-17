@@ -140,16 +140,18 @@ void chart_button(int flag)
 int detect_page(char *username,char *nowfield)
 {
     int record[21][26];
-    int i,k,pre_x=-1,pre_y=-1;
+    int i,k,pre_x=-1,pre_y=-1,x,y;
     int flag=0,mode = 0, handmode_flag = 0 , automode_flag = 0;
     int num[5];
     char path[100]="C:\\DATA\\";
     char *presentmode;
     char *tempmsgs[2]={"hand>","auto>"};
     FILE *fp;
-    struct point route[100];
+    int route[100][2];
+    char temp[10];
 
     memset(record , 0 , sizeof(record));
+    memset(route,0,sizeof(route));
 
     strcat(path,username);
     strcat(path,"\\FIELD\\");
@@ -226,7 +228,7 @@ int detect_page(char *username,char *nowfield)
             clrmous(MouseX,MouseY);
             // simulate(record , username);
             
-            if( handmode_flag == 1 ) {
+            if( handmode_flag == 1 && mode != 1) {
                 simulate_handmode(record,route);
                 handmode_flag=0;
                 memset(route,0,sizeof(route));
@@ -334,33 +336,25 @@ int detect_page(char *username,char *nowfield)
                 newmouse(&MouseX,&MouseY,&press);
                 if(mouse_press(110,50,630,470)==1)//处于画图区域并且点击
                 {
+
+                    route[k][0] = MouseX;
+                    route[k][1] = MouseY;
                     clrmous(MouseX,MouseY);
-                    delay(10);
+                    delay(100);
                     setfillstyle(SOLID_FILL,LIGHTBLUE);
                     fillellipse(MouseX, MouseY, 3, 3);
+                    
 
-                    // setcolor(LIGHTBLUE);
-                    // circle(MouseX,MouseY,2);
-
-                    route[k].x = MouseX;
-                    route[k].y = MouseY;
-                    k++;
-
-                    // if(pre_x!=-1 && pre_y!= -1 ) 
-                    // {
-                    //     setlinestyle(DOTTED_LINE, 0, THICK_WIDTH);
-                    //     setcolor(LIGHTBLUE);
-                    //     line(10,10,30,10);
-                    //     line(pre_x,pre_y,MouseX,MouseY);
-                    //     pre_x = MouseX;
-                    //     pre_y = MouseY;
-                    // }
-                    if(k!=1) {
+                    if(k!=0) {
                         setlinestyle(DOTTED_LINE, 0, THICK_WIDTH);
                         setcolor(LIGHTBLUE);
                         line(10,10,30,10);
-                        line(route[k-1].x,route[k-1].y,route[k].x,route[k].y);
+
+                        settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
+
+                        line(route[k-1][0],route[k-1][1],route[k][0],route[k][1]);
                     }
+                    k++;
                 }
                 if( mouse_press(5,130,95,169)==1 ) {
                     clrmous(MouseX,MouseY);
