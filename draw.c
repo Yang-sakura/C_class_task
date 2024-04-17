@@ -736,3 +736,28 @@ void put_crop3(int x,int y,int type,int situation)
     }
 }
 
+void put_drone1(float x,float y,int pix)
+{
+    printline(x-1*pix,y-1*pix,1,3,0,BLUE,pix,0);
+    printline(x-2*pix,y,1,5,0,BLUE,pix,0);
+    printline(x-1*pix,y,1,3,0,LIGHTGRAY,pix,0);
+    printline(x,y,1,1,0,YELLOW,pix,0);
+    printline(x-3*pix,y+1*pix,1,7,0,BLUE,pix,0);
+
+    printline(x-1*pix,y+2*pix,1,1,0,BLUE,pix,0);
+    printline(x+1*pix,y+2*pix,1,1,0,BLUE,pix,0);
+    printline(x-2*pix,y+3*pix,1,1,0,BLUE,pix,0);
+    printline(x+2*pix,y+3*pix,1,1,0,BLUE,pix,0);
+}
+void put_tree1(int x,int y,int pix)
+{
+    printline(x,y,1,7,1,GREEN,pix,0);
+    printline(x+pix,y+pix,1,6,1,GREEN,pix,0);
+    printline(x-pix,y+pix,1,6,1,GREEN,pix,0);
+    printline(x+2*pix,y+2*pix,1,5,1,GREEN,pix,0);
+    printline(x-2*pix,y+2*pix,1,5,1,GREEN,pix,0);
+    printline(x+3*pix,y+3*pix,1,3,1,GREEN,pix,0);
+    printline(x-3*pix,y+3*pix,1,3,1,GREEN,pix,0);
+    printline(x,y+7*pix,1,2,1,BROWN,pix,0);
+}
+
