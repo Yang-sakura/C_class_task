@@ -13,13 +13,6 @@ void move_drone1(int record[21][26], int x1,int y1,int x2,int y2 );
 
 void simulate( int record[21][26] ,char *nowfield);
 
-
-typedef struct point 
-{
-    int x;
-    int y;
-} Point ;
-
-void simulate_handmode(int record[21][26] , Point *route );
+void simulate_handmode(int record[21][26] , int route[100][2] );
 
 #endif
