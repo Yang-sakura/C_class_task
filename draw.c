@@ -147,4 +147,592 @@ void put_shovel(int x,int y,int pix,int COLOR1,int COLOR2)
     printline(x+8*pix,y+12*pix,1,3,0,COLOR2,pix,0);
     printline(x+12*pix,y+9*pix,1,3,1,COLOR2,pix,0);
 }
+void put_crop1(int x,int y,int type,int situation)
+{
+    if(type == SPROUT)
+    {
+        if(situation == HEALTHY)
+        {
+            putpixel(x+11,y+3,GREEN);
+            setcolor(GREEN);
+            line(x+11,y+4,x+12,y+4);
+            line(x+10,y+5,x+11,y+5);
+            line(x+10,y+5,x+10,y+7);
+            line(x+9,y+7,x+10,y+7);
+            line(x+9,y+7,x+9,y+12);
+            line(x+5,y+9,x+6,y+9);
+            line(x+6,y+10,x+7,y+10);
+            line(x+7,y+10,x+7,y+12);
+            line(x+7,y+13,x+9,y+13);
+            line(x+8,y+14,x+11,y+14);
+            line(x+8,y+15,x+10,y+15);
+            line(x+9,y+16,x+10,y+16);
+            line(x+9,y+17,x+9,y+19);
+            line(x+11,y+10,x+11,y+14);
+            line(x+12,y+8,x+12,y+10);
+            line(x+13,y+7,x+13,y+8);
+        }
+        else if(situation == SICK)
+        {
+            putpixel(x+11,y+3,GREEN);
+            setcolor(GREEN);
+            line(x+11,y+4,x+12,y+4);
+            line(x+10,y+5,x+11,y+5);
+            line(x+10,y+5,x+10,y+7);
+            line(x+9,y+7,x+10,y+7);
+            line(x+9,y+7,x+9,y+12);
+            line(x+5,y+9,x+6,y+9);
+            line(x+6,y+10,x+7,y+10);
+            line(x+7,y+10,x+7,y+12);
+            line(x+7,y+13,x+9,y+13);
+            line(x+8,y+14,x+11,y+14);
+            line(x+8,y+15,x+10,y+15);
+            line(x+9,y+16,x+10,y+16);
+            line(x+9,y+17,x+9,y+19);
+            line(x+11,y+10,x+11,y+14);
+            line(x+12,y+8,x+12,y+10);
+            line(x+13,y+7,x+13,y+8);
+
+            putpixel(x+12,y+4,RED);
+            putpixel(x+10,y+5,RED);
+            putpixel(x+6,y+9,RED);
+            putpixel(x+7,y+11,RED);
+            putpixel(x+12,y+10,RED);
+            putpixel(x+11,y+12,RED);
+            putpixel(x+8,y+13,RED);
+            putpixel(x+8,y+14,RED);
+            putpixel(x+10,y+16,RED);
+        }
+    }
+    else if(type == TRANSITION)
+    {
+        if(situation == HEALTHY)
+        {
+            putpixel(x+11,y+3,GREEN);
+            putpixel(x+10,y+4,YELLOW);
+            putpixel(x+12,y+5,YELLOW);
+            putpixel(x+14,y+8,YELLOW);
+            putpixel(x+9,y+7,YELLOW);
+            putpixel(x+6,y+11,YELLOW);
+            setcolor(GREEN);
+            line(x+11,y+4,x+12,y+4);
+            line(x+10,y+5,x+11,y+5);
+            line(x+10,y+5,x+10,y+7);
+            line(x+9,y+7,x+10,y+7);
+            line(x+9,y+7,x+9,y+12);
+            line(x+5,y+9,x+6,y+9);
+            line(x+6,y+10,x+7,y+10);
+            line(x+7,y+10,x+7,y+12);
+            line(x+7,y+13,x+9,y+13);
+            line(x+8,y+14,x+11,y+14);
+            line(x+8,y+15,x+10,y+15);
+            line(x+9,y+16,x+10,y+16);
+            line(x+9,y+17,x+9,y+19);
+            line(x+11,y+10,x+11,y+14);
+            line(x+12,y+8,x+12,y+10);
+            line(x+13,y+7,x+13,y+8);
+        }
+        else if(situation == SICK)
+        {
+            putpixel(x+11,y+3,GREEN);
+            putpixel(x+10,y+4,YELLOW);
+            putpixel(x+12,y+5,YELLOW);
+            putpixel(x+14,y+8,YELLOW);
+            putpixel(x+9,y+7,YELLOW);
+            putpixel(x+6,y+11,YELLOW);
+            setcolor(GREEN);
+            line(x+11,y+4,x+12,y+4);
+            line(x+10,y+5,x+11,y+5);
+            line(x+10,y+5,x+10,y+7);
+            line(x+9,y+7,x+10,y+7);
+            line(x+9,y+7,x+9,y+12);
+            line(x+5,y+9,x+6,y+9);
+            line(x+6,y+10,x+7,y+10);
+            line(x+7,y+10,x+7,y+12);
+            line(x+7,y+13,x+9,y+13);
+            line(x+8,y+14,x+11,y+14);
+            line(x+8,y+15,x+10,y+15);
+            line(x+9,y+16,x+10,y+16);
+            line(x+9,y+17,x+9,y+19);
+            line(x+11,y+10,x+11,y+14);
+            line(x+12,y+8,x+12,y+10);
+            line(x+13,y+7,x+13,y+8);
+
+            putpixel(x+12,y+4,RED);
+            putpixel(x+10,y+5,RED);
+            putpixel(x+6,y+9,RED);
+            putpixel(x+7,y+11,RED);
+            putpixel(x+12,y+10,RED);
+            putpixel(x+11,y+12,RED);
+            putpixel(x+8,y+13,RED);
+            putpixel(x+8,y+14,RED);
+            putpixel(x+10,y+16,RED);
+        }
+    }
+    else if(type == CROP)
+    {
+        if(situation == HEALTHY)
+        {
+            putpixel(x+11,y+3,GREEN);
+            putpixel(x+10,y+4,YELLOW);
+            putpixel(x+12,y+5,YELLOW);
+            putpixel(x+14,y+8,YELLOW);
+            putpixel(x+9,y+7,YELLOW);
+            putpixel(x+6,y+11,YELLOW);
+            putpixel(x+9,y+5,YELLOW);
+            putpixel(x+13,y+6,YELLOW);
+            putpixel(x+14,y+6,YELLOW);
+            putpixel(x+11,y+7,YELLOW);
+            putpixel(x+4,y+8,YELLOW);
+            putpixel(x+6,y+8,YELLOW);
+            putpixel(x+14,y+8,YELLOW);
+            putpixel(x+4,y+9,YELLOW);
+            putpixel(x+7,y+9,YELLOW);
+            putpixel(x+8,y+9,YELLOW);
+            putpixel(x+11,y+9,YELLOW);
+            putpixel(x+5,y+10,YELLOW);
+            putpixel(x+10,y+10,YELLOW);
+            putpixel(x+13,y+10,YELLOW);
+            putpixel(x+8,y+11,YELLOW);
+            putpixel(x+8,y+12,YELLOW);
+            putpixel(x+12,y+12,YELLOW);
+            putpixel(x+12,y+13,YELLOW);
+            putpixel(x+7,y+14,YELLOW);
+            setcolor(GREEN);
+            line(x+11,y+4,x+12,y+4);
+            line(x+10,y+5,x+11,y+5);
+            line(x+10,y+5,x+10,y+7);
+            line(x+9,y+7,x+10,y+7);
+            line(x+9,y+7,x+9,y+12);
+            line(x+5,y+9,x+6,y+9);
+            line(x+6,y+10,x+7,y+10);
+            line(x+7,y+10,x+7,y+12);
+            line(x+7,y+13,x+9,y+13);
+            line(x+8,y+14,x+11,y+14);
+            line(x+8,y+15,x+10,y+15);
+            line(x+9,y+16,x+10,y+16);
+            line(x+9,y+17,x+9,y+19);
+            line(x+11,y+10,x+11,y+14);
+            line(x+12,y+8,x+12,y+10);
+            line(x+13,y+7,x+13,y+8);
+        }
+        else if(situation == SICK)
+        {
+            putpixel(x+11,y+3,GREEN);
+            putpixel(x+10,y+4,YELLOW);
+            putpixel(x+12,y+5,YELLOW);
+            putpixel(x+14,y+8,YELLOW);
+            putpixel(x+9,y+7,YELLOW);
+            putpixel(x+6,y+11,YELLOW);
+            putpixel(x+9,y+5,YELLOW);
+            putpixel(x+13,y+6,YELLOW);
+            putpixel(x+14,y+6,YELLOW);
+            putpixel(x+11,y+7,YELLOW);
+            putpixel(x+4,y+8,YELLOW);
+            putpixel(x+6,y+8,YELLOW);
+            putpixel(x+14,y+8,YELLOW);
+            putpixel(x+4,y+9,YELLOW);
+            putpixel(x+7,y+9,YELLOW);
+            putpixel(x+8,y+9,YELLOW);
+            putpixel(x+11,y+9,YELLOW);
+            putpixel(x+5,y+10,YELLOW);
+            putpixel(x+10,y+10,YELLOW);
+            putpixel(x+13,y+10,YELLOW);
+            putpixel(x+8,y+11,YELLOW);
+            putpixel(x+8,y+12,YELLOW);
+            putpixel(x+12,y+12,YELLOW);
+            putpixel(x+12,y+13,YELLOW);
+            putpixel(x+7,y+14,YELLOW);
+            setcolor(GREEN);
+            line(x+11,y+4,x+12,y+4);
+            line(x+10,y+5,x+11,y+5);
+            line(x+10,y+5,x+10,y+7);
+            line(x+9,y+7,x+10,y+7);
+            line(x+9,y+7,x+9,y+12);
+            line(x+5,y+9,x+6,y+9);
+            line(x+6,y+10,x+7,y+10);
+            line(x+7,y+10,x+7,y+12);
+            line(x+7,y+13,x+9,y+13);
+            line(x+8,y+14,x+11,y+14);
+            line(x+8,y+15,x+10,y+15);
+            line(x+9,y+16,x+10,y+16);
+            line(x+9,y+17,x+9,y+19);
+            line(x+11,y+10,x+11,y+14);
+            line(x+12,y+8,x+12,y+10);
+            line(x+13,y+7,x+13,y+8);
+
+            putpixel(x+12,y+4,RED);
+            putpixel(x+10,y+5,RED);
+            putpixel(x+6,y+9,RED);
+            putpixel(x+7,y+11,RED);
+            putpixel(x+12,y+10,RED);
+            putpixel(x+11,y+12,RED);
+            putpixel(x+8,y+13,RED);
+            putpixel(x+8,y+14,RED);
+            putpixel(x+10,y+16,RED);
+        }
+    }
+}
+
+void put_crop2(int x,int y,int type,int situation)
+{
+    if(type == SPROUT)
+    {
+        if(situation == HEALTHY)
+        {
+            putpixel(x+9,y+8,GREEN);
+            setcolor(GREEN);
+            line(x+8,y+9,x+10,y+9);
+            line(x+7,y+10,x+11,y+10);
+            line(x+7,y+11,x+11,y+11);
+            line(x+7,y+12,x+11,y+12);
+            line(x+8,y+13,x+10,y+13);
+            line(x+9,y+13,x+9,y+19);
+            line(x+6,y+15,x+7,y+15);
+            line(x+7,y+16,x+8,y+16);
+            line(x+8,y+17,x+9,y+17);
+            line(x+11,y+16,x+12,y+16);
+            line(x+10,y+17,x+11,y+17);
+            line(x+9,y+18,x+10,y+18);
+        }
+        else if(situation == SICK)
+        {
+            putpixel(x+9,y+8,GREEN);
+            setcolor(GREEN);
+            line(x+8,y+9,x+10,y+9);
+            line(x+7,y+10,x+11,y+10);
+            line(x+7,y+11,x+11,y+11);
+            line(x+7,y+12,x+11,y+12);
+            line(x+8,y+13,x+10,y+13);
+            line(x+9,y+13,x+9,y+19);
+            line(x+6,y+15,x+7,y+15);
+            line(x+7,y+16,x+8,y+16);
+            line(x+8,y+17,x+9,y+17);
+            line(x+11,y+16,x+12,y+16);
+            line(x+10,y+17,x+11,y+17);
+            line(x+9,y+18,x+10,y+18);
+
+            putpixel(x+9,y+9,RED);
+            putpixel(x+8,y+10,RED);
+            putpixel(x+9,y+11,RED);
+            putpixel(x+10,y+11,RED);
+            putpixel(x+9,y+12,RED);
+            putpixel(x+9,y+15,RED);
+            putpixel(x+7,y+16,RED);
+            putpixel(x+11,y+16,RED);
+            putpixel(x+8,y+17,RED);
+            putpixel(x+9,y+18,RED);
+        }
+
+    }
+    else if(type == TRANSITION)
+    {
+        if(situation == HEALTHY)
+        {
+            putpixel(x+9,y+5,YELLOW);
+            setcolor(GREEN);
+            line(x+9,y+13,x+9,y+19);
+            line(x+6,y+15,x+7,y+15);
+            line(x+7,y+16,x+8,y+16);
+            line(x+8,y+17,x+9,y+17);
+            line(x+11,y+16,x+12,y+16);
+            line(x+10,y+17,x+11,y+17);
+            line(x+9,y+18,x+10,y+18);
+            setcolor(YELLOW);
+            line(x+8,y+6,x+10,y+6);
+            line(x+7,y+7,x+11,y+7);
+            line(x+6,y+8,x+12,y+8);
+            line(x+6,y+9,x+12,y+9);
+            line(x+6,y+10,x+12,y+10);
+            line(x+6,y+11,x+12,y+11);
+            line(x+7,y+12,x+11,y+12);
+            line(x+8,y+13,x+10,y+13);
+            setcolor(GREEN);
+            line(x+5,y+7,x+5,y+9);
+            line(x+6,y+9,x+6,y+11);
+            line(x+7,y+10,x+7,y+12);
+            line(x+8,y+11,x+8,y+13);
+            line(x+8,y+13,x+10,y+13);
+            line(x+13,y+7,x+13,y+9);
+            line(x+12,y+9,x+12,y+11);
+            line(x+11,y+10,x+11,y+12);
+            line(x+10,y+11,x+10,y+13);
+        }
+        else if(situation == SICK)
+        {
+            putpixel(x+9,y+5,YELLOW);
+            setcolor(GREEN);
+            line(x+9,y+13,x+9,y+19);
+            line(x+6,y+15,x+7,y+15);
+            line(x+7,y+16,x+8,y+16);
+            line(x+8,y+17,x+9,y+17);
+            line(x+11,y+16,x+12,y+16);
+            line(x+10,y+17,x+11,y+17);
+            line(x+9,y+18,x+10,y+18);
+            setcolor(YELLOW);
+            line(x+8,y+6,x+10,y+6);
+            line(x+7,y+7,x+11,y+7);
+            line(x+6,y+8,x+12,y+8);
+            line(x+6,y+9,x+12,y+9);
+            line(x+6,y+10,x+12,y+10);
+            line(x+6,y+11,x+12,y+11);
+            line(x+7,y+12,x+11,y+12);
+            line(x+8,y+13,x+10,y+13);
+            setcolor(GREEN);
+            line(x+5,y+7,x+5,y+9);
+            line(x+6,y+9,x+6,y+11);
+            line(x+7,y+10,x+7,y+12);
+            line(x+8,y+11,x+8,y+13);
+            line(x+8,y+13,x+10,y+13);
+            line(x+13,y+7,x+13,y+9);
+            line(x+12,y+9,x+12,y+11);
+            line(x+11,y+10,x+11,y+12);
+            line(x+10,y+11,x+10,y+13);
+
+            putpixel(x+9,y+9,RED);
+            putpixel(x+8,y+10,RED);
+            putpixel(x+9,y+11,RED);
+            putpixel(x+10,y+11,RED);
+            putpixel(x+9,y+12,RED);
+            putpixel(x+9,y+15,RED);
+            putpixel(x+7,y+16,RED);
+            putpixel(x+11,y+16,RED);
+            putpixel(x+8,y+17,RED);
+            putpixel(x+9,y+18,RED);
+            putpixel(x+5,y+7,RED);
+            putpixel(x+6,y+10,RED);
+            putpixel(x+6,y+11,RED);
+            putpixel(x+11,y+12,RED);
+            putpixel(x+13,y+9,RED);
+        }
+    }
+    else if(type == CROP)
+    {
+        if(situation == HEALTHY)
+        {
+            putpixel(x+9,y+5,YELLOW);
+            setcolor(GREEN);
+            line(x+9,y+13,x+9,y+19);
+            line(x+6,y+15,x+7,y+15);
+            line(x+7,y+16,x+8,y+16);
+            line(x+8,y+17,x+9,y+17);
+            line(x+11,y+16,x+12,y+16);
+            line(x+10,y+17,x+11,y+17);
+            line(x+9,y+18,x+10,y+18);
+            setcolor(YELLOW);
+            line(x+8,y+6,x+10,y+6);
+            line(x+7,y+7,x+11,y+7);
+            line(x+6,y+8,x+12,y+8);
+            line(x+6,y+9,x+12,y+9);
+            line(x+6,y+10,x+12,y+10);
+            line(x+6,y+11,x+12,y+11);
+            line(x+7,y+12,x+11,y+12);
+            line(x+8,y+13,x+10,y+13);
+        }
+        else if(situation == SICK)
+        {
+            putpixel(x+9,y+5,YELLOW);
+            setcolor(GREEN);
+            line(x+9,y+13,x+9,y+19);
+            line(x+6,y+15,x+7,y+15);
+            line(x+7,y+16,x+8,y+16);
+            line(x+8,y+17,x+9,y+17);
+            line(x+11,y+16,x+12,y+16);
+            line(x+10,y+17,x+11,y+17);
+            line(x+9,y+18,x+10,y+18);
+            setcolor(YELLOW);
+            line(x+8,y+6,x+10,y+6);
+            line(x+7,y+7,x+11,y+7);
+            line(x+6,y+8,x+12,y+8);
+            line(x+6,y+9,x+12,y+9);
+            line(x+6,y+10,x+12,y+10);
+            line(x+6,y+11,x+12,y+11);
+            line(x+7,y+12,x+11,y+12);
+            line(x+8,y+13,x+10,y+13);
+
+            putpixel(x+9,y+9,RED);
+            putpixel(x+8,y+10,RED);
+            putpixel(x+9,y+11,RED);
+            putpixel(x+10,y+11,RED);
+            putpixel(x+9,y+12,RED);
+            putpixel(x+9,y+15,RED);
+            putpixel(x+7,y+16,RED);
+            putpixel(x+11,y+16,RED);
+            putpixel(x+8,y+17,RED);
+            putpixel(x+9,y+18,RED);
+            putpixel(x+9,y+5,RED);
+            putpixel(x+10,y+6,RED);
+            putpixel(x+11,y+7,RED);
+            putpixel(x+8,y+7,RED);
+            putpixel(x+11,y+9,RED);
+            putpixel(x+12,y+9,RED);
+            putpixel(x+12,y+10,RED);
+            putpixel(x+7,y+11,RED);
+        }
+    }
+}
+void put_crop3(int x,int y,int type,int situation)
+{
+    if(type == SPROUT)
+    {
+        if(situation == HEALTHY)
+        {
+            setcolor(GREEN);
+            line(x+8,y+12,x+10,y+12);
+            line(x+8,y+12,x+8,y+19);
+            line(x+10,y+12,x+10,y+19);
+            line(x+8,y+19,x+10,y+19);
+            line(x+8,y+16,x+8,y+16);
+
+            setcolor(LIGHTGREEN);
+            line(x+9,y+13,x+9,y+15);
+            line(x+9,y+17,x+9,y+18);
+        }
+        else if(situation == SICK)
+        {
+            setcolor(GREEN);
+            line(x+8,y+12,x+10,y+12);
+            line(x+8,y+12,x+8,y+19);
+            line(x+10,y+12,x+10,y+19);
+            line(x+8,y+19,x+10,y+19);
+            line(x+8,y+16,x+8,y+16);
+
+            setcolor(LIGHTGREEN);
+            line(x+9,y+13,x+9,y+15);
+            line(x+9,y+17,x+9,y+18);
+
+            putpixel(x+10,y+13,RED);
+            putpixel(x+10,y+15,RED);
+            putpixel(x+10,y+16,RED);
+            putpixel(x+8,y+17,RED);
+            putpixel(x+10,y+19,RED);
+            putpixel(x+9,y+14,RED);
+        }
+    }
+    else if(type == TRANSITION)
+    {
+        if(situation == HEALTHY)
+        {
+            setcolor(GREEN);
+            line(x+8,y+12,x+10,y+12);
+            line(x+8,y+12,x+8,y+19);
+            line(x+10,y+12,x+10,y+19);
+            line(x+8,y+19,x+10,y+19);
+            line(x+8,y+16,x+8,y+16);
+            line(x+8,y+8,x+8,y+12);
+            line(x+10,y+8,x+10,y+12);
+            line(x+8,y+8,x+10,y+8);
+
+            setcolor(LIGHTGREEN);
+            line(x+9,y+13,x+9,y+15);
+            line(x+9,y+17,x+9,y+18);
+            line(x+9,y+9,x+9,y+11);
+        }
+        else if(situation == SICK)
+        {
+            setcolor(GREEN);
+            line(x+8,y+12,x+10,y+12);
+            line(x+8,y+12,x+8,y+19);
+            line(x+10,y+12,x+10,y+19);
+            line(x+8,y+19,x+10,y+19);
+            line(x+8,y+16,x+8,y+16);
+            line(x+8,y+8,x+8,y+12);
+            line(x+10,y+8,x+10,y+12);
+            line(x+8,y+8,x+10,y+8);
+
+            setcolor(LIGHTGREEN);
+            line(x+9,y+13,x+9,y+15);
+            line(x+9,y+17,x+9,y+18);
+            line(x+9,y+9,x+9,y+11);
+
+            putpixel(x+10,y+13,RED);
+            putpixel(x+10,y+15,RED);
+            putpixel(x+10,y+16,RED);
+            putpixel(x+8,y+17,RED);
+            putpixel(x+10,y+19,RED);
+            putpixel(x+9,y+14,RED);
+            putpixel(x+10,y+8,RED);
+            putpixel(x+10,y+10,RED);
+            putpixel(x+9,y+9,RED);
+            putpixel(x+8,y+10,RED);
+
+        }
+    }
+    else if(type == CROP)
+    {
+        if(situation == HEALTHY)
+        {
+            setcolor(GREEN);
+            line(x+8,y+12,x+10,y+12);
+            line(x+8,y+12,x+8,y+19);
+            line(x+10,y+12,x+10,y+19);
+            line(x+8,y+19,x+10,y+19);
+            line(x+8,y+16,x+8,y+16);
+            line(x+8,y+8,x+8,y+12);
+            line(x+10,y+8,x+10,y+12);
+            line(x+8,y+8,x+10,y+8);
+            line(x+8,y+1,x+8,y+7);
+            line(x+10,y+2,x+10,y+7);
+            line(x+8,y+4,x+10,y+4);
+            line(x+5,y+1,x+5,y+2);
+            line(x+6,y+3,x+6,y+4);
+            line(x+7,y+2,x+7,y+3);
+            line(x+11,y+1,x+11,y+2);
+            line(x+12,y+2,x+12,y+3);
+            line(x+13,y+3,x+13,y+4);
+            line(x+13,y+1,x+14,y+1);
+
+            setcolor(LIGHTGREEN);
+            line(x+9,y+13,x+9,y+15);
+            line(x+9,y+17,x+9,y+18);
+            line(x+9,y+9,x+9,y+11);
+            line(x+9,y+5,x+9,y+7);
+        }
+        else if(situation == SICK)
+        {
+            setcolor(GREEN);
+            line(x+8,y+12,x+10,y+12);
+            line(x+8,y+12,x+8,y+19);
+            line(x+10,y+12,x+10,y+19);
+            line(x+8,y+19,x+10,y+19);
+            line(x+8,y+16,x+8,y+16);
+            line(x+8,y+8,x+8,y+12);
+            line(x+10,y+8,x+10,y+12);
+            line(x+8,y+8,x+10,y+8);
+            line(x+8,y+1,x+8,y+7);
+            line(x+10,y+2,x+10,y+7);
+            line(x+8,y+4,x+10,y+4);
+            line(x+5,y+1,x+5,y+2);
+            line(x+6,y+3,x+6,y+4);
+            line(x+7,y+2,x+7,y+3);
+            line(x+11,y+1,x+11,y+2);
+            line(x+12,y+2,x+12,y+3);
+            line(x+13,y+3,x+13,y+4);
+            line(x+13,y+1,x+14,y+1);
+
+            setcolor(LIGHTGREEN);
+            line(x+9,y+13,x+9,y+15);
+            line(x+9,y+17,x+9,y+18);
+            line(x+9,y+9,x+9,y+11);
+            line(x+9,y+5,x+9,y+7);
+
+            putpixel(x+10,y+13,RED);
+            putpixel(x+10,y+15,RED);
+            putpixel(x+10,y+16,RED);
+            putpixel(x+8,y+17,RED);
+            putpixel(x+10,y+19,RED);
+            putpixel(x+9,y+14,RED);
+            putpixel(x+10,y+8,RED);
+            putpixel(x+10,y+10,RED);
+            putpixel(x+9,y+9,RED);
+            putpixel(x+8,y+10,RED);
+            putpixel(x+5,y+2,RED);
+            putpixel(x+14,y+1,RED);
+            putpixel(x+8,y+3,RED);
+            putpixel(x+11,y+3,RED);
+            putpixel(x+9,y+5,RED);
+            putpixel(x+8,y+6,RED);
+        }
+    }
+}
 
