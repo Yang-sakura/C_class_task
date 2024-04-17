@@ -5,7 +5,7 @@ void main()
 {
     int gdriver = VGA;
     int gmode = VGAHI;
-    int page = HOME;
+    int page = LOGIN;
     INFO *temp;
     char *now_field;
     initgraph(&gdriver,&gmode,"c:\\borlandc\\bgi");
@@ -31,19 +31,19 @@ void main()
                break;
 
             case FIELD :
-               page = field_page(temp);
+               page = field_page(temp,now_field);
                break;
 
             case DRONE :
-               page = 1;
+               page = HOME;
                break;
 
             case PESTICIDE :
-               page = 1;
+               page = HOME;
                break;
 
             case DETECTOR :
-               page = 1;
+               page = detect_page(temp->name,now_field);
                break; 
             
             case DRAW_FIELD:
