@@ -2,6 +2,7 @@
 #define _DETECT_H_
 
 void put_calender(void);
+void put_calender_number(char *date);
 void pause_button(int flag);
 void mode_button(int flag);
 void chart_button(int flag);
