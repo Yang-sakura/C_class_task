@@ -28,13 +28,10 @@ void put_calender(void)
 
     bar(5,70,95,73);
     bar(65,70,68,120);
-    // bar(5,67,95,70);//70-90  17/2 8
-    // bar(48,70,52,87);
+    
     setcolor(DARKGRAY);
     settextstyle(DEFAULT_FONT,HORIZ_DIR,1);
     outtextxy(13,18,"DAY");
-
-    // outtextxy(27,35,"29");
 
     // put_arrow(15,74,DARKGRAY,1,LEFTARROW);
     // put_arrow(61,74,DARKGRAY,1,RIGHTARROW);
@@ -141,16 +138,46 @@ void chart_button(int flag)
         chart_button(PAINT);
     }
 }
+void route_button(int flag)
+{
+    if(flag == PAINT)
+    {
+        clrmous(MouseX,MouseY);
+        printbox(5,330,95,369,DARKGRAY,1,3,3);
+        setcolor(DARKGRAY);
+        settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
+        outtextxy(13,341,"ROUTE");
+    }
+    else if(flag == LIGHT)
+    {
+        clrmous(MouseX,MouseY);
+        printbox(5,330,95,369,BLUE,1,3,3);
+        setcolor(CYAN);
+        settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
+        outtextxy(13,341,"ROUTE");
+    }
+    else if(flag == DELETE)
+    {
+        setfillstyle(SOLID_FILL,WHITE);
+        bar(5,330,95,369);
+    }
+    else if(flag == RECOVER)
+    {
+        route_button(PAINT);
+    }
+}
 int detect_page(char *username,char *nowfield)
 {
+    int ceshi = 0;
+
     int record[21][26];
     int i,k,pre_x=-1,pre_y=-1,x,y;
     // int pre_press = -1 ;
-    int flag = 0,mode = 0, handmode_flag = 0 , automode_flag = 0;
+    int flag = 0,mode = 0, handmode_flag = 0 , automode_flag = 0 , routebutton_flag = 0;
     int num[5];
     char path[100]="C:\\DATA\\";
     char *presentmode;
-    char *tempmsgs[2]={"hand>","auto>"};
+    char *tempmsgs[2] = {"hand>","auto>"};
     FILE *fp;
     int route[100][2];
     char date[10];
@@ -201,12 +228,6 @@ int detect_page(char *username,char *nowfield)
 
             drop_down_menu(5,169,90,35,2,2, tempmsgs ,WHITE,BLUE,presentmode);
             
-            if(handmode_flag == 1 && presentmode[0]=='h') //存在hand档的地图
-            {
-                paint_field_right(record , nowfield );
-                memset(route,0,sizeof(route));
-                handmode_flag = 0 ;
-            }
             if(strlen(presentmode) != 0) 
             {
                 setfillstyle(SOLID_FILL,WHITE);
@@ -219,12 +240,11 @@ int detect_page(char *username,char *nowfield)
                 num[1]=10;
             }
             if(presentmode[0]=='h') {
-                mode = 1 ;
+                routebutton_flag = 1 ;
             }
             else if(presentmode[0]=='a') {
                 mode = 2;
             }
-            
             
         }
         else if( mouse_press(5,180,95,219)==2 )//start未点击
@@ -309,12 +329,53 @@ int detect_page(char *username,char *nowfield)
             temp_input(date , 18,35, 3 , 22 ,20,WHITE,3);//4 33 25
             put_calender_number(date);
         }
+        else if( mouse_press(5,330,95,369)==2 && presentmode[0]=='h') //route未点击
+        {
+            if( flag != 6 )
+            {
+                MouseS = 1 ;
+                flag = 6 ;
+                num[6] = 1;
+                clrmous(MouseX,MouseY);
+                route_button(LIGHT);
+            }
+        }
+        else if( mouse_press(5,330,95,369)==1  && presentmode[0]=='h')//route点击
+        {
+            MouseS = 0;
+            clrmous(MouseX,MouseY);
+
+            mode = 1 ;
+
+            if(handmode_flag == 1 && presentmode[0]=='h') //存在hand档的地图 清空地图
+            {
+                paint_field_right(record , nowfield );
+                memset(route,0,sizeof(route));
+                handmode_flag = 0 ;
+            }
+        }
         else 
         {
-            MouseS = 0 ;
-            flag = 0 ;
+            if(flag!=0)
+            {
+                MouseS = 0 ;
+                flag = 0 ;
+            }
         }
 
+        if( presentmode[0]=='h' && routebutton_flag == 1)
+        {
+            route_button(PAINT);
+            routebutton_flag = 0;
+            setfillstyle(SOLID_FILL,BLUE);
+            bar(5*ceshi,5*ceshi,5*(ceshi+1),5*(ceshi+1));
+            ceshi++;
+        }
+        else if( presentmode[0]!='h' && routebutton_flag == 1)
+        {
+            route_button(DELETE) ;
+            routebutton_flag = 0 ;
+        }
         if( flag!=1 && num[1]==1)
         {
             clrmous(MouseX,MouseY);
@@ -344,6 +405,12 @@ int detect_page(char *username,char *nowfield)
             clrmous(MouseX,MouseY);
             chart_button(RECOVER);
             num[5]=0;
+        }
+        else if( flag!=6 && num[6]==1 && presentmode[0] == 'h')
+        {
+            clrmous(MouseX,MouseY);
+            route_button(RECOVER);
+            num[6]=0;
         }
 
         if(mode==1) //选择hand后选点
@@ -383,7 +450,8 @@ int detect_page(char *username,char *nowfield)
                 // }
                 // pre_press = press ;
                 
-                if( mouse_press(5,130,95,169)==1 ) {
+                if( mouse_press(5,330,95,369)==1 ) //
+                {
                     clrmous(MouseX,MouseY);
                     setfillstyle(SOLID_FILL,WHITE);
                     bar(110,0,640,50);
