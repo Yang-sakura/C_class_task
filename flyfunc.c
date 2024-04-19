@@ -6,10 +6,11 @@ int drone_flag = 0;
 
 void move_drone1(int record[21][26], int x1,int y1,int x2,int y2 )
 {
-    int i,j,step;
+    int i,step;
     double step_x,step_y,x,y ;
     step = max( abs(x2-x1),abs(y2-y1));
-    // step /= 1.5;//速度修改
+    if(step<1) step = 1;
+    step /= 1.5;//速度修改
     step_x = (x2-x1) / (float)step;
     step_y = (y2-y1) / (float)step;
     x = x1;
@@ -70,18 +71,18 @@ void simulate( int record[21][26] ,char *nowfield )
 {
     int house_x,house_y,house_screen_x,house_screen_y;
     int i,j,k;
-
+    
 }
 void simulate_handmode(int record[21][26] , int route[100][2] )
 {
     int i=0;
-    while(route[i+1][0])
+    while(route[i+1][0]!=-1)
     {
-        setfillstyle(SOLID_FILL,LIGHTBLUE);
-        bar(10+i*10,10+i*10,10+(i+1)*10,10+(i+1)*10);
+    //     setfillstyle(SOLID_FILL,LIGHTBLUE);
+    //     bar(10+i*10,10+i*10,10+(i+1)*10,10+(i+1)*10);
         move_drone1(record,route[i][0],route[i][1],route[i+1][0],route[i+1][1]);
         i++;
     }
-    setfillstyle(SOLID_FILL,RED);
-        bar(400,400,405,405);
+    // setfillstyle(SOLID_FILL,RED);
+    //     bar(400,400,405,405);
 }
