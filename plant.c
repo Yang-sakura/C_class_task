@@ -4,17 +4,25 @@
 void paint_field( int record[21][26] ,char *nowfield)
 {
     int i,j,x,y;
+    // char *nowfield_outstring ;
+
+    // for(i=0;i<strlen(nowfield)-4 ;i++)
+    // {
+    //     nowfield_outstring[i] = nowfield_outstring[i] ;
+    // }
+    // nowfield_outstring[i]='\0';
     setbkcolor(WHITE);
     cleardevice();
     clrmous(MouseX,MouseY);
 
     back_button(PAINT);
 
-    printline(100,0,1,480,1,DARKGRAY,5,5);
+    printline(100,0,1,50,1,DARKGRAY,5,5);
     setcolor(DARKGRAY);
     settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
     outtextxy(110,10,"NAME:");
-    outtextxy(230,10,nowfield);
+    outtextxy(260,10,nowfield);
+    // outtextxy(260,10,nowfield_outstring);
 
     setlinestyle(SOLID_LINE,0,THICK_WIDTH);
     line(110,50,110,470);
@@ -61,6 +69,63 @@ void paint_field( int record[21][26] ,char *nowfield)
         }
     }
 }
+void paint_field_right( int record[21][26] ,char *nowfield)
+{
+    int i,j,x,y;
+    clrmous(MouseX,MouseY);
+    setfillstyle(SOLID_FILL,WHITE);
+    bar(110,0,640,480);
+
+    printline(100,0,1,50,1,DARKGRAY,5,5);
+    setcolor(DARKGRAY);
+    settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
+    outtextxy(110,10,"NAME:");
+    outtextxy(260,10,nowfield);
+
+    setlinestyle(SOLID_LINE,0,THICK_WIDTH);
+    line(110,50,110,470);
+    line(110,470,630,470);
+    line(110,50,108,60);
+    line(110,50,112,60);
+    line(630,470,620,468);
+    line(630,470,620,472);
+
+    setlinestyle(DOTTED_LINE,0,NORM_WIDTH);
+    for(i=0;i<26;i++)
+    {
+        line(110+i*20,50,110+i*20,470);
+    }
+    for(i=0;i<21;i++)
+    {
+        line(110,470-i*20,630,470-i*20);
+    }
+
+    for(i=0;i<21;i++)//y
+    {
+        for(j=0;j<26;j++)//x 
+        {
+            if ( record[i][j] )
+            {
+                setfillstyle(SOLID_FILL,DARKGRAY);
+                bar(110+j*20 , 470-(i+1)*20 ,110+(j+1)*20, 470-i*20);
+            }
+            if( record[i][j] == 2 )
+            {
+                x = 110 + j*20 ;
+                y = 470-i*20-20 ;
+                put_sprout(x,y,GREEN,2);
+            }
+            else if( record[i][j]==3 )
+            {
+                x = 110 + j*20 ;
+                y = 470-i*20-20 ;
+                put_house(x,y,BROWN,CYAN,2);
+            }
+            
+        }
+    }
+}
+//0-3 幼苗 4-6 过渡 7-9 成苗
 void plant_screen( int record[21][26] ,char *nowfield)
 {
     setbkcolor(WHITE);
@@ -81,7 +146,7 @@ int plant_page(char *username,char *nowfield)
     int num[5];
     int sprout_flag=0 ,shovel_flag=0 ;
     int x,y;
-    char path[50]="C:\\DATA\\";
+    char path[100]="C:\\DATA\\";
     // char path[50]="C:\\DATA\\QWQ\\FIELD\\field.dat";
     int i,j;
     FILE *fp;
@@ -169,7 +234,6 @@ int plant_page(char *username,char *nowfield)
                 MouseS = 0;
                 flag = 0;
             }
-            
         }
 
         //侧边及返回按键恢复
