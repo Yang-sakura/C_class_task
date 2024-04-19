@@ -4,13 +4,6 @@
 void paint_field( int record[21][26] ,char *nowfield)
 {
     int i,j,x,y;
-    // char *nowfield_outstring ;
-
-    // for(i=0;i<strlen(nowfield)-4 ;i++)
-    // {
-    //     nowfield_outstring[i] = nowfield_outstring[i] ;
-    // }
-    // nowfield_outstring[i]='\0';
     setbkcolor(WHITE);
     cleardevice();
     clrmous(MouseX,MouseY);
