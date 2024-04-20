@@ -168,23 +168,23 @@ void route_button(int flag)
 }
 int detect_page(char *username,char *nowfield)
 {
-    int ceshi = 0;
+    // int ceshi = 0;
 
     int record[21][26];
     int i,k,pre_x=-1,pre_y=-1,x,y;
     // int pre_press = -1 ;
-    int flag = 0,mode = 0, handmode_flag = 0 , automode_flag = 0 , routebutton_flag = 0;
-    int num[5];
+    int flag = 0,mode = 0, handmode_flag = 0 , automode_flag = 0 , routebutton_flag = 0 , line_flag = 0,field_flag=0;
+    int num[10];
     char path[100]="C:\\DATA\\";
     char *presentmode;
     char *tempmsgs[2] = {"hand>","auto>"};
     FILE *fp;
     int route[100][2];
-    char date[10];
+    char date[10] = "1" , compare[10] ;
 
     memset(record , 0 , sizeof(record));
     memset(route,-1,sizeof(route));
-    memset(date ,0,sizeof(date));
+    memset(compare , 0 ,sizeof(compare));
 
     strcat(path,username);
     strcat(path,"\\FIELD\\");
@@ -205,12 +205,15 @@ int detect_page(char *username,char *nowfield)
 
     detect_screen(record , nowfield);
     mouseinit();
+    if( strlen(date) != 0 ) {
+        put_calender_number(date);
+    }
     
     while(1)
     {
         newmouse(&MouseX,&MouseY,&press);
 
-        if( mouse_press(5,130,95,169)==2 )//new_mode未点击5,130,95,169
+        if( mouse_press(5,130,95,169)==2 )//mode未点击5,130,95,169
         {
             if( flag != 1 && num[1]!=10)
             {
@@ -239,13 +242,15 @@ int detect_page(char *username,char *nowfield)
                 
                 num[1]=10;
             }
-            if(presentmode[0]=='h') {
-                routebutton_flag = 1 ;
-            }
-            else if(presentmode[0]=='a') {
+            if(presentmode[0]=='a') {
+                if(line_flag != 0 )
+                {
+                    paint_field_right(record , nowfield );
+                    line_flag = 0 ;
+                }
                 mode = 2;
             }
-            
+            delay(200);
         }
         else if( mouse_press(5,180,95,219)==2 )//start未点击
         {
@@ -262,13 +267,10 @@ int detect_page(char *username,char *nowfield)
         {
             MouseS = 0;
             clrmous(MouseX,MouseY);
-            // simulate(record , username);
             
-            if( handmode_flag == 1 ) //&& mode != 1
+            if( handmode_flag == 1 && presentmode[0] == 'h') 
             {
                 simulate_handmode(record,route);
-                // handmode_flag = 0;
-                // memset(route,0,sizeof(route));
             }
 
         }
@@ -324,10 +326,15 @@ int detect_page(char *username,char *nowfield)
         }
         else if( mouse_press(15,20,90,60)==1 ) //日历数字点击
         {
+            strcpy(compare , date );
             setfillstyle(SOLID_FILL,WHITE);
             bar(11,25,90,69);
             temp_input(date , 18,35, 3 , 22 ,20,WHITE,3);//4 33 25
             put_calender_number(date);
+            if(strcmp(compare , date )!= 0  ) {
+                grow(record , atoi(date));
+                field_flag = 1 ;
+            }
         }
         else if( mouse_press(5,330,95,369)==2 && presentmode[0]=='h') //route未点击
         {
@@ -345,14 +352,15 @@ int detect_page(char *username,char *nowfield)
             MouseS = 0;
             clrmous(MouseX,MouseY);
 
-            mode = 1 ;
-
-            if(handmode_flag == 1 && presentmode[0]=='h') //存在hand档的地图 清空地图
+            if(handmode_flag == 1 ) //存在hand档的地图 清空地图
             {
                 paint_field_right(record , nowfield );
                 memset(route,0,sizeof(route));
                 handmode_flag = 0 ;
             }
+
+            mode = 1 ;
+            delay(200);
         }
         else 
         {
@@ -363,13 +371,10 @@ int detect_page(char *username,char *nowfield)
             }
         }
 
-        if( presentmode[0]=='h' && routebutton_flag == 1)
+        if( presentmode[0]=='h' && routebutton_flag == 0)
         {
             route_button(PAINT);
-            routebutton_flag = 0;
-            setfillstyle(SOLID_FILL,BLUE);
-            bar(5*ceshi,5*ceshi,5*(ceshi+1),5*(ceshi+1));
-            ceshi++;
+            routebutton_flag = 1;
         }
         else if( presentmode[0]!='h' && routebutton_flag == 1)
         {
@@ -410,7 +415,7 @@ int detect_page(char *username,char *nowfield)
         {
             clrmous(MouseX,MouseY);
             route_button(RECOVER);
-            num[6]=0;
+            num[6] = 0;
         }
 
         if(mode==1) //选择hand后选点
@@ -425,8 +430,6 @@ int detect_page(char *username,char *nowfield)
             while(1)
             {
                 newmouse(&MouseX,&MouseY,&press);
-                // if(pre_press==0 && press == 1 )
-                // {
                 if( mouse_press(110,50,630,470)==1 )//处于画图区域并且点击
                 {
                     route[k][0] = MouseX;
@@ -446,9 +449,8 @@ int detect_page(char *username,char *nowfield)
                         line(route[k-1][0],route[k-1][1],route[k][0],route[k][1]);
                     }
                     k++;
+                    if(line_flag != 1 ) line_flag = 1 ;
                 }
-                // }
-                // pre_press = press ;
                 
                 if( mouse_press(5,330,95,369)==1 ) //
                 {
@@ -470,7 +472,140 @@ int detect_page(char *username,char *nowfield)
         }
         if(mode == 2) //auto
         {
-
+            clrmous(MouseX,MouseY);
+            // while(1)
+            // {
+            //     newmouse(&MouseX,&MouseY,&press);
+            //     if( mouse_press(5,180,95,219)==2 )//start未点击
+            //     {
+                    
+            //     }
+            //     else if( mouse_press(5,180,95,219)==1 )//start点击5,180,95,219
+            //     {
+                    
+            //     }
+            // }
+            delay(200);
         }
     }
 }
+void recover_field(int record[21][26],char *username,char *nowfield )
+{
+    int i,j ;
+    char path[100]="C:\\DATA\\";
+    FILE *fp;
+    strcat(path,username);
+    strcat(path,"\\FIELD\\");
+    strcat(path,nowfield);
+    if ( (fp = fopen(path,"rb")) != NULL )
+    {
+        for(i=0; i<21 ;i++ )
+        {
+            fread( record[i],sizeof(int), 26 ,fp);
+        }
+    }
+    else 
+    {
+        perror("error in opening fieldfile!");
+    }
+    fclose(fp);
+}
+void grow(int record[21][26] , int date ) //reord从最初始状态，直接计算date状态时现象
+{
+    int i,j,k,x,y,random_grow, random_health , state , health ,crop;
+    srand((unsigned)time(NULL));
+
+    setfillstyle(SOLID_FILL,GREEN);
+    bar(50,400,55,405);
+    
+    for(i=0;i<21;i++)//y
+    {
+        for(j=0;j<26;j++)//x 
+        {
+            x = 110 + j*20 ;
+            y = 470-i*20-20 ;
+            if ( record[i][j] )
+            {
+                setfillstyle(SOLID_FILL,DARKGRAY);
+                bar(x , y , x+20 , y-20 );
+            }
+            if((record[i][j]>=10 && record[i][j]<=39)) //crop1 / 12  24
+            {
+                crop = 1 ;
+                state = SPROUT ;
+                health = HEALTHY ;
+                random_grow = rand() % 100 ;//0-99
+                if(date >= CROP1_STATE1 ) {
+                    if(random_grow <= 90) {
+                        state = TRANSITION ;
+                    }
+                }  
+                if(date >= CROP1_STATE2 ) {
+                    random_grow = rand() % 100 ;
+                    if(state == TRANSITION && random_grow <= 90) {
+                        state = CROP ;
+                    }
+                }
+                random_health = rand() % 100 ;
+                if(random_health <= 20) health = SICK ;
+                else health = HEALTHY ;
+
+                put_crop1(x,y,state , health);
+            }
+            else if(record[i][j]>=40 && record[i][j]<=69) //crop2  / 10 20
+            {
+                crop = 2 ;
+                state = SPROUT ;
+                health = HEALTHY ;
+                random_grow = rand() % 100 ;//0-99
+                if(date >= CROP2_STATE1 ) {
+                    if(random_grow <= 90) {
+                        state = TRANSITION ;
+                    }
+                }  
+                if(date >= CROP2_STATE2 ) {
+                    random_grow = rand() % 100 ;
+                    if(state == TRANSITION && random_grow <= 90) {
+                        state = CROP ;
+                    }
+                }
+                random_health = rand() % 100 ;
+                if(random_health <= 20) health = SICK ;
+                else health = HEALTHY ;
+
+                put_crop2(x,y,state , health);
+            }
+            else if(record[i][j]>=70 && record[i][j]<=99) //crop3 / 14 28
+            {
+                crop = 3 ;
+                state = SPROUT ;
+                health = HEALTHY ;
+                random_grow = rand() % 100 ;//0-99
+                if(date >= CROP3_STATE1 ) {
+                    if(random_grow <= 90) {
+                        state = TRANSITION ;
+                    }
+                }  
+                if(date >= CROP3_STATE2 ) {
+                    random_grow = rand() % 100 ;
+                    if(state == TRANSITION && random_grow <= 90) {
+                        state = CROP ;
+                    }
+                }
+                random_health = rand() % 100 ;
+                if(random_health <= 20) health = SICK ;
+                else health = HEALTHY ;
+
+                put_crop3(x,y,state , health);
+            }
+            else if( record[i][j]==3 )
+            {
+                put_house(x,y,BROWN,CYAN,2);
+            }
+        }
+    }
+}
+// void show_chart(int record[21][26])
+// {
+
+// }
