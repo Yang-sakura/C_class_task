@@ -6,6 +6,7 @@ void paint_field( int record[21][26] ,char *nowfield)
     int i,j,x,y;
     setbkcolor(WHITE);
     cleardevice();
+
     clrmous(MouseX,MouseY);
 
     back_button(PAINT);
@@ -50,16 +51,15 @@ void paint_field( int record[21][26] ,char *nowfield)
             {
                 put_house(x,y,BROWN,CYAN,2);
             }
-            else if( record[i][j]>=10 && record[i][j]<=19 ){
+            else if( record[i][j]>=10 && record[i][j]<=39 ){
                 put_crop1(x,y,SPROUT,HEALTHY);
             }
-            else if( record[i][j]>=40 && record[i][j]<=49 ){
+            else if( record[i][j]>=40 && record[i][j]<=69 ){
                 put_crop2(x,y,SPROUT,HEALTHY);
             }
-            else if( record[i][j]>=70 && record[i][j]<=79 ){
+            else if( record[i][j]>=70 && record[i][j]<=99 ){
                 put_crop3(x,y,SPROUT,HEALTHY);
             }
-            
         }
     }
 }
@@ -109,13 +109,13 @@ void paint_field_right( int record[21][26] ,char *nowfield)
             {
                 put_house(x,y,BROWN,CYAN,2);
             }
-            else if( record[i][j]>=10 && record[i][j]<=19 ){
+            else if( record[i][j]>=10 && record[i][j]<=39 ){
                 put_crop1(x,y,SPROUT,HEALTHY);
             }
-            else if( record[i][j]>=40 && record[i][j]<=49 ){
+            else if( record[i][j]>=40 && record[i][j]<=69 ){
                 put_crop2(x,y,SPROUT,HEALTHY);
             }
-            else if( record[i][j]>=70 && record[i][j]<=79 ){
+            else if( record[i][j]>=70 && record[i][j]<=99 ){
                 put_crop3(x,y,SPROUT,HEALTHY);
             }
         }
