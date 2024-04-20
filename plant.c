@@ -39,24 +39,25 @@ void paint_field( int record[21][26] ,char *nowfield)
     {
         for(j=0;j<26;j++)//x
         {
+            x = 110 + j*20 ;
+            y = 470-i*20-20 ;
             if ( record[i][j] )
             {
                 setfillstyle(SOLID_FILL,DARKGRAY);
                 bar(110+j*20 , 470-(i+1)*20 ,110+(j+1)*20, 470-i*20);
             }
-            if( record[i][j] == 2 )
+            if( record[i][j]==3 )
             {
-                x = 110 + j*20 ;
-                y = 470-i*20-20 ;//左上角
-                //右下角 (110 + j * 20 + 20, 470 - i * 20)
-                put_sprout(x,y,GREEN,2);
-            }
-            else if( record[i][j]==3 )
-            {
-                x = 110 + j*20 ;
-                y = 470-i*20-20 ;//左上角
-                //右下角 (110 + j * 20 + 20, 470 - i * 20)
                 put_house(x,y,BROWN,CYAN,2);
+            }
+            else if( record[i][j]>=10 && record[i][j]<=19 ){
+                put_crop1(x,y,SPROUT,HEALTHY);
+            }
+            else if( record[i][j]>=40 && record[i][j]<=49 ){
+                put_crop2(x,y,SPROUT,HEALTHY);
+            }
+            else if( record[i][j]>=70 && record[i][j]<=79 ){
+                put_crop3(x,y,SPROUT,HEALTHY);
             }
             
         }
@@ -97,24 +98,26 @@ void paint_field_right( int record[21][26] ,char *nowfield)
     {
         for(j=0;j<26;j++)//x 
         {
+            x = 110 + j*20 ;
+            y = 470-i*20-20 ;
             if ( record[i][j] )
             {
                 setfillstyle(SOLID_FILL,DARKGRAY);
                 bar(110+j*20 , 470-(i+1)*20 ,110+(j+1)*20, 470-i*20);
             }
-            if( record[i][j] == 2 )
+            if( record[i][j]==3 )
             {
-                x = 110 + j*20 ;
-                y = 470-i*20-20 ;
-                put_sprout(x,y,GREEN,2);
-            }
-            else if( record[i][j]==3 )
-            {
-                x = 110 + j*20 ;
-                y = 470-i*20-20 ;
                 put_house(x,y,BROWN,CYAN,2);
             }
-            
+            else if( record[i][j]>=10 && record[i][j]<=19 ){
+                put_crop1(x,y,SPROUT,HEALTHY);
+            }
+            else if( record[i][j]>=40 && record[i][j]<=49 ){
+                put_crop2(x,y,SPROUT,HEALTHY);
+            }
+            else if( record[i][j]>=70 && record[i][j]<=79 ){
+                put_crop3(x,y,SPROUT,HEALTHY);
+            }
         }
     }
 }
@@ -137,11 +140,12 @@ int plant_page(char *username,char *nowfield)
     int flag = 0;
     int mode = 0;
     int num[5];
-    int sprout_flag=0 ,shovel_flag=0 ;
+    int sprout_flag=0 ,shovel_flag=0 ,crop=0 ;
     int x,y;
     char path[100]="C:\\DATA\\";
-    // char path[50]="C:\\DATA\\QWQ\\FIELD\\field.dat";
+    char *tempmsgs[3] = {"rice","corn","cane"};
     int i,j;
+    char *plant ;
     FILE *fp;
 
     memset(record , 0 , sizeof(record));
@@ -183,11 +187,15 @@ int plant_page(char *username,char *nowfield)
         }
         else if( mouse_press(12,50,80,110)==1 )//种树点击
         {
-            mode = 1;
             MouseS = 0;
             clrmous(MouseX,MouseY);
+            drop_down_menu(8,120,80,35,3,2,tempmsgs,WHITE,GREEN,plant);
+            if( strcmp(plant,"rice")==0 ) crop = 1;
+            else if( strcmp(plant,"corn" )==0) crop = 2 ;
+            else if( strcmp(plant,"cane")==0 ) crop = 3 ;
+            mode = 1;
         }
-        else if( mouse_press(12,150,80,215)==2 )//铲子未点击
+        else if( mouse_press(12,150,80,215)==2 )//铲子未点击 (12,150,80,215) 
         {
             if(flag!=2)
             {
@@ -275,10 +283,20 @@ int plant_page(char *username,char *nowfield)
                     if( record[i][j] == 1)
                     {
                         x = 110+j*20 ;
-                        y = 470-i*20-20 ;//左上角
-                        //右下角 (110 + j * 20 + 20, 470 - i * 20)
-                        put_sprout(x,y,GREEN,2);
-                        record[i][j] = 2;
+                        y = 470-i*20-20 ;
+
+                        if(crop == 1 ) {
+                            put_crop1(x,y,SPROUT,HEALTHY);
+                            record[i][j] = 10;
+                        }
+                        else if(crop == 2 ) {
+                            put_crop2(x,y,SPROUT,HEALTHY);
+                            record[i][j] = 40 ;
+                        }
+                        else if(crop == 3 ) {
+                            put_crop3(x,y,SPROUT,HEALTHY);
+                            record[i][j] = 70 ;
+                        }
                     }
                 }
                 else if(mouse_press(5,400,95,470)==2)//处于ok区域未点击
@@ -316,7 +334,6 @@ int plant_page(char *username,char *nowfield)
                     
                     break;
                 }
-
                 else 
                 {
                     if(sprout_flag != 0)
