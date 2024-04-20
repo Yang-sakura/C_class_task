@@ -48,10 +48,9 @@ int house_page(char *username,char *nowfield)
     int flag = 0;
     int mode = 0;
     int num[5];
-    int house_flag=0 ,house=0;
+    int house_flag=0 , house = 0;
     int x,y;
     char path[50]="C:\\DATA\\";
-    // char path[50]="C:\\DATA\\QWQ\\FIELD\\field.dat";
     int i,j,i_recent,j_recent;
     FILE *fp;
 
@@ -76,7 +75,20 @@ int house_page(char *username,char *nowfield)
 
     house_screen( record ,nowfield);
     mouseinit();
-    i=0;j=0;i_recent=0;j_recent;
+    i=0;j=0;
+    i_recent=0;j_recent=0;
+
+    for(i=0;i<21;i++)
+    {
+        for(j=0;j<26;j++)
+        {
+            if( record[i][j] == 3 ) {
+                house = 1;
+                i_recent = i ;
+                j_recent = j ;
+            }
+        }
+    }
 
     while(1)
     {
@@ -131,7 +143,7 @@ int house_page(char *username,char *nowfield)
         {
             clrmous(MouseX,MouseY);
             back_button(RECOVER);
-            num[1]=0;
+            num[2]=0;
         }
 
         if( mode==1 )
@@ -224,7 +236,7 @@ int house_page(char *username,char *nowfield)
                 }
                 else if( mouse_press(5,130,95,180)==1 )//清空键点击
                 {
-                    if( house!=0 )
+                    if( house != 0 )
                     {
                         clrmous(MouseX,MouseY);
                         x = 110+j_recent*20 ;
