@@ -45,15 +45,23 @@ void clear_button(int flag)
 int house_page(char *username,char *nowfield)
 {
     int record[21][26];
+    int housenumber = 0;
     int flag = 0;
     int mode = 0;
     int num[5];
-    int house_flag=0 , house = 0;
+    int house_flag=0 ,house = 0;
     int x,y;
     char path[50]="C:\\DATA\\";
-    int i,j,i_recent,j_recent;
+    // char path[50]="C:\\DATA\\QWQ\\FIELD\\field.dat";
+    int i,j;
+    int i_recent[4],j_recent[4];
     FILE *fp;
 
+    char ceshi[10];
+
+    
+    memset(i_recent,0,sizeof(i_recent));
+    memset(j_recent,0,sizeof(j_recent));
     memset(record , 0 , sizeof(record));
 
     strcat(path,username);
@@ -74,21 +82,46 @@ int house_page(char *username,char *nowfield)
     fclose(fp);
 
     house_screen( record ,nowfield);
-    mouseinit();
-    i=0;j=0;
-    i_recent=0;j_recent=0;
 
     for(i=0;i<21;i++)
     {
         for(j=0;j<26;j++)
         {
-            if( record[i][j] == 3 ) {
+            if(record[i][j]==3)
+            {
+                i_recent[0] = i;
+                j_recent[0] = j;
+                housenumber++;
                 house = 1;
-                i_recent = i ;
-                j_recent = j ;
+            }
+            else if(record[i][j]==4)
+            {
+                i_recent[1] = i;
+                j_recent[1] = j;
+                housenumber++;
+                house = 1;
+            }
+            else if(record[i][j]==5)
+            {
+                i_recent[2] = i;
+                j_recent[2] = j;
+                housenumber++;
+                house = 1;
+            }
+            else if(record[i][j]==6)
+            {
+                i_recent[3] = i;
+                j_recent[3] = j;
+                housenumber++;
+                house = 1;
             }
         }
     }
+
+    itoa(housenumber,ceshi,10);
+                    outtextxy(10,300,ceshi);
+    mouseinit();
+    i=0;j=0;
 
     while(1)
     {
@@ -143,11 +176,12 @@ int house_page(char *username,char *nowfield)
         {
             clrmous(MouseX,MouseY);
             back_button(RECOVER);
-            num[2]=0;
+            num[1]=0;
         }
 
         if( mode==1 )
         {
+            housenumber = 0;
             put_house(25,50,BROWN,CYAN,5);
             clear_button(PAINT);
             put_ok_button(PAINT);
@@ -167,21 +201,27 @@ int house_page(char *username,char *nowfield)
                 }
                 else if( mouse_press(110,50,630,470)==1 )//处于画图区域并且点击
                 {
-                    if(house != 0) continue;
+                    if(housenumber >= 4) continue;
                     clrmous(MouseX,MouseY);
                     i = (470-MouseY)/20;
                     j = (MouseX - 110)/20;
-                    i_recent = i ;
-                    j_recent = j ;
+                    i_recent[housenumber] = i ;
+                    j_recent[housenumber] = j ;
+                    
+                    delay(1000);
+                    itoa(housenumber,ceshi,10);
+                    outtextxy(10,300,ceshi);
                     if( record[i][j] == 1 )
                     {
                         x = 110+j*20 ;
                         y = 470-i*20-20 ;//左上角
                         //右下角 (110 + j * 20 + 20, 470 - i * 20)
                         put_house(x,y,BROWN,CYAN,2);
-                        record[i][j] = 3;
-                        house = 1;
+                        record[i][j] = 3 + housenumber;
+                        housenumber ++;
+                        house == 1;
                     }
+                    
                 }
                 else if(mouse_press(5,400,95,470)==2)//处于ok区域未点击
                 {
@@ -198,7 +238,7 @@ int house_page(char *username,char *nowfield)
                     MouseS = 0;
                     mode = 0;
 
-                    if(house == 1) 
+                    if(house==1) 
                     {
                         if ( (fp = fopen(path,"wb")) != NULL )
                         {
@@ -212,6 +252,7 @@ int house_page(char *username,char *nowfield)
                             perror("error in changing record data!");
                         }
                         fclose(fp);
+                        house = 0;
                     }
                     
                     clrmous(MouseX,MouseY);
@@ -236,16 +277,19 @@ int house_page(char *username,char *nowfield)
                 }
                 else if( mouse_press(5,130,95,180)==1 )//清空键点击
                 {
-                    if( house != 0 )
+                    housenumber = 0;
+                    while( housenumber< 4 )
                     {
                         clrmous(MouseX,MouseY);
-                        x = 110+j_recent*20 ;
-                        y = 470-i_recent*20-20 ;//左上角
+                        x = 110+j_recent[housenumber]*20 ;
+                        y = 470-i_recent[housenumber]*20-20 ;//左上角
                         setfillstyle(SOLID_FILL,DARKGRAY);
                         bar(x,y,x+20,y+20);
-                        record[i_recent][j_recent] = 1;
-                        house = 0 ;
+                        record[i_recent[housenumber]][j_recent[housenumber]] = 1;
+                        housenumber++ ;
                     }
+                    housenumber = 0;
+                    house = 1;
                 }
                 else 
                 {
