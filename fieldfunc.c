@@ -1,3 +1,4 @@
+
 #include "public.h"
 #include "fieldfunc.h"
 #include "main.h"
@@ -742,6 +743,7 @@ void put_ok_button(int flag)
         put_ok_button(PAINT);
     }
 }
+
 
 
 
