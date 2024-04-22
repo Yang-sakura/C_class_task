@@ -1,307 +1,298 @@
 #include "public.h"
-#include "house.h"
+#include "home.h"
+#include "main.h"
 
-void house_screen(int record[21][26] ,char *nowfield)
-{
-    setbkcolor(WHITE);
-    cleardevice();
-    clrmous(MouseX,MouseY);
+void home_screen(void)
+{   
+    printbox(100,90,310,190,DARKGRAY,1,5,4);
+    printbox(330,90,540,190,DARKGRAY,1,5,4);
+    printbox(100,230,310,330,DARKGRAY,1,5,4);
+    printbox(330,230,540,330,DARKGRAY,1,5,4);
+    printbox(100,370,310,470,DARKGRAY,1,5,4);
+    printbox(330,370,540,470,DARKGRAY,1,5,4);
 
-    paint_field(record ,nowfield);
+    setcolor(BLUE);
+    settextstyle(DEFAULT_FONT , HORIZ_DIR,3);
+    outtextxy(145,130, "FIELD");
+    outtextxy(375,130, "DRONE");
+    outtextxy(160,270, "PEST");
+    outtextxy(365,270, "DETECT");
+    outtextxy(135,410, "README");
+    outtextxy(390,410, "QUIT");
 
-    put_house(25,50,DARKGRAY,LIGHTGRAY,5);
+    setcolor(DARKGRAY);
+    settextstyle(DEFAULT_FONT,HORIZ_DIR,6);
+    outtextxy(120,10,"HOMEPAGE");
 
+    printbox(595,5,630,40,DARKGRAY,1,5,4);//右上角退出
+    setcolor(DARKGRAY);
+    settextstyle(DEFAULT_FONT , HORIZ_DIR,3);
+    outtextxy(602,10, "x");
 }
 
-void clear_button(int flag)
-{
-    if(flag == PAINT)
-    {
-        clrmous(MouseX,MouseY);
-        printbox(5,130,95,180,DARKGRAY,1,5,5);
-        setcolor(DARKGRAY);
-        settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
-        outtextxy(10,150,"CLEAR");
-    }
-    else if(flag == LIGHT)
-    {
-        clrmous(MouseX,MouseY);
-        printbox(5,130,95,180,YELLOW,1,5,5);
-        setcolor(CYAN);
-        settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
-        outtextxy(10,150,"CLEAR");
-    }
-    else if(flag == RECOVER)
-    {
-        clear_button(PAINT);
-    }
-    else if(flag == DELETE)
-    {
-        setfillstyle(SOLID_FILL,WHITE);
-        bar(5,130,95,180);
-    }
-}
 
-int house_page(char *username,char *nowfield)
+int home_page(INFO *temp)
 {
-    int record[21][26];
-    int housenumber = 0;
     int flag = 0;
-    int mode = 0;
-    int num[5];
-    int house_flag=0 ,house = 0;
-    int x,y;
-    char path[50]="C:\\DATA\\";
-    // char path[50]="C:\\DATA\\QWQ\\FIELD\\field.dat";
-    int i,j;
-    int i_recent[4],j_recent[4];
-    FILE *fp;
-
-    char ceshi[10];
-
-    
-    memset(i_recent,0,sizeof(i_recent));
-    memset(j_recent,0,sizeof(j_recent));
-    memset(record , 0 , sizeof(record));
-
-    strcat(path,username);
-    strcat(path,"\\FIELD\\");
-    strcat(path,nowfield);
-
-    if ( (fp = fopen(path,"rb")) != NULL )
-    {
-        for(i=0; i<21 ;i++ )
-        {
-            fread( record[i],sizeof(int), 26 ,fp);
-        }
-    }
-    else 
-    {
-        perror("error in opening fieldfile!");
-    }
-    fclose(fp);
-
-    house_screen( record ,nowfield);
-
-    for(i=0;i<21;i++)
-    {
-        for(j=0;j<26;j++)
-        {
-            if(record[i][j]==3)
-            {
-                i_recent[0] = i;
-                j_recent[0] = j;
-                housenumber++;
-                house = 1;
-            }
-            else if(record[i][j]==4)
-            {
-                i_recent[1] = i;
-                j_recent[1] = j;
-                housenumber++;
-                house = 1;
-            }
-            else if(record[i][j]==5)
-            {
-                i_recent[2] = i;
-                j_recent[2] = j;
-                housenumber++;
-                house = 1;
-            }
-            else if(record[i][j]==6)
-            {
-                i_recent[3] = i;
-                j_recent[3] = j;
-                housenumber++;
-                house = 1;
-            }
-        }
-    }
-
-    itoa(housenumber,ceshi,10);
-                    outtextxy(10,300,ceshi);
+    int num[8] = {0,0,0,0,0,0,0,0};
+    cleardevice();
+    setbkcolor(WHITE);
     mouseinit();
-    i=0;j=0;
-
+    home_screen();
     while(1)
-    {
+    {   
         newmouse(&MouseX,&MouseY,&press);
-
-        if( mouse_press(25,50,70,95)==2 )//房子未点击
-        {
-            if( flag!=1 )
+        if(mouse_press(100,90,310,190)==2)
+        {   
+            if(flag!=1)
             {
                 MouseS = 1;
                 flag = 1;
-                num[1] = 1 ;
-                clrmous(MouseX,MouseY);
-                put_house(25,50,BROWN,CYAN,5);
+                num[1] = 1;
+                home_button_light(flag);
             }
         }
-        else if( mouse_press(25,50,70,95)==1 ) //房子点击
-        {
-            mode = 1 ;
-            MouseS = 0;
-            clrmous(MouseX,MouseY);
-        }
-        else if( mouse_press(595,5,630,40)==2 )//退出键未点击
-        {
-            if( flag!=2 )
+        else if(mouse_press(330,90,540,190)==2)
+        {   
+            if(flag!=2)
             {
-                MouseS = 1 ;
-                flag = 2 ;
-                num[2] = 1;
-                clrmous(MouseX,MouseY);
+                MouseS = 1;
+                flag = 2;
+                num[2] = 2;
+                home_button_light(flag);
+            }
+        }
+        else if(mouse_press(100,230,310,330)==2)
+        {   
+            if(flag!=3)
+            {
+                MouseS = 1;
+                flag = 3;
+                num[3] = 3;
+                home_button_light(flag);
+            }
+        }
+        else if(mouse_press(330,230,540,330)==2)
+        {   
+            if(flag!=4)
+            {
+                MouseS = 1;
+                flag = 4;
+                num[4] = 4;
+                home_button_light(flag);
+            }
+        }
+        else if(mouse_press(100,370,310,470)==2)
+        {   
+            if(flag!=5)
+            {
+            MouseS = 1;
+            flag = 5;
+            num[5] = 5;
+            home_button_light(flag);
+            }
+        }
+        else if(mouse_press(330,370,540,470)==2)
+        {   
+            if(flag!=6)
+            {
+                MouseS = 1;
+                flag = 6;
+                num[6] = 6;
+                home_button_light(flag);
+            }
+        }
+        else if(mouse_press(595,5,630,40)==2)
+        {
+            if(flag!=7)
+            {
+                MouseS = 1;
+                flag = 7;
+                num[7] = 7;
                 back_button(LIGHT);
             }
         }
-        else if( mouse_press(595,5,630,40)==1 )//退出点击
+        else
         {
-            clrmous(MouseX,MouseY);
+            MouseS = 0;
+            flag = 0;
+        }
+
+        if(mouse_press(100,90,310,190)==1)
+        {   
             return FIELD;
         }
-        else 
-        {
-            MouseS = 0 ;
-            flag = 0 ;
+        else if(mouse_press(330,90,540,190)==1)
+        {   
+            return DRONE;
+        }
+        else if(mouse_press(100,230,310,330)==1)
+        {   
+            return PESTICIDE;
+        }
+        else if(mouse_press(330,230,540,330)==1)
+        {   
+            return DETECTOR;
+        }
+        else if(mouse_press(100,370,310,470)==1)
+        {   
+            return README;
+        }
+        else if(mouse_press(330,370,540,470)==1)
+        {   
+            return QUIT;
+        }
+        else if(mouse_press(595,5,630,40)==1)
+        {   
+            return LOGIN;
         }
 
-        if( flag!=1 && num[1]==1)
+        if(flag!=1&&num[1]==1)
         {
-            clrmous(MouseX,MouseY);
-            put_house(25,50,DARKGRAY,LIGHTGRAY,5);
+            home_button_recovery(num[1]);
             num[1]=0;
         }
-        else if( flag!=2 && num[2]==1 )
+        else if(flag!=2&&num[2]==2)
         {
-            clrmous(MouseX,MouseY);
+            home_button_recovery(num[2]);
+            num[2]=0;
+        }
+        else if(flag!=3&&num[3]==3)
+        {
+            home_button_recovery(num[3]);
+            num[3]=0;
+        }
+        else if(flag!=4&&num[4]==4)
+        {
+            home_button_recovery(num[4]);
+            num[4]=0;
+        }
+        else if(flag!=5&&num[5]==5)
+        {
+            home_button_recovery(num[5]);
+            num[5]=0;
+        }
+        else if(flag!=6&&num[6]==6)
+        {
+            home_button_recovery(num[6]);
+            num[6]=0;
+        }
+        else if(flag!=7&&num[7]==7)
+        {
             back_button(RECOVER);
-            num[1]=0;
+            num[7]=0;
         }
+        
 
-        if( mode==1 )
-        {
-            housenumber = 0;
-            put_house(25,50,BROWN,CYAN,5);
-            clear_button(PAINT);
-            put_ok_button(PAINT);
-            setfillstyle(SOLID_FILL,WHITE);
-            bar(595,5,630,40);
-            while(1)
-            {
-                newmouse(&MouseX,&MouseY,&press);
+    }
+}
 
-                if( mouse_press(110,50,630,470)==2 ) //处于画图区域，但未点击
-                {
-                    if(house_flag != 1 )
-                    {
-                        MouseS = 8;
-                        house_flag = 1;
-                    }
-                }
-                else if( mouse_press(110,50,630,470)==1 )//处于画图区域并且点击
-                {
-                    if(housenumber >= 4) continue;
-                    clrmous(MouseX,MouseY);
-                    i = (470-MouseY)/20;
-                    j = (MouseX - 110)/20;
-                    i_recent[housenumber] = i ;
-                    j_recent[housenumber] = j ;
-                    
-                    delay(1000);
-                    itoa(housenumber,ceshi,10);
-                    outtextxy(10,300,ceshi);
-                    if( record[i][j] == 1 )
-                    {
-                        x = 110+j*20 ;
-                        y = 470-i*20-20 ;//左上角
-                        //右下角 (110 + j * 20 + 20, 470 - i * 20)
-                        put_house(x,y,BROWN,CYAN,2);
-                        record[i][j] = 3 + housenumber;
-                        housenumber ++;
-                        house == 1;
-                    }
-                    
-                }
-                else if(mouse_press(5,400,95,470)==2)//处于ok区域未点击
-                {
-                    if( house_flag != 2)
-                    {
-                        MouseS = 1;
-                        house_flag = 2;
-                        clrmous(MouseX,MouseY);
-                        put_ok_button(LIGHT);
-                    }
-                }
-                else if( mouse_press(5,400,95,470)==1 )//处于ok区域并且点击
-                {
-                    MouseS = 0;
-                    mode = 0;
+void home_button_light(int flag)
+{
+    clrmous(MouseX,MouseY);
+    if(flag==1)
+    {
+        printbox(100,90,310,190,YELLOW,1,5,4);
+        setcolor(CYAN);
+        settextstyle( DEFAULT_FONT , HORIZ_DIR , 3);
+        outtextxy(145,130, "FIELD");
+    }
+    else if(flag==2)
+    {
+        printbox(330,90,540,190,YELLOW,1,5,4);
+        setcolor(CYAN);
+        settextstyle( DEFAULT_FONT , HORIZ_DIR , 3);
+        outtextxy(375,130, "DRONE");
+    }
+    else if(flag==3)
+    {
+        printbox(100,230,310,330,YELLOW,1,5,4);
+        setcolor(CYAN);
+        settextstyle( DEFAULT_FONT , HORIZ_DIR , 3);
+        outtextxy(160,270, "PEST");
+    }
+    else if(flag==4)
+    {
+        printbox(330,230,540,330,YELLOW,1,5,4);
+        setcolor(CYAN);
+        settextstyle( DEFAULT_FONT , HORIZ_DIR , 3);
+        outtextxy(365,270, "DETECT");
+    }
+    else if(flag==5)
+    {
+        printbox(100,370,310,470,YELLOW,1,5,4);
+        setcolor(CYAN);
+        settextstyle( DEFAULT_FONT , HORIZ_DIR , 3);
+        outtextxy(135,410, "README");
+    }
+    else if(flag==6)
+    {
+        printbox(330,370,540,470,YELLOW,1,5,4);
+        setcolor(CYAN);
+        settextstyle( DEFAULT_FONT , HORIZ_DIR , 3);
+        outtextxy(390,410, "QUIT");
+    }
 
-                    if(house==1) 
-                    {
-                        if ( (fp = fopen(path,"wb")) != NULL )
-                        {
-                            for(i=0;i<21;i++)
-                            {
-                                fwrite(record[i],sizeof(int),26,fp);
-                            }
-                        }
-                        else 
-                        {
-                            perror("error in changing record data!");
-                        }
-                        fclose(fp);
-                        house = 0;
-                    }
-                    
-                    clrmous(MouseX,MouseY);
-                    setfillstyle(SOLID_FILL,WHITE);
-                    bar(0,0,95,480);
-                    put_house(25,50,DARKGRAY,LIGHTGRAY,5);
+}
 
-                    back_button(PAINT);
-                    clear_button(DELETE);
-                    break;
-                }
-                else if( mouse_press(5,130,95,180)==2 )//清空键未点击
-                {
-                    if( house_flag != 3 )
-                    {
-                        MouseS = 1 ;
-                        house_flag = 3 ;
-                        num[3] = 1;
-                        clrmous(MouseX,MouseY);
-                        clear_button(LIGHT);
-                    }
-                }
-                else if( mouse_press(5,130,95,180)==1 )//清空键点击
-                {
-                    housenumber = 0;
-                    while( housenumber< 4 )
-                    {
-                        clrmous(MouseX,MouseY);
-                        x = 110+j_recent[housenumber]*20 ;
-                        y = 470-i_recent[housenumber]*20-20 ;//左上角
-                        setfillstyle(SOLID_FILL,DARKGRAY);
-                        bar(x,y,x+20,y+20);
-                        record[i_recent[housenumber]][j_recent[housenumber]] = 1;
-                        housenumber++ ;
-                    }
-                    housenumber = 0;
-                    house = 1;
-                }
-                else 
-                {
-                    if(house_flag != 0)
-                    {
-                        MouseS = 0;
-                        house_flag = 0;
-                        put_ok_button(RECOVER);
-                        clear_button(RECOVER);
-                    }
-                }
-            }
-        }
+void home_button_recovery(int num)
+{
+    clrmous(MouseX,MouseY);
+    printbox(100,90,310,190,DARKGRAY,1,5,4);
+    printbox(330,90,540,190,DARKGRAY,1,5,4);
+    printbox(100,230,310,330,DARKGRAY,1,5,4);
+    printbox(330,230,540,330,DARKGRAY,1,5,4);
+    printbox(100,370,310,470,DARKGRAY,1,5,4);
+    printbox(330,370,540,470,DARKGRAY,1,5,4);
+
+    setcolor(BLUE);
+    settextstyle(DEFAULT_FONT , HORIZ_DIR,3);
+    outtextxy(145,130, "FIELD");
+    outtextxy(375,130, "DRONE");
+    outtextxy(160,270, "PEST");
+    outtextxy(365,270, "DETECT");
+    outtextxy(135,410, "README");
+    outtextxy(390,410, "QUIT");
+    if(num == 1)
+    {
+        printbox(100,90,310,190,DARKGRAY,1,5,4);
+        setcolor(BLUE);
+        settextstyle(DEFAULT_FONT , HORIZ_DIR,3);
+        outtextxy(145,130, "FIELD");
+    }
+    else if(num == 2)
+    {
+        printbox(330,90,540,190,DARKGRAY,1,5,4);
+        setcolor(BLUE);
+        settextstyle(DEFAULT_FONT , HORIZ_DIR,3);
+        outtextxy(375,130, "DRONE");
+    }
+    else if(num == 3)
+    {
+        printbox(100,230,310,330,DARKGRAY,1,5,4);
+        setcolor(BLUE);
+        settextstyle(DEFAULT_FONT , HORIZ_DIR,3);
+        outtextxy(160,270, "PEST");;
+    }
+    else if(num == 4)
+    {
+        printbox(330,230,540,330,DARKGRAY,1,5,4);
+        setcolor(BLUE);
+        settextstyle(DEFAULT_FONT , HORIZ_DIR,3);
+        outtextxy(365,270, "DETECT");
+    }
+    else if(num == 5)
+    {
+        printbox(100,370,310,470,DARKGRAY,1,5,4);
+        setcolor(BLUE);
+        settextstyle(DEFAULT_FONT , HORIZ_DIR,3);
+        outtextxy(135,410, "README");
+    }
+    else if(num == 6)
+    {
+        printbox(330,370,540,470,DARKGRAY,1,5,4);
+        setcolor(BLUE);
+        settextstyle(DEFAULT_FONT , HORIZ_DIR,3);
+        outtextxy(390,410, "QUIT");
     }
 }
