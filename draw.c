@@ -889,3 +889,16 @@ void put_down_arrow(int x,int y,int pix)
     printline(x+pix*2,y+3*pix,1,4,0,DARKGRAY,pix,0);
     printline(x+pix*3,y+4*pix,1,2,0,DARKGRAY,pix,0);
 }
+void put_water(int x,int y,int COLOR,int pix)
+{
+    printline(x+6*pix,y+5*pix,1,1,0,COLOR,pix,0);
+    printline(x+5*pix,y+6*pix,1,3,0,COLOR,pix,0);
+    printline(x+5*pix,y+7*pix,1,3,0,COLOR,pix,0);
+    printline(x+4*pix,y+8*pix,1,5,0,COLOR,pix,0);
+    printline(x+4*pix,y+9*pix,1,5,0,COLOR,pix,0);
+    printline(x+3*pix,y+10*pix,1,7,0,COLOR,pix,0);
+    printline(x+3*pix,y+11*pix,1,7,0,COLOR,pix,0);
+    printline(x+3*pix,y+12*pix,1,7,0,COLOR,pix,0);
+    printline(x+4*pix,y+13*pix,1,5,0,COLOR,pix,0);
+    printline(x+5*pix,y+14*pix,1,3,0,COLOR,pix,0);
+}
