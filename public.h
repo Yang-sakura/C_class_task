@@ -53,12 +53,15 @@
 #define DRAW_FIELD 10
 #define PLANT 11
 #define HOUSE 12
-
+#define DRONE_LIST 13
 
 #define PAINT 0
 #define RECOVER 1
 #define LIGHT 2
 #define DELETE 3
+
+#define LEFTARROW 1
+#define RIGHTARROW 2
 
 #define SPROUT 1
 #define TRANSITION 2
@@ -67,10 +70,27 @@
 #define SICK 1
 #define HEALTHY 2
 
+#define MAP_ROWS 21
+#define MAP_COLS 26
+
+#define CROP1_STATE1 12
+#define CROP1_STATE2 24
+#define CROP2_STATE1 14
+#define CROP2_STATE2 28
+#define CROP3_STATE1 10
+#define CROP3_STATE2 20
+
+#define CALENDER_MAX 60
+
+#define MAX 0x3f3f3f3f
+
 void printline(int x,int y,int len,int n,int flag,int COLOR,int wid,int gap);
 //x,y是第一个小方块左上角起始点，flag=0横着向右，flag=1竖着向下，len每格长度是宽度的多少倍数，n记录画多少个,COLOR是画线颜色
 void printbox(int x1,int y1,int x2,int y2,int COLOR,int len,int wid,int gap);
 void back_button(int flag);
+void string_limitation(char *string , int len);
+void warning(char *msg,int nx,int ny,int lettersize);
+void drop_down_menu(int x,int y,int wide,int h,int n,int lettersize,char **msgs,int lightcolor,int darkcolor,char *record);
 
 typedef struct userinfo
 {
@@ -78,6 +98,15 @@ typedef struct userinfo
     char password[18];
 } INFO;
 
+typedef struct droneinfo
+{
+    char name[10];
+    char weight[10];
+    char wing[10];
+    char weather[10];
+    char time[10];
+    char power[10];
+} DRONEINFO;
 
 #include <stdio.h>
 #include <stdlib.h>
