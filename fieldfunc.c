@@ -113,10 +113,10 @@ int draw_field_page(char *name,char *now_field)
             perror("error in opening fieldfile!");
         }
         fclose(fp);
-        paint_field(record ,now_field);
+        
 
     }
-
+    paint_field(record ,now_field);
     
 
     draw_field_screen();
@@ -454,19 +454,20 @@ int draw_field_page(char *name,char *now_field)
                         strcat(now_field,".dat");
                         strcat(stringnow,now_field);
                         
-                        if((fp = fopen(stringnow,"wb"))!= NULL)
-                        {
-                            for(i=0;i<21;i++)
-                            {
-                                fwrite(precord[i],sizeof(int),26,fp);
-                            }
-                        }
-                        else
-                        {
-                            perror("ERROR IN CREATING!");
-                            delay(3000);
-                            exit(1);
-                        }
+                        // if((fp = fopen(stringnow,"wb"))!= NULL)
+                        // {
+                        //     for(i=0;i<21;i++)
+                        //     {
+                        //         fwrite(precord[i],sizeof(int),26,fp);
+                        //     }
+                        // }
+                        // else
+                        // {
+                        //     perror("ERROR IN CREATING!");
+                        //     delay(3000);
+                        //     exit(1);
+                        // }
+                        fopen(stringnow,"wb+");
                         fclose(fp);
                         filetime = 1;
                         return DRAW_FIELD;
