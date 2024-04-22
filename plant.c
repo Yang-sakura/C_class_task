@@ -51,6 +51,18 @@ void paint_field( int record[21][26] ,char *nowfield)
             {
                 put_house(x,y,BROWN,CYAN,2);
             }
+            else if( record[i][j]==4 )
+            {
+                put_house(x,y,BROWN,MAGENTA,2);
+            }
+            else if( record[i][j]==5 )
+            {
+                put_house(x,y,BROWN,YELLOW,2);
+            }
+            else if( record[i][j]==6 )
+            {
+                put_house(x,y,BROWN,BLUE,2);
+            }
             else if( record[i][j]>=10 && record[i][j]<=39 ){
                 put_crop1(x,y,SPROUT,HEALTHY);
             }
@@ -108,6 +120,18 @@ void paint_field_right( int record[21][26] ,char *nowfield)
             if( record[i][j]==3 )
             {
                 put_house(x,y,BROWN,CYAN,2);
+            }
+            else if( record[i][j]==4 )
+            {
+                put_house(x,y,BROWN,MAGENTA,2);
+            }
+            else if( record[i][j]==5 )
+            {
+                put_house(x,y,BROWN,YELLOW,2);
+            }
+            else if( record[i][j]==6 )
+            {
+                put_house(x,y,BROWN,BLUE,2);
             }
             else if( record[i][j]>=10 && record[i][j]<=39 ){
                 put_crop1(x,y,SPROUT,HEALTHY);
