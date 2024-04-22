@@ -3,6 +3,7 @@
 
 void put_calender(void);
 void put_calender_number(char *date);
+void put_calender_weather(char *weather);
 void pause_button(int flag);
 void mode_button(int flag);
 void chart_button(int flag);
@@ -12,5 +13,7 @@ void start_button(int flag);
 void detect_screen(int record[21][26] , char *nowfield);
 int detect_page(char *username,char *nowfield);
 void grow(int record[21][26] , int date );
+void grow_oneday(int record[21][26] ,int date);
+void auto_simulate(int record[21][26], char *date_char );
 
 #endif
