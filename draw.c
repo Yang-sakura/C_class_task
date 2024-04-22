@@ -804,19 +804,88 @@ void put_tree1(int x,int y,int pix)
     printline(x-3*pix,y+3*pix,1,3,1,GREEN,pix,0);
     printline(x,y+7*pix,1,2,1,BROWN,pix,0);
 }
+// input:int x,int y,int len,int n,int flag,int COLOR,int wid,int gap
+//       x,y是第一个小方块左上角起始点，flag=0横着向右，flag=1竖着向下，len记录每个块有多长，n记录有多少格
+//       wid每格宽度，每格长度为len倍的宽度,gap为每格之间间隙
 void put_cloud(int x,int y,int pix)
 {
-    printline(x,y,1,5,1,LIGHTBLUE,pix,0);
-
-
+    printline(x,y,1,13,0,LIGHTBLUE,pix,0);
+    printline(x+1*pix,y-1*pix,1,11,0,LIGHTBLUE,pix,0);
+    printline(x+1*pix,y-2*pix,1,7,0,LIGHTBLUE,pix,0);
+    printline(x+9*pix,y-2*pix,1,2,0,LIGHTBLUE,pix,0);
+    printline(x+2*pix,y-3*pix,1,5,0,LIGHTBLUE,pix,0);
+    printline(x+3*pix,y-4*pix,1,3,0,LIGHTBLUE,pix,0);
 }
-void put_sun(int x,int y,int pix)
+void put_sun(int x,int y,int pix,int COLOR)
 {
-    printline(x,y,1,5,1,RED,pix,0);
+    printline(x+1*pix,y,1,3,0,COLOR,pix,0);
+    printline(x,y+1*pix,1,5,0,COLOR,pix,0);
+    printline(x,y+2*pix,1,5,0,COLOR,pix,0);
+    printline(x,y+3*pix,1,5,0,COLOR,pix,0);
+    printline(x+1*pix,y+4*pix,1,3,0,COLOR,pix,0);
 
+    printline(x+2*pix,y-3*pix,1,2,1,COLOR,pix,0);
+    printline(x+2*pix,y+6*pix,1,2,1,COLOR,pix,0);
+
+    printline(x-3*pix,y+2*pix,1,2,0,COLOR,pix,0);
+    printline(x+6*pix,y+2*pix,1,2,0,COLOR,pix,0);
+
+    printline(x-2*pix,y-2*pix,1,1,0,COLOR,pix,0);
+    printline(x-1*pix,y-1*pix,1,1,0,COLOR,pix,0);
+    printline(x+5*pix,y+5*pix,1,1,0,COLOR,pix,0);
+    printline(x+6*pix,y+6*pix,1,1,0,COLOR,pix,0);
+    printline(x+5*pix,y-1*pix,1,1,0,COLOR,pix,0);
+    printline(x+6*pix,y-2*pix,1,1,0,COLOR,pix,0);
+    printline(x-1*pix,y+5*pix,1,1,0,COLOR,pix,0);
+    printline(x-2*pix,y+6*pix,1,1,0,COLOR,pix,0);
 }
 void put_rain(int x,int y,int pix)
 {
-    printline(x,y,1,5,1,BLUE,pix,0);
+    printline(x,y,1,9,0,LIGHTBLUE,pix,0);
+    printline(x+1*pix,y-1*pix,1,8,0,LIGHTBLUE,pix,0);
+    printline(x+1*pix,y-2*pix,1,7,0,LIGHTBLUE,pix,0);
+    printline(x+2*pix,y-3*pix,1,5,0,LIGHTBLUE,pix,0);
+    printline(x+3*pix,y-4*pix,1,4,0,LIGHTBLUE,pix,0);
 
+    printline(x+4*pix,y+2*pix,1,1,0,BLUE,pix,0);
+    printline(x+3*pix,y+3*pix,1,1,0,BLUE,pix,0);
+    printline(x+2*pix,y+4*pix,1,1,0,BLUE,pix,0);
+}
+void put_snow(int x,int y,int pix)
+{
+    int pixel=1;
+    printline(x,y,1,9,0,LIGHTBLUE,pix,0);
+    printline(x+1*pix,y-1*pix,1,8,0,LIGHTBLUE,pix,0);
+    printline(x+1*pix,y-2*pix,1,7,0,LIGHTBLUE,pix,0);
+    printline(x+2*pix,y-3*pix,1,5,0,LIGHTBLUE,pix,0);
+    printline(x+3*pix,y-4*pix,1,4,0,LIGHTBLUE,pix,0);
+
+    printline(x+5*pix-2*pixel,y+2*pix+2*pixel,1,1,0,BLUE,pixel,0);
+    printline(x+5*pix+2*pixel,y+2*pix+2*pixel,1,1,0,BLUE,pixel,0);
+    printline(x+5*pix-3*pixel,y+2*pix+3*pixel,1,4,0,BLUE,pixel,0);
+    printline(x+5*pix+3*pixel,y+2*pix+3*pixel,1,1,0,BLUE,pixel,0);
+    printline(x+5*pix-4*pixel,y+2*pix+4*pixel,1,3,0,BLUE,pixel,0);
+    printline(x+5*pix+1*pixel,y+2*pix+4*pixel,1,4,0,BLUE,pixel,0);
+    printline(x+5*pix-2*pixel,y+2*pix+5*pixel,1,1,0,BLUE,pixel,0);
+    printline(x+5*pix,y+2*pix+5*pixel,1,3,0,BLUE,pixel,0);
+    printline(x+5*pix-4*pixel,y+2*pix+6*pixel,1,4,0,BLUE,pixel,0);
+    printline(x+5*pix+2*pixel,y+2*pix+6*pixel,1,3,0,BLUE,pixel,0);
+    printline(x+5*pix-1*pixel,y+2*pix+7*pixel,1,1,0,BLUE,pixel,0);
+    printline(x+5*pix+2*pixel,y+2*pix+7*pixel,1,1,0,BLUE,pixel,0);
+}
+void put_up_arrow(int x,int y,int pix)
+{
+    printline(x,y,1,8,0,DARKGRAY,pix,0);
+    printline(x,y-1*pix,1,8,0,DARKGRAY,pix,0);
+    printline(x+pix*1,y-2*pix,1,6,0,DARKGRAY,pix,0);
+    printline(x+pix*2,y-3*pix,1,4,0,DARKGRAY,pix,0);
+    printline(x+pix*3,y-4*pix,1,2,0,DARKGRAY,pix,0);
+}
+void put_down_arrow(int x,int y,int pix)
+{
+    printline(x,y,1,8,0,DARKGRAY,pix,0);
+    printline(x,y+1*pix,1,8,0,DARKGRAY,pix,0);
+    printline(x+pix*1,y+2*pix,1,6,0,DARKGRAY,pix,0);
+    printline(x+pix*2,y+3*pix,1,4,0,DARKGRAY,pix,0);
+    printline(x+pix*3,y+4*pix,1,2,0,DARKGRAY,pix,0);
 }
