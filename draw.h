@@ -24,4 +24,6 @@ void put_snow(int x,int y,int pix);
 void put_up_arrow(int x,int y,int pix);
 void put_down_arrow(int x,int y,int pix);
 
+void put_water(int x,int y,int COLOR,int pix)；
+
 #endif
