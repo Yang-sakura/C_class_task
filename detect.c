@@ -1,6 +1,7 @@
 #include "public.h"
 #include "detect.h"
 #include "flyfunc.h"
+#include "detectfunc.h"
 
 void detect_screen(int record[21][26] , char *nowfield )
 {
@@ -46,11 +47,11 @@ void put_calender_number(char *date)//(15,20,90,60)
     if(strlen(date)==1) outtextxy(39,35,date);
     if(strlen(date)==2) outtextxy(27,35,date);
 }
-void put_calender_weather(char *weather)
+void put_calender_weather(char weather[10])
 {
     setfillstyle(SOLID_FILL,WHITE);
     bar(8,73,65,117);
-    if(strcmp(weather,"cloud")==0 ) {
+    if(strcmp(weather,"cloud") == 0 ) {
         put_cloud(15,100,3);
     }
     else if(strcmp(weather,"sun")==0 ) {
@@ -186,8 +187,9 @@ void route_button(int flag)
 int detect_page(char *username,char *nowfield)
 {
     int record[21][26];
-    int i,k,pre_x=-1,pre_y=-1,x,y,temp_date;
+    int i,j,k,pre_x=-1,pre_y=-1,x,y,temp_date;
     int flag = 0,flag2 = 0 , mode = 0, handmode_flag = 0 , automode_flag = 0 , routebutton_flag = 0 , line_flag = 0,field_flag=0;
+    int random_weather ;
     int num[10];
     char path[100]="C:\\DATA\\";
     char *presentmode;
@@ -195,10 +197,11 @@ int detect_page(char *username,char *nowfield)
     FILE *fp;
     int route[100][2];
     char date[10] = "1" , compare[10] ;
+    char weather[10] = "cloud" ;
 
     memset(record , 0 , sizeof(record));
-    memset(route,-1,sizeof(route));
-    memset(compare , 0 ,sizeof(compare));
+    memset(route,-1, sizeof(route));
+    memset(compare , 0 , sizeof(compare));
 
     strcat(path,username);
     strcat(path,"\\FIELD\\");
@@ -221,6 +224,8 @@ int detect_page(char *username,char *nowfield)
     mouseinit();
     if( strlen(date) != 0 ) {
         put_calender_number(date);
+        change_weather(weather);
+        put_calender_weather(weather);
     }
     
     while(1)
@@ -320,7 +325,8 @@ int detect_page(char *username,char *nowfield)
         {
             MouseS = 0;
             clrmous(MouseX,MouseY);
-
+            delay(200);
+            show_chart(record,nowfield);
         }
         else if( mouse_press(595,5,630,40)==2 )//退出键未点击
         {
@@ -335,6 +341,7 @@ int detect_page(char *username,char *nowfield)
         }
         else if( mouse_press(595,5,630,40)==1 )//退出点击
         {
+            MouseS = 0 ;
             clrmous(MouseX,MouseY);
             return HOME;
         }
@@ -346,6 +353,9 @@ int detect_page(char *username,char *nowfield)
             temp_input(date , 18,35, 3 , 22 ,20,WHITE,3);//4 33 25
             put_calender_number(date);
             if(strcmp(compare , date )!= 0  ) {
+                change_weather(weather);
+                put_calender_weather(weather);
+                recover_field(record,username,nowfield);
                 grow(record , atoi(date));//每次日期改变时,都刷新右侧地图
                 field_flag = 1 ;
             }
@@ -360,6 +370,8 @@ int detect_page(char *username,char *nowfield)
             temp_date++ ;
             itoa(temp_date , date , 10 );
             put_calender_number(date);
+            change_weather(weather);
+            put_calender_weather(weather);
             if(temp_date == 2 )
             {
                 if(strcmp(compare , date )!= 0  ) {
@@ -385,6 +397,8 @@ int detect_page(char *username,char *nowfield)
             temp_date-- ;
             itoa(temp_date , date , 10 );
             put_calender_number(date);
+            change_weather(weather);
+            put_calender_weather(weather);
             if(strcmp(compare , date )!= 0  ) {
                 grow(record , atoi(date));//每次日期改变时,都刷新右侧地图
                 field_flag = 1 ;
@@ -473,7 +487,7 @@ int detect_page(char *username,char *nowfield)
             num[6] = 0;
         }
 
-        if(mode==1) //选择hand后选点
+        if(mode == 1) //选择hand后选点
         {
             clrmous(MouseX,MouseY);
             setfillstyle(SOLID_FILL,WHITE);
@@ -487,10 +501,28 @@ int detect_page(char *username,char *nowfield)
                 newmouse(&MouseX,&MouseY,&press);
                 if( mouse_press(110,50,630,470)==1 )//处于画图区域并且点击
                 {
+                    if(k==0) {
+                        i = (470-MouseY)/20;
+                        j = (MouseX - 110)/20;
+                        if(record[i][j] < 3 || record[i][j] > 6 ) {
+                            setfillstyle(SOLID_FILL,WHITE);
+                            bar(110,0,640,50);
+                            setcolor(DARKGRAY);
+                            settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
+                            outtextxy(110,18,"please start from a house!");
+                            delay(1500);
+                            setfillstyle(SOLID_FILL,WHITE);
+                            bar(110,0,640,50);
+                            setcolor(DARKGRAY);
+                            settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
+                            outtextxy(110,18,"please choose your route!");
+                            continue ;
+                        }
+                    }
                     route[k][0] = MouseX;
                     route[k][1] = MouseY;
                     clrmous(MouseX,MouseY);
-                        delay(200);
+                    delay(200);
                     setfillstyle(SOLID_FILL,LIGHTBLUE);
                     fillellipse(MouseX, MouseY, 3, 3);
                     
@@ -506,10 +538,15 @@ int detect_page(char *username,char *nowfield)
                     k++;
                     if(line_flag != 1 ) line_flag = 1 ;
                 }
-                
-                if( mouse_press(5,330,95,369)==1 ) //
+                if( mouse_press(5,330,95,369)==1 ) //route点击
                 {
-                    clrmous(MouseX,MouseY);
+                    route[k][0] = route[0][0];
+                    route[k][1] = route[0][1];
+                    setlinestyle(DOTTED_LINE, 0, THICK_WIDTH);
+                    setcolor(LIGHTBLUE);
+                    line(route[k-1][0],route[k-1][1],route[k][0],route[k][1]);
+
+                    clrmous(MouseX , MouseY);
                     setfillstyle(SOLID_FILL,WHITE);
                     bar(110,0,640,50);
                     back_button(PAINT);
@@ -523,6 +560,9 @@ int detect_page(char *username,char *nowfield)
                 }
             }
             handmode_flag = 1;
+            setfillstyle(SOLID_FILL,WHITE);
+            bar(5,130,95,169);
+            mode_button(RECOVER);
             delay(200);
         }
         if(mode == 2) //auto
@@ -547,7 +587,7 @@ int detect_page(char *username,char *nowfield)
                 {
                     MouseS = 0;
                     clrmous(MouseX,MouseY);
-                    auto_simulate( record , date );
+                    auto_simulate( record , date ,username , nowfield);
                 }
                 else if( mouse_press(5,130,95,169)==1 )//mode点击
                 {
@@ -567,10 +607,11 @@ int detect_page(char *username,char *nowfield)
                         back_button(LIGHT);
                     }
                 }
-                else if( mouse_press(595,5,630,40)==1 )//退出点击
+                else if( mouse_press(595,5,630,40) == 1 )//退出点击
                 {
                     MouseS = 0 ;
                     clrmous(MouseX,MouseY);
+                    delay(200);
                     return HOME;
                 }
                 else 
@@ -595,237 +636,20 @@ int detect_page(char *username,char *nowfield)
                     num[8] = 0;
                 }
             }
+            setfillstyle(SOLID_FILL,WHITE);
+            bar(5,130,95,169);
+            mode_button(RECOVER);
             delay(200);
         }
     }
 }
-void recover_field(int record[21][26],char *username , char *nowfield )
-{
-    int i,j ;
-    char path[100]="C:\\DATA\\";
-    FILE *fp;
-    strcat(path,username);
-    strcat(path,"\\FIELD\\");
-    strcat(path,nowfield);
-    if ( (fp = fopen(path,"rb")) != NULL )
-    {
-        for(i=0; i<21 ;i++ )
-        {
-            fread( record[i],sizeof(int), 26 ,fp);
-        }
-    }
-    else 
-    {
-        perror("error in opening fieldfile!");
-    }
-    fclose(fp);
-}
-void grow(int record[21][26] , int date ) //reord从最初始状态，直接计算date状态时现象
-{
-    int i,j,k,x,y,random_grow, random_health , state , health ,crop;
-    srand((unsigned)time(NULL));
-    
-    for(i=0;i<21;i++)//y
-    {
-        for(j=0;j<26;j++)//x 
-        {
-            x = 110 + j*20 ;
-            y = 470-i*20-20 ;
-            if ( record[i][j] )
-            {
-                setfillstyle(SOLID_FILL,DARKGRAY);
-                bar(x , y , x+20 , y+20 );
-            }
-            if((record[i][j]>=10 && record[i][j]<=39)) //crop1 / 12  24
-            {
-                crop = 1 ;
-                state = SPROUT ;
-                health = HEALTHY ;
-                random_grow = rand() % 100 ;//0-99
-                if(date >= CROP1_STATE1 ) {
-                    if(random_grow <= 90) {
-                        state = TRANSITION ;
-                    }
-                }  
-                if(date >= CROP1_STATE2 ) {
-                    random_grow = rand() % 100 ;
-                    if(state == TRANSITION && random_grow <= 90) {
-                        state = CROP ;
-                    }
-                }
-                random_health = rand() % 100 ;
-                if(random_health <= 20) health = SICK ;
-                else health = HEALTHY ;
-
-                put_crop1(x,y,state , health);
-            }
-            else if(record[i][j]>=40 && record[i][j]<=69) //crop2  / 10 20
-            {
-                crop = 2 ;
-                state = SPROUT ;
-                health = HEALTHY ;
-                random_grow = rand() % 100 ;//0-99
-                if(date >= CROP2_STATE1 ) {
-                    if(random_grow <= 90) {
-                        state = TRANSITION ;
-                    }
-                }  
-                if(date >= CROP2_STATE2 ) {
-                    random_grow = rand() % 100 ;
-                    if(state == TRANSITION && random_grow <= 90) {
-                        state = CROP ;
-                    }
-                }
-                random_health = rand() % 100 ;
-                if(random_health <= 20) health = SICK ;
-                else health = HEALTHY ;
-
-                put_crop2(x,y,state , health);
-            }
-            else if(record[i][j]>=70 && record[i][j]<=99) //crop3 / 14 28
-            {
-                crop = 3 ;
-                state = SPROUT ;
-                health = HEALTHY ;
-                random_grow = rand() % 100 ;//0-99
-                if(date >= CROP3_STATE1 ) {
-                    if(random_grow <= 90) {
-                        state = TRANSITION ;
-                    }
-                }  
-                if(date >= CROP3_STATE2 ) {
-                    random_grow = rand() % 100 ;
-                    if(state == TRANSITION && random_grow <= 90) {
-                        state = CROP ;
-                    }
-                }
-                random_health = rand() % 100 ;
-                if(random_health <= 20) health = SICK ;
-                else health = HEALTHY ;
-
-                put_crop3(x,y,state , health);
-            }
-            else if( record[i][j]==3 )
-            {
-                put_house(x,y,BROWN,CYAN,2);
-            }
-            else if( record[i][j]==4 )
-            {
-                put_house(x,y,BROWN,MAGENTA,2);
-            }
-            else if( record[i][j]==5 )
-            {
-                put_house(x,y,BROWN,YELLOW,2);
-            }
-            else if( record[i][j]==6 )
-            {
-                put_house(x,y,BROWN,BLUE,2);
-            }
-        }
-    }
-}
-void grow_oneday(int record[21][26] ,int date)
-{
-    int random_sick ,random_state ,health , state ,crop ,one_place , ten_place ,date_one,date_ten;
-    int i , j ,x,y;
-    srand((unsigned)time(NULL));
-    for(i=0;i<21;i++)//y
-    {
-        for(j=0;j<26;j++) //x
-        {
-            x = 110 + j*20 ;
-            y = 470-i*20-20 ;
-            one_place = record[i][j] % 10 ;
-            ten_place = record[i][j]/10 ;
-            date_one = date % 10 ;
-            date_ten = date / 10 ;
-            
-            random_sick = rand() % 100 ;
-            health = HEALTHY ;
-            if(one_place == 0 && ten_place!=0)
-            {
-                if(random_sick <= 3 && one_place <= 8) {
-                    record[i][j] += 3 ;
-                    health = SICK ;
-                }
-            }
-            else if(one_place != 0 ) {
-                health = SICK ;
-            }
-
-            random_state = rand() % 100 ;
-            if(date >= CROP1_STATE1-3 && date <= CROP1_STATE1+3 && ten_place==1 ) {
-                state = SPROUT ;
-                if(random_state <= 90) {
-                    state = TRANSITION ;
-                    record[i][j]+=10 ;
-                }
-            }
-            else if(date >= CROP1_STATE2-3 && date <= CROP1_STATE2+3 && ten_place==2 ) {
-                state = TRANSITION ;
-                if(random_state <= 90) {
-                    state = CROP ;
-                    record[i][j]+=10 ;
-                }
-            }
-            else if(date >= CROP2_STATE1-3 && date <= CROP2_STATE1+3 && ten_place==4 ) {
-                state = SPROUT ;
-                if(random_state <= 90) {
-                    state = TRANSITION ;
-                    record[i][j]+=10 ;
-                }
-            }
-            else if(date >= CROP2_STATE2-3 && date <= CROP2_STATE2+3 && ten_place==5 ) {
-                state = TRANSITION ;
-                if(random_state <= 90) {
-                    state = CROP ;
-                    record[i][j]+=10 ;
-                }
-            }
-            else if(date >= CROP3_STATE1-3 && date <= CROP3_STATE1+3 && ten_place==7 ) {
-                state = SPROUT ;
-                if(random_state <= 90) {
-                    state = TRANSITION ;
-                    record[i][j]+=10 ;
-                }
-            }
-            else if(date >= CROP3_STATE2-3 && date <= CROP3_STATE2+3 && ten_place==8 ) {
-                state = TRANSITION ;
-                if(random_state <= 90) {
-                    state = CROP ;
-                    record[i][j]+=10 ;
-                }
-            }
-
-            if((record[i][j]>=10 && record[i][j]<=39 ))
-            {
-                crop = 1;
-                // setfillstyle(SOLID_FILL,DARKGRAY);
-                // bar(x,y,x+20,y+20);
-                // delay(50);
-                put_crop1(x,y,state,health);
-            }
-            else if((record[i][j]>=40 && record[i][j]<=69)) {
-                crop = 2 ;
-                // setfillstyle(SOLID_FILL,DARKGRAY);
-                // bar(x,y,x+20,y+20);
-                put_crop2(x,y,state,health);
-            }
-            else if((record[i][j]>=70 && record[i][j]<=99)) {
-                crop = 3 ;
-                // setfillstyle(SOLID_FILL,DARKGRAY);
-                // bar(x,y,x+20,y+20);
-                put_crop3(x,y,state,health);
-            }
-        }
-    }
-}
-void auto_simulate(int record[21][26], char *date_char )
+void auto_simulate(int record[21][26], char *date_char ,char *username , char *nowfield)
 {
     int date ,i,j, add = 1 , flag = 0 , startlight = 1 , pauselight = 0 ;
     long long int time ;
     int num[10];
     char date_temp[10];
+    char weather[10];
 
     memset(date_temp,0,sizeof(date_temp));
     memset(num,0,sizeof(num));
@@ -842,6 +666,8 @@ void auto_simulate(int record[21][26], char *date_char )
         {
             itoa(date , date_temp , 10);
             put_calender_number(date_temp);
+            change_weather(weather);
+            put_calender_weather(weather);
             grow_oneday(record,date);
             time = 0;
             date++ ;
@@ -903,8 +729,29 @@ void auto_simulate(int record[21][26], char *date_char )
         {
             MouseS = 0;
             clrmous(MouseX,MouseY);
+            itoa(date,date_char,10);
             delay(200);
-            break ;
+            return ;
+        }
+        else if( mouse_press(15,20,90,60)==1 ) //日历数字点击
+        {
+            setfillstyle(SOLID_FILL,WHITE);
+            bar(11,25,90,69);
+            temp_input(date_temp , 18,35, 3 , 22 ,20,WHITE,3);//4 33 25
+            put_calender_number(date_temp);
+            if( date+1 == atoi( date_temp ) ) {
+                date = date+1 ;
+                change_weather(weather);
+                put_calender_weather(weather);
+                grow_oneday(record,date);
+            }
+            else {
+                recover_field(record,username,nowfield);
+                date = atoi(date_temp);
+                change_weather(weather);
+                put_calender_weather(weather);
+                grow(record , date );
+            }
         }
         else if( mouse_press(595,5,630,40)==2 )//退出键未点击
         {
@@ -924,8 +771,10 @@ void auto_simulate(int record[21][26], char *date_char )
         {
             MouseS = 0 ;
             clrmous(MouseX,MouseY);
+            itoa(date,date_char,10);
+            
             delay(200);
-            return HOME;
+            return ;
         }
         else 
         {
@@ -938,18 +787,19 @@ void auto_simulate(int record[21][26], char *date_char )
 
         if( flag!=1 && num[1]==1 )
         {
+            num[1]=0;
             if(startlight!=1) {
                 clrmous(MouseX,MouseY);
                 start_button(RECOVER);
-                num[1]=0;
+                
             }
         }
         else if( flag!=2 && num[2]==1 )
         {
+            num[2]=0;
             if(pauselight != 1) {
                 clrmous(MouseX,MouseY);
-                pause_button(RECOVER);
-                num[2]=0;
+                pause_button(RECOVER);     
             }
         }
         else if( flag!=3 && num[3]==1 )
@@ -959,6 +809,10 @@ void auto_simulate(int record[21][26], char *date_char )
             num[3]=0;
         }
         if(startlight) time++ ;
-        if(date > CALENDER_MAX) break ;
+        if(date > CALENDER_MAX) {
+            itoa(date,date_char,10);
+            return ;
+        }
     }
+    return ;
 }
