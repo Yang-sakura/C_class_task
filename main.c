@@ -8,6 +8,7 @@ void main()
     int page = LOGIN;
     INFO *temp;
     char *now_field;
+    DRONEINFO *drone;
     initgraph(&gdriver,&gmode,"c:\\borlandc\\bgi");
 
     while(1)
