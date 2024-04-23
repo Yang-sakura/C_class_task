@@ -35,7 +35,7 @@ void main()
                break;
 
             case DRONE :
-               page = HOME;
+               page = drone_page(temp->name,drone->name,drone);
                break;
 
             case PESTICIDE :
@@ -57,7 +57,10 @@ void main()
             case HOUSE :
                page = house_page(temp->name,now_field);
                break;
-            
+
+	    case DRONE_LIST:
+               page = drone_list_page(temp->name,drone);
+               break;
 			default :
 				exit(1);
         }
