@@ -650,25 +650,39 @@ void auto_simulate(int record[21][26], char *date_char ,char *username , char *n
     int num[10];
     char date_temp[10];
     char weather[10];
+    int houserecord[4][2];
 
+    memset(houserecord,0,sizeof(houserecord));
     memset(date_temp,0,sizeof(date_temp));
     memset(num,0,sizeof(num));
     date = atoi( date_char );//从date天开始
-    grow(record , date );
+    if(date != 1) {
+        grow(record , date );
+    }
 
     mouseinit();
+
+    find_house(record,houserecord);
 
     while(1)
     {
         newmouse(&MouseX,&MouseY,&press);
 
-        if(time%1000000 == 0) 
+        if(time%600000 == 0) 
         {
             itoa(date , date_temp , 10);
             put_calender_number(date_temp);
             change_weather(weather);
             put_calender_weather(weather);
+            
             grow_oneday(record,date);
+
+            if(date % 3 == 0) //侦测天数
+            {
+                // fly_detect( record , find_closest_house(record) );
+                fly_spray(record,4);
+            }
+
             time = 0;
             date++ ;
         }
