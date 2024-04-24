@@ -130,7 +130,7 @@ void fly_spray(int record[21][26], int n )
     Point route[5][50];
     int num[5],fly[5],drone_flag_n[5];
     double step[5] , step_x[5] , step_y[5], x_n[5] , y_n[5];
-    void *drone_buffer_n[5] ;
+    void *drone_buffer0 ,*drone_buffer1 , *drone_buffer2, *drone_buffer3 ;
     char temp_out[20];
 
     memset(route,0,sizeof(route));
@@ -219,11 +219,11 @@ void fly_spray(int record[21][26], int n )
     route[0][2].x=200 ;route[0][2].y = 200 ;
     route[0][3].x=200 ;route[0][3].y = 250 ;
     num[0] = 4 ;
-    // route[1][0].x=300 ;route[1][0].y = 100 ;
-    // route[1][1].x=300 ;route[1][1].y = 150 ;
-    // route[1][2].x=300 ;route[1][2].y = 200 ;
-    // route[1][3].x=300 ;route[1][3].y = 250 ;
-    // num[1] = 4 ;
+    route[1][0].x=300 ;route[1][0].y = 100 ;
+    route[1][1].x=300 ;route[1][1].y = 150 ;
+    route[1][2].x=300 ;route[1][2].y = 200 ;
+    route[1][3].x=300 ;route[1][3].y = 250 ;
+    num[1] = 4 ;
     route[2][0].x=400 ;route[2][0].y = 100 ;
     route[2][1].x=400 ;route[2][1].y = 150 ;
     route[2][2].x=400 ;route[2][2].y = 200 ;
@@ -233,18 +233,22 @@ void fly_spray(int record[21][26], int n )
     {
         num[k]++ ;
     }
-    for(i=1;i<=num[0];i++) {
-        itoa(route[0][i].x,temp_out,10);
-        outtextxy(15,300+i*10,temp_out);
-        itoa(route[0][i].y,temp_out,10);
-        outtextxy(70,300+i*10,temp_out);
-    }
-
+    
     for(k = 0 ; k <= n-1 ; k++)
     {
         route[k][num[k]].x  = route[k][0].x;
         route[k][num[k]].y  = route[k][0].y;
     }
+    for(j=0;j<4;j++)
+    {
+        for(i=1;i<=num[j];i++) {
+            itoa(route[j][i].x,temp_out,10);
+            outtextxy(15+50*j,300+i*10,temp_out);
+            itoa(route[j][i].y,temp_out,10);
+            outtextxy(70+50*j,300+i*10,temp_out);
+        }
+    }
+    
     
     for( k = 0 ; k < n ; k++)//step初始化
     {
@@ -275,11 +279,34 @@ void fly_spray(int record[21][26], int n )
             nx = (int)x_n[k] ;
             ny = (int)y_n[k] ;
             size = imagesize(nx-10, ny-10, nx + 10, ny + 10);//save_bk_drone((int)x,(int)y);
-            drone_buffer_n[k] = malloc(size);
-            if (drone_buffer_n[k] != NULL)
-                getimage(nx-10, ny-10, nx + 10, ny + 10 , drone_buffer_n[k]);
-            else
-                printf("Error");
+            if(k==0) {
+                drone_buffer0 = malloc(size);
+                if (drone_buffer0 != NULL)
+                    getimage(nx-10, ny-10, nx + 10, ny + 10 , drone_buffer0);
+                else
+                    printf("Error");
+            }
+            else if(k==1) {
+                drone_buffer1 = malloc(size);
+                if (drone_buffer1 != NULL)
+                    getimage(nx-10, ny-10, nx + 10, ny + 10 , drone_buffer1);
+                else
+                    printf("Error");
+            }
+            else if(k==2) {
+                drone_buffer2 = malloc(size);
+                if (drone_buffer2 != NULL)
+                    getimage(nx-10, ny-10, nx + 10, ny + 10 , drone_buffer2);
+                else
+                    printf("Error");
+            }
+            else if(k==3) {
+                drone_buffer3 = malloc(size);
+                if (drone_buffer3 != NULL)
+                    getimage(nx-10, ny-10, nx + 10, ny + 10 , drone_buffer3);
+                else
+                    printf("Error");
+            }
             if(drone_flag_n[k] == 0 ) //draw_drone
             {
                 setwritemode(COPY_PUT);
@@ -294,20 +321,31 @@ void fly_spray(int record[21][26], int n )
             if (fly[k] == num[k]) continue ;
             nx = (int)x_n[k] ;
             ny = (int)y_n[k] ;
-            if(drone_flag_n[k] == 1 )
-            {
+            if(drone_flag_n[k] == 1 ) {
                 setwritemode(XOR_PUT);
                 put_drone1(nx, ny , 2);
-                putimage(nx-10, ny-10, drone_buffer_n[k], COPY_PUT);
-                free( drone_buffer_n[k] );
+                if(k==0) {
+                    putimage(nx-10, ny-10, drone_buffer0, COPY_PUT);
+                    free( drone_buffer0 );
+                }
+                else if(k==1) {
+                    putimage(nx-10, ny-10, drone_buffer1, COPY_PUT);
+                    free( drone_buffer1 );
+                }
+                else if(k==2) {
+                    putimage(nx-10, ny-10, drone_buffer2, COPY_PUT);
+                    free( drone_buffer2 );
+                }
+                else if(k==3) {
+                    putimage(nx-10, ny-10, drone_buffer3, COPY_PUT);
+                    free( drone_buffer3 );
+                }
                 drone_flag_n[k] = 0;
-		        setwritemode(COPY_PUT);
+                setwritemode(COPY_PUT);
             }
+            
         }
-        for( k = 0 ; k < n ; k++) 
-        {
-            free( drone_buffer_n[k] );
-        }
+        
         for( k = 0 ; k < n ; k++) 
         {
             x_n[k] += step_x[k] ;
