@@ -2,7 +2,7 @@
 #include "main.h"
 #include "public.h"
 
-void pesticide_screen()
+void pesticide_screen(int language)
 {
     setbkcolor(WHITE);
     printbox(310,20,590,100,DARKGRAY,1,5,5);
@@ -12,13 +12,23 @@ void pesticide_screen()
     printbox(50,400,285,465,DARKGRAY,1,5,5);
     put_Erlenmeyer_flask(70,0,0,9);
 
-    setcolor(DARKGRAY);
-    settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
-    outtextxy(347,50,"PESTICIDE");
-    outtextxy(405,170,"NAME");
-    outtextxy(382,290,"PERIOD");
-    outtextxy(332,410,"PEST STYLE");
-    outtextxy(143,425,"OK");
+    if(language == ENGLISH ){
+        setcolor(DARKGRAY);
+        settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
+        outtextxy(347,50,"PESTICIDE");
+        outtextxy(405,170,"NAME");
+        outtextxy(382,290,"PERIOD");
+        outtextxy(332,410,"PEST STYLE");
+        outtextxy(143,425,"OK");
+    }
+    else if(language == CHINESE)
+    {
+        puthz(350,50,"管理农药",32,32,DARKGRAY);
+        puthz(350,170,"药品名称",32,32,DARKGRAY);
+        puthz(350,290,"喷洒周期",32,32,DARKGRAY);
+        puthz(350,410,"虫害种类",32,32,DARKGRAY);
+        puthz(143,425,"确认",32,32,DARKGRAY);
+    }
 
     setfillstyle(SOLID_FILL,DARKGRAY);
     bar(55,350,282,355);
@@ -55,7 +65,7 @@ void open_file3()
     back_button(PAINT);
 }
 
-int pesticide_page(char *username,char *now_pesticide)
+int pesticide_page(char *username,char *now_pesticide,int language)
 {
     int flag = 0;
     int mode = 0;
@@ -118,11 +128,9 @@ int pesticide_page(char *username,char *now_pesticide)
         fclose(fp);
     }
 
-    
-
     clrmous(MouseX,MouseY);
     cleardevice();
-    pesticide_screen();
+    pesticide_screen(language);
 
     setcolor(DARKGRAY);
     setfillstyle(SOLID_FILL,WHITE);
@@ -130,38 +138,59 @@ int pesticide_page(char *username,char *now_pesticide)
     bar(320,390,580,450);
     bar(320,150,580,210);
 
-        if(strlen(pesticide.name)!=0)
-        {
-            settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
-            outtextxy(320,165,pesticide.name);
-        }
-        else
-        {
+    if(strlen(pesticide.name)!=0)
+    {
+        settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
+        outtextxy(320,165,pesticide.name);
+    }
+    else
+    {
+        if(language == ENGLISH ){
+            setcolor(DARKGRAY);
             settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
             outtextxy(405,170,"NAME");
         }
-                
-        if(strlen(pesticide.period)!=0)
+        else if(language == CHINESE)
         {
-            settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
-            outtextxy(320,285,pesticide.period);
+            puthz(350,170,"药品名称",32,32,DARKGRAY);
         }
-        else
-        {
+    }
+            
+    if(strlen(pesticide.period)!=0)
+    {
+        settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
+        outtextxy(320,285,pesticide.period);
+    }
+    else
+    {
+        if(language == ENGLISH ){
+            setcolor(DARKGRAY);
             settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
             outtextxy(382,290,"PERIOD");
         }
-
-        if(strlen(pesticide.pest_style)!=0)
-        {    
-            settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
-            outtextxy(320,405,pesticide.pest_style);
-        }
-        else
+        else if(language == CHINESE)
         {
+            puthz(350,290,"喷洒周期",32,32,DARKGRAY);
+        }
+    }
+
+    if(strlen(pesticide.pest_style)!=0)
+    {    
+        settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
+        outtextxy(320,405,pesticide.pest_style);
+    }
+    else
+    {
+        if(language == ENGLISH ){
+            setcolor(DARKGRAY);
             settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
             outtextxy(332,410,"PEST STYLE");
         }
+        else if(language == CHINESE)
+        {
+            puthz(350,410,"虫害种类",32,32,DARKGRAY);
+        }
+    }
     mouseinit();
 
     while(1)
@@ -177,9 +206,15 @@ int pesticide_page(char *username,char *now_pesticide)
                     MouseS = 1;
                     flag = 1;
                     num[1] = 1;
-                    setcolor(YELLOW);
-                    settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
-                    outtextxy(347,50,"PESTICIDE");
+                    if(language == ENGLISH ){
+                        setcolor(YELLOW);
+                        settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
+                        outtextxy(347,50,"PESTICIDE");
+                    }
+                    else if(language == CHINESE)
+                    {
+                        puthz(350,50,"管理农药",32,32,DARKGRAY);
+                    }
             }
         }
         else if(mouse_press(310,20,590,100)==1)
@@ -197,9 +232,15 @@ int pesticide_page(char *username,char *now_pesticide)
                     MouseS = 1;
                     flag = 2;
                     num[2] = 1;
-                    setcolor(YELLOW);
-                    settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
-                    outtextxy(405,170,"NAME");
+                    if(language == ENGLISH ){
+                        setcolor(YELLOW);
+                        settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
+                        outtextxy(405,170,"NAME");
+                    }
+                    else if(language == CHINESE)
+                    {
+                        puthz(350,170,"药品名称",32,32,YELLOW);
+                    }
                 }
                 else
                 {
@@ -233,34 +274,48 @@ int pesticide_page(char *username,char *now_pesticide)
             {
                 // perror("ERROR IN CREATING!");
             }
-                fclose(fp);
+            fclose(fp);
+        
+            setcolor(DARKGRAY);
+            setfillstyle(SOLID_FILL,WHITE);
+            bar(320,270,580,330);
+            bar(320,390,580,450);
             
-                setcolor(DARKGRAY);
-                setfillstyle(SOLID_FILL,WHITE);
-                bar(320,270,580,330);
-                bar(320,390,580,450);
-                
-                if(strlen(pesticide.period)!=0)
-                {
-                    settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
-                    outtextxy(320,285,pesticide.period);
-                }
-                else
-                {
+            if(strlen(pesticide.period)!=0)
+            {
+                settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
+                outtextxy(320,285,pesticide.period);
+            }
+            else
+            {
+                if(language == ENGLISH ){
+                    setcolor(DARKGRAY);
                     settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
                     outtextxy(382,290,"PERIOD");
                 }
-
-                if(strlen(pesticide.pest_style)!=0)
-                {    
-                    settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
-                    outtextxy(320,405,pesticide.pest_style);
-                }
-                else
+                else if(language == CHINESE)
                 {
+                    puthz(350,290,"喷洒周期",32,32,DARKGRAY);
+                }
+            }
+
+            if(strlen(pesticide.pest_style)!=0)
+            {    
+                settextstyle(DEFAULT_FONT,HORIZ_DIR,4);
+                outtextxy(320,405,pesticide.pest_style);
+            }
+            else
+            {
+                if(language == ENGLISH ){
+                    setcolor(DARKGRAY);
                     settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
                     outtextxy(332,410,"PEST STYLE");
                 }
+                else if(language == CHINESE)
+                {
+                    puthz(350,410,"虫害种类",32,32,DARKGRAY);
+                }
+            }
         }
         else if(mouse_press(310,260,590,340)==2)
         {
@@ -272,9 +327,15 @@ int pesticide_page(char *username,char *now_pesticide)
                     MouseS = 1;
                     flag = 3;
                     num[3] = 1;
-                    setcolor(YELLOW);
-                    settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
-                    outtextxy(382,290,"PERIOD");
+                    if(language == ENGLISH ){
+                        setcolor(YELLOW);
+                        settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
+                        outtextxy(382,290,"PERIOD");
+                    }
+                    else if(language == CHINESE)
+                    {
+                        puthz(350,290,"喷洒周期",32,32,YELLOW);
+                    }
                 }
                 else
                 {
@@ -300,9 +361,15 @@ int pesticide_page(char *username,char *now_pesticide)
                     memset(pesticide.period,0,sizeof(pesticide.period));
                     setfillstyle(SOLID_FILL,WHITE);
                     bar(320,275,575,325);
-                    setcolor(DARKGRAY);
-                    settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
-                    outtextxy(382,290,"PERIOD");
+                    if(language == ENGLISH ){
+                        setcolor(DARKGRAY);
+                        settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
+                        outtextxy(382,290,"PERIOD");
+                    }
+                    else if(language == CHINESE)
+                    {
+                        puthz(350,290,"喷洒周期",32,32,DARKGRAY);
+                    }
                     break;
                 }
             }
@@ -317,9 +384,15 @@ int pesticide_page(char *username,char *now_pesticide)
                     MouseS = 1;
                     flag = 4;
                     num[4] = 1;
-                    setcolor(YELLOW);
-                    settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
-                    outtextxy(332,410,"PEST STYLE");
+                    if(language == ENGLISH ){
+                        setcolor(YELLOW);
+                        settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
+                        outtextxy(332,410,"PEST STYLE");
+                    }
+                    else if(language == CHINESE)
+                    {
+                        puthz(350,410,"虫害种类",32,32,YELLOW);
+                    }
                 }
                 else
                 {
@@ -352,9 +425,15 @@ int pesticide_page(char *username,char *now_pesticide)
                 flag = 5;
                 num[5] = 1;
                 printbox(50,400,285,465,YELLOW,1,5,5);
-                setcolor(CYAN);
-                settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
-                outtextxy(143,425,"OK");
+                if(language == ENGLISH ){
+                    setcolor(CYAN);
+                    settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
+                    outtextxy(143,425,"OK");
+                }
+                else if(language == CHINESE)
+                {
+                    puthz(143,425,"确认",32,32,CYAN);
+                }
             }
         }
         else if(mouse_press(50,400,285,465)==1)
@@ -398,18 +477,31 @@ int pesticide_page(char *username,char *now_pesticide)
         if(flag!=1&&num[1]==1)
         {
             num[1] = 0;
-            setcolor(DARKGRAY);
-            settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
-            outtextxy(347,50,"PESTICIDE");
+            if(language == ENGLISH ){
+                setcolor(DARKGRAY);
+                settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
+                outtextxy(347,50,"PESTICIDE");
+            }
+            else if(language == CHINESE)
+            {
+                puthz(350,50,"管理农药",32,32,DARKGRAY);
+            }
+
         }
         else if(flag!=2&&num[2]==1)
         {
             num[2] = 0;
             if(strlen(pesticide.name)==0)
             {
-                setcolor(DARKGRAY);
-                settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
-                outtextxy(405,170,"NAME");
+                if(language == ENGLISH ){
+                    setcolor(DARKGRAY);
+                    settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
+                    outtextxy(405,170,"NAME");
+                }
+                else if(language == CHINESE)
+                {
+                    puthz(350,170,"药品名称",32,32,DARKGRAY);
+                }
             }
         }
         else if(flag!=3&&num[3]==1)
@@ -417,9 +509,15 @@ int pesticide_page(char *username,char *now_pesticide)
             num[3] = 0;
             if(strlen(pesticide.period)==0)
             {
-                setcolor(DARKGRAY);
-                settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
-                outtextxy(382,290,"PERIOD");
+                if(language == ENGLISH ){
+                    setcolor(DARKGRAY);
+                    settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
+                    outtextxy(382,290,"PERIOD");
+                }
+                else if(language == CHINESE)
+                {
+                    puthz(350,290,"喷洒周期",32,32,DARKGRAY);
+                }
             }
         }
         else if(flag!=4&&num[4]==1)
@@ -427,9 +525,15 @@ int pesticide_page(char *username,char *now_pesticide)
             num[4] = 0;
             if(strlen(pesticide.pest_style)==0)
             {
-                setcolor(DARKGRAY);
-                settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
-                outtextxy(332,410,"PEST STYLE");
+                if(language == ENGLISH ){
+                    setcolor(DARKGRAY);
+                    settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
+                    outtextxy(332,410,"PEST STYLE");
+                }
+                else if(language == CHINESE)
+                {
+                    puthz(350,410,"虫害种类",32,32,DARKGRAY);
+                }
             }
         }
         else if(flag!=5&&num[5]==1)
@@ -437,9 +541,15 @@ int pesticide_page(char *username,char *now_pesticide)
             num[5] = 0;
             clrmous(MouseX,MouseY);
             printbox(50,400,285,465,DARKGRAY,1,5,5);
-            setcolor(DARKGRAY);
-            settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
-            outtextxy(143,425,"OK");
+            if(language == ENGLISH ){
+                setcolor(DARKGRAY);
+                settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
+                outtextxy(143,425,"OK");
+            }
+            else if(language == CHINESE)
+            {
+                puthz(143,425,"确认",32,32,DARKGRAY);
+            }
         }
         else if(flag!=6&&num[6]==1)
         {
@@ -504,7 +614,6 @@ int pesticide_page(char *username,char *now_pesticide)
             done = findfirst(stringall,&ffblk,0);
             while(!done)
             {
-                
                 strcpy(pesticide_list[i],ffblk.ff_name);
                 done = findnext(&ffblk);
                 i++;
