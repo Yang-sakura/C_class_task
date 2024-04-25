@@ -1,15 +1,15 @@
 #include "public.h"
 #include "detect.h"
 #include "flyfunc.h"
-#include "detectfunc.h"
+#include "detectf.h"
 
-void detect_screen(int record[21][26] , char *nowfield )
+void detect_screen(int record[21][26] , char *nowfield ,int language)
 {
     setbkcolor(WHITE);
     cleardevice();
     clrmous(MouseX,MouseY);
 
-    paint_field(record ,nowfield);
+    paint_field(record ,nowfield,language);
 
     put_calender();
 
@@ -184,7 +184,7 @@ void route_button(int flag)
         route_button(PAINT);
     }
 }
-int detect_page(char *username,char *nowfield)
+int detect_page(char *username,char *nowfield,int language)
 {
     int record[21][26];
     int i,j,k,pre_x=-1,pre_y=-1,x,y,temp_date;
@@ -220,7 +220,7 @@ int detect_page(char *username,char *nowfield)
     }
     fclose(fp);
 
-    detect_screen(record , nowfield);
+    detect_screen(record , nowfield,language);
     mouseinit();
     if( strlen(date) != 0 ) {
         put_calender_number(date);
@@ -264,7 +264,7 @@ int detect_page(char *username,char *nowfield)
             if(presentmode[0]=='a') {
                 if(line_flag != 0 )
                 {
-                    paint_field_right(record , nowfield );
+                    paint_field_right(record , nowfield ,language);
                     line_flag = 0 ;
                 }
                 mode = 2;
@@ -423,7 +423,7 @@ int detect_page(char *username,char *nowfield)
 
             if(handmode_flag == 1 ) //存在hand档的地图 清空地图
             {
-                paint_field_right(record , nowfield );
+                paint_field_right(record , nowfield,language);
                 memset(route,0,sizeof(route));
                 handmode_flag = 0 ;
             }
@@ -829,4 +829,188 @@ void auto_simulate(int record[21][26], char *date_char ,char *username , char *n
         }
     }
     return ;
+}
+
+void show_chart(int record[21][26],char* now_field)
+{
+    int i,j;
+    int flag = 0;
+    double height[20];
+    char *strheight[20];
+    double sum[5];
+    double crop1_sprout = 100,crop1_transition = 50,crop1_crop = 150;
+    double crop2_sprout = 200,crop2_transition = 170,crop2_crop = 30;
+    double crop3_sprout = 300,crop3_transition = 0,crop3_crop = 200;
+    double crop1_sick = 60, crop1_healthy = 30;
+    double crop2_sick = 10, crop2_healthy = 80;
+    double crop3_sick = 45, crop3_healthy = 60;
+    double locust = 10,ladybug = 5;
+
+    for(i=0;i<21;i++)
+    {
+        for(j=0;j<26;j++)
+        {
+            if(record[i][j]>=10&&record[i][j]<=19) crop1_sprout++;
+            else if(record[i][j]>=20&&record[i][j]<=29) crop1_transition++;
+            else if(record[i][j]>=30&&record[i][j]<=39) crop1_crop++;
+            else if(record[i][j]>=40&&record[i][j]<=49) crop2_sprout++;
+            else if(record[i][j]>=50&&record[i][j]<=59) crop2_transition++;
+            else if(record[i][j]>=60&&record[i][j]<=69) crop2_crop++;
+            else if(record[i][j]>=70&&record[i][j]<=79) crop3_sprout++;
+            else if(record[i][j]>=80&&record[i][j]<=89) crop3_transition++;
+            else if(record[i][j]>=90&&record[i][j]<=99) crop3_crop++;
+            
+            if((record[i][j]>=10&&record[i][j]<=39)&&record[i][j]%10!=0) crop1_sick++;
+            else if((record[i][j]>=10&&record[i][j]<=39)&&record[i][j]%10==0) crop1_healthy++;
+            else if((record[i][j]>=40&&record[i][j]<=69)&&record[i][j]%10!=0) crop2_sick++;
+            else if((record[i][j]>=40&&record[i][j]<=69)&&record[i][j]%10==0) crop2_healthy++;
+            else if((record[i][j]>=70&&record[i][j]<=99)&&record[i][j]%10!=0) crop3_sick++;
+            else if((record[i][j]>=70&&record[i][j]<=99)&&record[i][j]%10==0) crop3_healthy++;
+
+            if((record[i][j]>=10&&record[i][j]<=99)&&((record[i][j]%10)>=1&&(record[i][j]%10)<=BUG)) locust++;
+            else if((record[i][j]>=10&&record[i][j]<=99)&&((record[i][j]%10)>BUG&&(record[i][j]%10)<=9)) ladybug++;
+        }
+    }
+
+    memset(height,0,sizeof(height));
+    memset(sum,0,sizeof(sum));
+    memset(strheight,0,sizeof(strheight));
+    sum[0] = (crop1_sprout + crop1_transition + crop1_crop + crop2_sprout + crop2_transition + crop2_crop + crop3_sprout + crop3_transition + crop3_crop);
+    sum[1] = (locust+ladybug);
+    height[0] = (crop1_sprout/sum[0])*100;
+    height[1] = (crop1_transition/sum[0])*100;
+    height[2] = (crop1_crop/sum[0])*100;
+    height[3] = (crop2_sprout/sum[0])*100;
+    height[4] = (crop2_transition/sum[0])*100;
+    height[5] = (crop2_crop/sum[0])*100;
+    height[6] = (crop3_sprout/sum[0])*100;
+    height[7] = (crop3_transition/sum[0])*100;
+    height[8] = (crop3_crop/sum[0])*100;
+
+    height[9] = (crop1_healthy/sum[0]*100);
+    height[10] = (crop1_sick/sum[0]*100);
+    height[11] = (crop2_healthy/sum[0]*100);
+    height[12] = (crop2_sick/sum[0]*100);
+    height[13] = (crop3_healthy/sum[0]*100);
+    height[14] = (crop3_sick/sum[0]*100);
+
+    height[15] = (locust/sum[1])*100;
+    height[16] = (ladybug/sum[1])*100;
+
+
+    setfillstyle(SOLID_FILL,WHITE);
+    bar(105,0,640,480);
+
+    setcolor(DARKGRAY);
+    settextstyle(DEFAULT_FONT,HORIZ_DIR,1);
+    outtextxy(427,210,"RICE");
+    outtextxy(494,210,"CORN");
+    outtextxy(557,210,"CANE");
+    outtextxy(545,42,"SPROUT");
+    outtextxy(545,52,"TRANSITION");
+    outtextxy(545,62,"CROP");
+    outtextxy(173,210,"LOCUST");
+    outtextxy(250,210,"LADYBUG");
+    outtextxy(295,292,"HEALTHY");
+    outtextxy(295,302,"SICK");
+    outtextxy(160,450,"RICE");
+    outtextxy(220,450,"CORN");
+    outtextxy(280,450,"CANE");
+
+    setfillstyle(SOLID_FILL,RED);
+    bar(530,40,540,50);
+    bar(420,200-((int)height[0])*2,435,200);
+    bar(485,200-((int)height[3])*2,500,200);
+    bar(550,200-((int)height[6])*2,565,200);
+
+    setfillstyle(SOLID_FILL,BLUE);
+    bar(530,51,540,60);
+    bar(436,200-((int)height[1])*2,450,200);
+    bar(501,200-((int)height[4])*2,515,200);
+    bar(566,200-((int)height[7])*2,580,200);
+
+    setfillstyle(SOLID_FILL,LIGHTGREEN);
+    bar(530,61,540,70);
+    bar(451,200-((int)height[3])*2,465,200);
+    bar(516,200-((int)height[5])*2,530,200);
+    bar(581,200-((int)height[8])*2,595,200);
+
+    setfillstyle(SOLID_FILL,CYAN);
+    bar(190,200-((int)height[15]),205,200);
+    bar(270,200-((int)height[16]),285,200);
+
+    setfillstyle(SOLID_FILL,MAGENTA);
+    bar(280,290,290,300);
+    bar(160,440-((int)height[9])*2,175,440);
+    bar(220,440-((int)height[11])*2,235,440);
+    bar(280,440-((int)height[13])*2,295,440);
+
+    setfillstyle(SOLID_FILL,LIGHTBLUE);
+    bar(280,301,290,310);
+    bar(176,440-((int)height[10])*2,190,440);
+    bar(236,440-((int)height[12])*2,250,440);
+    bar(296,440-((int)height[14])*2,310,440);
+
+
+
+    
+    setcolor(DARKGRAY);
+    setlinestyle(SOLID_LINE,0,THICK_WIDTH);
+    line(130,200,355,200);
+    line(130,200,130,40);
+    line(395,200,620,200);
+    line(395,200,395,40);
+    line(130,440,355,440);
+    line(130,440,130,280);
+    line(395,440,620,440);
+    line(395,440,395,280);
+    
+    line(355,200,345,197);
+    line(355,200,345,203);
+    line(133,50,130,40);
+    line(127,50,130,40);
+    line(610,203,620,200);
+    line(610,197,620,200);
+    line(392,50,395,40);
+    line(398,50,395,40);
+    line(345,437,355,440);
+    line(345,443,355,440);
+    line(133,290,130,280);
+    line(127,290,130,280);
+    line(610,443,620,440);
+    line(610,437,620,440);
+    line(398,290,395,280);
+    line(392,290,395,280);
+    
+    settextstyle(DEFAULT_FONT,HORIZ_DIR,1);
+    outtextxy(200,20,"PEST RATE");
+    outtextxy(435,20,"CROP SITUATION RATE");
+    outtextxy(185,260,"SICK CROP RATE");
+    outtextxy(455,260,"SPROUTING RATE");
+
+    mouseinit();
+    while(1)
+    {
+        newmouse(&MouseX,&MouseY,&press);
+        if(mouse_press(5,280,95,319)==2)
+        {
+            if(flag!=1)
+            {
+                MouseS = 1;
+                flag = 1;
+            }
+        }
+        else if(mouse_press(5,280,95,319)==1)
+        {
+            return;
+        }
+        else
+        {
+            if(flag!=0)
+            {
+                MouseS = 0;
+                flag = 0;
+            }
+        }
+    }
 }
