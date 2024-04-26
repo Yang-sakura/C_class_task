@@ -245,17 +245,17 @@ int detect_page(char *username ,char *nowfield,int language)
     int random_weather ;
     int num[10];
     char path[100]="C:\\DATA\\";
-    char *presentmode;
+    char presentmode[10];
     char *tempmsgs[2] = {"hand>","auto>"};
     FILE *fp;
     int route[100][2];
-    int save[100][2];
     char date[10] = "1" , compare[10] ;
     char weather[10] = "cloud" ;
 
     memset(record , 0 , sizeof(record));
     memset(route,-1, sizeof(route));
     memset(compare , 0 , sizeof(compare));
+    memset(presentmode,0,sizeof(presentmode));
 
     strcat(path,username);
     strcat(path,"\\FIELD\\");
@@ -321,9 +321,13 @@ int detect_page(char *username ,char *nowfield,int language)
                     paint_field_right(record , nowfield , language);
                     line_flag = 0 ;
                 }
-                mode = 2;
             }
-            delay(200);
+            start_button(PAINT);
+            pause_button(PAINT);
+            chart_button(PAINT);
+            if(presentmode[0]=='a') set_button(PAINT);
+            else if(presentmode[0]=='h') route_button(PAINT);
+            
         }
         else if( mouse_press(5,180,95,219)==2 )//start未点击
         {
@@ -344,6 +348,10 @@ int detect_page(char *username ,char *nowfield,int language)
             if( handmode_flag == 1 && presentmode[0] == 'h') 
             {
                 simulate_handmode(record,route);
+            }
+            if(presentmode[0] == 'a')
+            {
+                auto_simulate( record , date ,username , nowfield);
             }
 
         }
@@ -633,87 +641,11 @@ int detect_page(char *username ,char *nowfield,int language)
             mode_button(RECOVER);
             delay(200);
         }
-        if(mode == 2) //auto
-        {
-            clrmous(MouseX,MouseY);
-            flag2 = 0 ;
-            while(1)
-            {
-                newmouse(&MouseX,&MouseY,&press);
-                if( mouse_press(5,180,95,219)==2 )//start未点击
-                {
-                    if( flag2 != 1 )
-                    {
-                        MouseS = 1 ;
-                        flag2 = 1 ;
-                        num[7] = 1;
-                        clrmous(MouseX,MouseY);
-                        start_button(LIGHT);
-                    }
-                }
-                else if( mouse_press(5,180,95,219)==1 )//start点击
-                {
-                    MouseS = 0;
-                    clrmous(MouseX,MouseY);
-                    auto_simulate( record , date ,username , nowfield);
-                }
-                else if( mouse_press(5,130,95,169)==1 )//mode点击
-                {
-                    MouseS = 0;
-                    clrmous(MouseX,MouseY);
-                    mode = 0 ;
-                    break ;
-                }
-                else if( mouse_press(595,5,630,40)==2 )//退出键未点击
-                {
-                    if( flag2!=2 )
-                    {
-                        MouseS = 1 ;
-                        flag2 = 2 ;
-                        num[8] = 1;
-                        clrmous(MouseX,MouseY);
-                        back_button(LIGHT);
-                    }
-                }
-                else if( mouse_press(595,5,630,40) == 1 )//退出点击
-                {
-                    MouseS = 0 ;
-                    clrmous(MouseX,MouseY);
-                    delay(200);
-                    return HOME;
-                }
-                else 
-                {
-                    if(flag2 != 0)
-                    {
-                        MouseS = 0;
-                        flag2 = 0;
-                    }
-                }
-
-                if( flag2 != 1 && num[7]==1 )
-                {
-                    clrmous(MouseX,MouseY);
-                    start_button(RECOVER);
-                    num[7] = 0;
-                }
-                else if( flag2 != 2 && num[8]==1 )
-                {
-                    clrmous(MouseX,MouseY);
-                    back_button(RECOVER);
-                    num[8] = 0;
-                }
-            }
-            setfillstyle(SOLID_FILL,WHITE);
-            bar(5,130,95,169);
-            mode_button(RECOVER);
-            delay(200);
-        }
     }
 }
 void auto_simulate(int record[21][26], char *date_char ,char *username , char *nowfield)
 {
-    int date ,i,j, add = 1 , flag = 0 , startlight = 1 , pauselight = 0 ;
+    int date ,i,j, add = 1 , flag = 0 , startlight = 0 , pauselight = 0 ;
     long long int time ;
     int num[10];
     char date_temp[10];
