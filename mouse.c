@@ -22,7 +22,7 @@ void *buffer;
 union REGS regs;
 int flag = 0;
 
-void mouseinit() //初始化
+void mouseinit() //初始�?
 {
 	int retcode;
 	int xmin, xmax, ymin, ymax, x_max = 625, y_max = 480;
@@ -62,7 +62,7 @@ void mouseinit() //初始化
 FUNCTION: mouse
 DESCRIPTION: 画不同形态的鼠标
 INPUT: x,y
-RETURN: 无
+RETURN: �?
 ******************************/
 void mouse(int x, int y)
 {
@@ -129,12 +129,12 @@ void mouse(int x, int y)
 	break;
 	case 4://铅笔
 	{
-		setcolor(DARKGRAY);
+		setcolor(LIGHTGRAY);
     	setlinestyle(0,0,1);
     	line(x-1,y-2,x+2,y-2);
     	line(x-1,y-1,x+1,y-1);
     	line(x-1,y,x,y);
-    	putpixel(x-1,y+1,DARKGRAY);
+    	putpixel(x-1,y+1,LIGHTGRAY);
 
 		setcolor(BROWN);
 		setlinestyle(0,0,1);
@@ -243,6 +243,23 @@ void mouse(int x, int y)
 	}
 	break;
 
+	case 9: //�?
+	{
+		setcolor(BLUE);
+		setlinestyle(SOLID_LINE,0,NORM_WIDTH);
+		putpixel(x+3,y+0,BLUE);
+		line(x+2,y+1,x+4,y+1);
+		line(x+2,y+2,x+4,y+2);
+		line(x+1,y+3,x+5,y+3);
+		line(x+1,y+4,x+5,y+4);
+		line(x,y+5,x+6,y+5);
+		line(x,y+6,x+6,y+6);
+		line(x,y+7,x+6,y+7);
+		line(x+1,y+8,x+5,y+8);
+		line(x+2,y+9,x+4,y+9);
+	}
+	break;
+
 	default: //默认鼠标
 	{
 		setlinestyle(0, 0, 1);
@@ -287,7 +304,7 @@ void mouse(int x, int y)
 	drawmous(*nx,*ny);
 }
 
-void mread(int *nx,int *ny,int*nbuttons)//改坐标不画
+void mread(int *nx,int *ny,int*nbuttons)//改坐标不�?
 {
 	int x0=*nx,y0=*ny,buttons0=*nbuttons;
 	int xnew,ynew,buttonsnew;
@@ -313,9 +330,9 @@ void mread(int *nx,int *ny,int*nbuttons)//改坐标不画
 
 /***************************************
 FUNCTION: mread
-DESCRIPTION: 获取新的寄存器信息
+DESCRIPTION: 获取新的寄存器信�?
 INPUT: nx,ny,nbuttons
-RETURN: 无
+RETURN: �?
 ****************************************/
 void mread(int *nx, int *ny, int *nbuttons)
 {
@@ -330,7 +347,7 @@ void mread(int *nx, int *ny, int *nbuttons)
 FUNCTION: newmouse
 DESCRIPTION: 鼠标状态发生变化则更新鼠标
 INPUT: nx,ny,nbuttons
-RETURN: 无
+RETURN: �?
 ********************************************/
 
 void newmouse(int *nx, int *ny, int *nbuttons)
@@ -342,7 +359,7 @@ void newmouse(int *nx, int *ny, int *nbuttons)
 	*ny = yn;
 	*nbuttons = buttonsn;
 	if (buttons0 == *nbuttons)
-		*nbuttons = 0; //使得能连续按键
+		*nbuttons = 0; //使得能连续按�?
 	if (xn == x0 && yn == y0 && buttonsn == buttons0)
 		return;		 	//鼠标状态不变则直接返回S
 	clrmous(x0, y0); 	//说明鼠标状态发生了改变
@@ -350,7 +367,7 @@ void newmouse(int *nx, int *ny, int *nbuttons)
 	drawmous(*nx, *ny);
 }
 
-void save_bk_mou(int nx, int ny) //存鼠标背景
+void save_bk_mou(int nx, int ny) //存鼠标背�?
 {
 	int size;
 
@@ -384,10 +401,10 @@ void drawmous(int nx, int ny)
 	}
 }
 
-//如果在框中点击，则返回1；在框中未点击，则返回2；不在框中则返回0
+//如果在框中点击，则返�?1；在框中未点击，则返�?2；不在框中则返回0
 int mouse_press(int x1, int y1, int x2, int y2)
 {
-	//在框中点击，则返回1
+	//在框中点击，则返�?1
 	if (MouseX > x1 && MouseX < x2 && MouseY > y1 && MouseY < y2 && press == 1)
 	{
 		return 1;
@@ -399,7 +416,7 @@ int mouse_press(int x1, int y1, int x2, int y2)
 		return 2;
 	}
 
-	//在框中点击右键，则返回3
+	//在框中点击右键，则返�?3
 	else if (MouseX > x1 && MouseX < x2 && MouseY > y1 && MouseY < y2 && press == 2)
 	{
 		return 3;
