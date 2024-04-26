@@ -64,6 +64,30 @@ void put_calender_weather(char weather[10])
         put_snow(20,95,3);
     }
 }
+
+// void setinfo_button(int flag)
+// {
+//     if(flag == PAINT)
+//     {
+//         clrmous(MouseX,MouseY);
+//         printbox(5,380,95,419,DARKGRAY,1,3,3);
+//         setcolor(DARKGRAY);
+//         settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
+//         outtextxy(13,391," SET ");
+//     }
+//     else if(flag == LIGHT)
+//     {
+//         clrmous(MouseX,MouseY);
+//         printbox(5,380,95,419,BLUE,1,3,3);
+//         setcolor(CYAN);
+//         settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
+//         outtextxy(13,391," SET ");
+//     }
+//     else if(flag == RECOVER)
+//     {
+//         setinfo_button(PAINT);
+//     }
+// }
 void mode_button(int flag)
 {
     if(flag == PAINT)
@@ -133,6 +157,7 @@ void pause_button(int flag)
         pause_button(PAINT);
     }
 }
+
 void chart_button(int flag)
 {
     if(flag == PAINT)
@@ -184,11 +209,39 @@ void route_button(int flag)
         route_button(PAINT);
     }
 }
-int detect_page(char *username,char *nowfield,int language)
+void set_button(int flag)
+{
+    if(flag == PAINT)
+    {
+        clrmous(MouseX,MouseY);
+        printbox(5,330,95,369,DARKGRAY,1,3,3);
+        setcolor(DARKGRAY);
+        settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
+        outtextxy(13,341," SET");
+    }
+    else if(flag == LIGHT)
+    {
+        clrmous(MouseX,MouseY);
+        printbox(5,330,95,369,BLUE,1,3,3);
+        setcolor(CYAN);
+        settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
+        outtextxy(13,341," SET");
+    }
+    else if(flag == DELETE)
+    {
+        setfillstyle(SOLID_FILL,WHITE);
+        bar(5,330,95,369);
+    }
+    else if(flag == RECOVER)
+    {
+        route_button(PAINT);
+    }
+}
+int detect_page(char *username ,char *nowfield,int language)
 {
     int record[21][26];
     int i,j,k,pre_x=-1,pre_y=-1,x,y,temp_date;
-    int flag = 0,flag2 = 0 , mode = 0, handmode_flag = 0 , automode_flag = 0 , routebutton_flag = 0 , line_flag = 0,field_flag=0;
+    int flag = 0,flag2 = 0 , mode = 0, handmode_flag = 0 , automode_flag = 0 , routebutton_flag = 0 , setbutton_flag = 0 , line_flag = 0,field_flag=0;
     int random_weather ;
     int num[10];
     char path[100]="C:\\DATA\\";
@@ -196,6 +249,7 @@ int detect_page(char *username,char *nowfield,int language)
     char *tempmsgs[2] = {"hand>","auto>"};
     FILE *fp;
     int route[100][2];
+    int save[100][2];
     char date[10] = "1" , compare[10] ;
     char weather[10] = "cloud" ;
 
@@ -264,7 +318,7 @@ int detect_page(char *username,char *nowfield,int language)
             if(presentmode[0]=='a') {
                 if(line_flag != 0 )
                 {
-                    paint_field_right(record , nowfield ,language);
+                    paint_field_right(record , nowfield , language);
                     line_flag = 0 ;
                 }
                 mode = 2;
@@ -353,7 +407,9 @@ int detect_page(char *username,char *nowfield,int language)
             temp_input(date , 18,35, 3 , 22 ,20,WHITE,3);//4 33 25
             put_calender_number(date);
             if(strcmp(compare , date )!= 0  ) {
+
                 change_weather(weather);
+
                 put_calender_weather(weather);
                 recover_field(record,username,nowfield);
                 grow(record , atoi(date));//每次日期改变时,都刷新右侧地图
@@ -450,6 +506,18 @@ int detect_page(char *username,char *nowfield,int language)
             route_button(DELETE) ;
             routebutton_flag = 0 ;
         }
+        if( presentmode[0]=='a' && setbutton_flag == 0)
+        {
+            set_button(PAINT);
+            setbutton_flag = 1;
+        }
+        else if( presentmode[0]!='a' && setbutton_flag == 1)
+        {
+            set_button(DELETE) ;
+            setbutton_flag = 0 ;
+        }
+
+
         if( flag!=1 && num[1]==1)
         {
             clrmous(MouseX,MouseY);
@@ -650,7 +718,9 @@ void auto_simulate(int record[21][26], char *date_char ,char *username , char *n
     int num[10];
     char date_temp[10];
     char weather[10];
-    int houserecord[4][2];
+    int housenumber , houserecord[5][2];
+    struct droneinfo drone[4];
+    Point houserecord_xy[5];
 
     memset(houserecord,0,sizeof(houserecord));
     memset(date_temp,0,sizeof(date_temp));
@@ -662,7 +732,9 @@ void auto_simulate(int record[21][26], char *date_char ,char *username , char *n
 
     mouseinit();
 
-    find_house(record,houserecord);
+    housenumber = find_house_number( record );
+    find_house( record , houserecord );
+    find_house_xy(record , houserecord_xy);
 
     while(1)
     {
@@ -680,7 +752,8 @@ void auto_simulate(int record[21][26], char *date_char ,char *username , char *n
             if(date % 3 == 0) //侦测天数
             {
                 // fly_detect( record , find_closest_house(record) );
-                fly_spray(record,4);
+                // fly_spray(record,housenumber);
+                fly_one_round(record,find_closest_house(record));
             }
 
             time = 0;
@@ -1012,144 +1085,5 @@ void show_chart(int record[21][26],char* now_field)
                 flag = 0;
             }
         }
-    }
-}
-
-void setinfo(char *username,struct droneinfo record[])
-{
-    int i;
-    int flag = 0;
-    char string[80] = "c:\\DATA";
-    char stringnow[80];
-    FILE* fp;
-    clrmous(MouseX,MouseY);
-    setfillstyle(SOLID_FILL,BLUE);
-    bar(100,100,540,400);
-    setfillstyle(SOLID_FILL,LIGHTBLUE);
-    bar(100,100,540,105);
-    bar(100,100,105,400);
-    bar(100,395,540,400);
-    bar(535,100,540,400);
-    for(i=0;i<5;i++)
-    {
-        bar(100,100+50*(i+1),540,105+50*(i+1));
-    }
-    bar(260,100,265,400);
-
-    settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
-    outtextxy(110,120,"HOUSE1");
-    outtextxy(110,170,"HOUSE2");
-    outtextxy(110,220,"HOUSE3");
-    outtextxy(110,270,"HOUSE4");
-
-    strcat(string,"\\");
-    strcat(string,username);
-    strcat(string,"\\");
-
-    mouseinit();
-    while(1)
-    {
-        newmouse(&MouseX,&MouseY,&press);
-        if(mouse_press(270,105,535,150)==2)
-        {
-            if(flag!=1)
-            {
-                MouseS = 2;
-                flag = 1;
-            }
-        }
-        else if(mouse_press(270,105,535,150)==1)
-        {
-            temp_input(record[0].name,280,119,5,25,20,BLUE,3);
-            strcpy(stringnow,string);
-            strcat(stringnow,"DRONE\\");
-            strcat(stringnow,record[0].name);
-            strcat(stringnow,".dat");
-            if((fp=fopen(stringnow,"rb"))!=NULL)
-            {
-                fread(&record[0],sizeof(DRONEINFO),1,fp);
-                
-            }
-            else
-            {
-                warning("NOT EXIST!",280,255,1);
-                delay(100);
-                setfillstyle(SOLID_FILL,BLUE);
-                bar(280,110,525,140);
-                memset(record[0].name,0,sizeof(record[0].name));
-            }
-            settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
-                outtextxy(320,100,record[0].name);
-                outtextxy(320,100,record[0].weight);
-        }
-        else if(mouse_press(270,155,535,200)==2)
-        {
-            if(flag!=2)
-            {
-                MouseS = 2;
-                flag = 2;
-            }
-        }
-        else if(mouse_press(270,155,535,200)==1)
-        {
-            temp_input(record[1].name,280,169,5,25,20,BLUE,3);
-        }
-        else if(mouse_press(270,205,535,250)==2)
-        {
-            if(flag!=3)
-            {
-                MouseS = 2;
-                flag = 3;
-            }
-        }
-        else if(mouse_press(270,205,535,250)==1)
-        {
-            temp_input(record[2].name,280,219,5,25,20,BLUE,3);
-        }
-        else if(mouse_press(270,255,535,300)==2)
-        {
-            if(flag!=4)
-            {
-                MouseS = 2;
-                flag = 4;
-            }
-        }
-        else if(mouse_press(270,255,535,300)==1)
-        {
-            temp_input(record[3].name,280,119,5,25,20,BLUE,3);
-        }
-        else
-        {
-            if(flag!=0)
-            {
-                flag = 0;
-                MouseS = 0;
-            }
-        }
-    }
-}
-
-
-void setinfo_button(int flag)
-{
-    if(flag == PAINT)
-    {
-        clrmous(MouseX,MouseY);
-        printbox(5,380,95,419,DARKGRAY,1,3,3);
-        setcolor(DARKGRAY);
-        settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
-        outtextxy(13,391," SET ");
-    }
-    else if(flag == LIGHT)
-    {
-        clrmous(MouseX,MouseY);
-        printbox(5,380,95,419,BLUE,1,3,3);
-        setcolor(CYAN);
-        settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
-        outtextxy(13,391," SET ");
-    }
-    else if(flag == RECOVER)
-    {
-        setinfo_button(PAINT);
     }
 }
