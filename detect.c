@@ -1014,3 +1014,118 @@ void show_chart(int record[21][26],char* now_field)
         }
     }
 }
+
+void setinfo(char *username,struct droneinfo record[])
+{
+    int i;
+    int flag = 0;
+    char string[80] = "c:\\DATA";
+    char stringnow[80];
+    FILE* fp;
+    clrmous(MouseX,MouseY);
+    setfillstyle(SOLID_FILL,BLUE);
+    bar(100,100,540,400);
+    setfillstyle(SOLID_FILL,LIGHTBLUE);
+    bar(100,100,540,105);
+    bar(100,100,105,400);
+    bar(100,395,540,400);
+    bar(535,100,540,400);
+    for(i=0;i<5;i++)
+    {
+        bar(100,100+50*(i+1),540,105+50*(i+1));
+    }
+    bar(260,100,265,400);
+
+    settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
+    outtextxy(110,120,"HOUSE1");
+    outtextxy(110,170,"HOUSE2");
+    outtextxy(110,220,"HOUSE3");
+    outtextxy(110,270,"HOUSE4");
+
+    strcat(string,"\\");
+    strcat(string,username);
+    strcat(string,"\\");
+
+    mouseinit();
+    while(1)
+    {
+        newmouse(&MouseX,&MouseY,&press);
+        if(mouse_press(270,105,535,150)==2)
+        {
+            if(flag!=1)
+            {
+                MouseS = 2;
+                flag = 1;
+            }
+        }
+        else if(mouse_press(270,105,535,150)==1)
+        {
+            temp_input(record[0].name,280,119,5,25,20,BLUE,3);
+            strcpy(stringnow,string);
+            strcat(stringnow,"DRONE\\");
+            strcat(stringnow,record[0].name);
+            strcat(stringnow,".dat");
+            if((fp=fopen(stringnow,"rb"))!=NULL)
+            {
+                fread(&record[0],sizeof(DRONEINFO),1,fp);
+                
+            }
+            else
+            {
+                warning("NOT EXIST!",280,255,1);
+                delay(100);
+                setfillstyle(SOLID_FILL,BLUE);
+                bar(280,110,525,140);
+                memset(record[0].name,0,sizeof(record[0].name));
+            }
+            settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
+                outtextxy(320,100,record[0].name);
+                outtextxy(320,100,record[0].weight);
+        }
+        else if(mouse_press(270,155,535,200)==2)
+        {
+            if(flag!=2)
+            {
+                MouseS = 2;
+                flag = 2;
+            }
+        }
+        else if(mouse_press(270,155,535,200)==1)
+        {
+            temp_input(record[1].name,280,169,5,25,20,BLUE,3);
+        }
+        else if(mouse_press(270,205,535,250)==2)
+        {
+            if(flag!=3)
+            {
+                MouseS = 2;
+                flag = 3;
+            }
+        }
+        else if(mouse_press(270,205,535,250)==1)
+        {
+            temp_input(record[2].name,280,219,5,25,20,BLUE,3);
+        }
+        else if(mouse_press(270,255,535,300)==2)
+        {
+            if(flag!=4)
+            {
+                MouseS = 2;
+                flag = 4;
+            }
+        }
+        else if(mouse_press(270,255,535,300)==1)
+        {
+            temp_input(record[3].name,280,119,5,25,20,BLUE,3);
+        }
+        else
+        {
+            if(flag!=0)
+            {
+                flag = 0;
+                MouseS = 0;
+            }
+        }
+    }
+}
+
