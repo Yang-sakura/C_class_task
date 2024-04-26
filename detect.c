@@ -953,13 +953,14 @@ void show_chart(int record[21][26],char* now_field)
     double height[20];
     char *strheight[20];
     double sum[5];
-    double crop1_sprout = 100,crop1_transition = 50,crop1_crop = 150;
-    double crop2_sprout = 200,crop2_transition = 170,crop2_crop = 30;
-    double crop3_sprout = 300,crop3_transition = 0,crop3_crop = 200;
-    double crop1_sick = 60, crop1_healthy = 30;
-    double crop2_sick = 10, crop2_healthy = 80;
-    double crop3_sick = 45, crop3_healthy = 60;
-    double locust = 10,ladybug = 5;
+    double crop1_sprout = 0,crop1_transition = 0,crop1_crop = 0;
+    double crop2_sprout = 0,crop2_transition = 0,crop2_crop = 0;
+    double crop3_sprout = 0,crop3_transition = 0,crop3_crop = 0;
+    double crop1_sick = 0, crop1_healthy = 0;
+    double crop2_sick = 0, crop2_healthy = 0;
+    double crop3_sick = 0, crop3_healthy = 0;
+    double locust = 0,ladybug = 0;
+    double field = 0,water = 0;
 
     for(i=0;i<21;i++)
     {
@@ -984,6 +985,9 @@ void show_chart(int record[21][26],char* now_field)
 
             if((record[i][j]>=10&&record[i][j]<=99)&&((record[i][j]%10)>=1&&(record[i][j]%10)<=BUG)) locust++;
             else if((record[i][j]>=10&&record[i][j]<=99)&&((record[i][j]%10)>BUG&&(record[i][j]%10)<=9)) ladybug++;
+
+            if(record[i][j]!=2&&record[i][j]!=0) field++;
+            else if(record[i][j]==2) water++;
         }
     }
 
@@ -992,26 +996,37 @@ void show_chart(int record[21][26],char* now_field)
     memset(strheight,0,sizeof(strheight));
     sum[0] = (crop1_sprout + crop1_transition + crop1_crop + crop2_sprout + crop2_transition + crop2_crop + crop3_sprout + crop3_transition + crop3_crop);
     sum[1] = (locust+ladybug);
-    height[0] = (crop1_sprout/sum[0])*100;
-    height[1] = (crop1_transition/sum[0])*100;
-    height[2] = (crop1_crop/sum[0])*100;
-    height[3] = (crop2_sprout/sum[0])*100;
-    height[4] = (crop2_transition/sum[0])*100;
-    height[5] = (crop2_crop/sum[0])*100;
-    height[6] = (crop3_sprout/sum[0])*100;
-    height[7] = (crop3_transition/sum[0])*100;
-    height[8] = (crop3_crop/sum[0])*100;
+    sum[2] = (field+water);
+    if(sum[0]!=0)
+    {
+        height[0] = (crop1_sprout/sum[0])*100;
+        height[1] = (crop1_transition/sum[0])*100;
+        height[2] = (crop1_crop/sum[0])*100;
+        height[3] = (crop2_sprout/sum[0])*100;
+        height[4] = (crop2_transition/sum[0])*100;
+        height[5] = (crop2_crop/sum[0])*100;
+        height[6] = (crop3_sprout/sum[0])*100;
+        height[7] = (crop3_transition/sum[0])*100;
+        height[8] = (crop3_crop/sum[0])*100;
 
-    height[9] = (crop1_healthy/sum[0]*100);
-    height[10] = (crop1_sick/sum[0]*100);
-    height[11] = (crop2_healthy/sum[0]*100);
-    height[12] = (crop2_sick/sum[0]*100);
-    height[13] = (crop3_healthy/sum[0]*100);
-    height[14] = (crop3_sick/sum[0]*100);
-
-    height[15] = (locust/sum[1])*100;
-    height[16] = (ladybug/sum[1])*100;
-
+        height[9] = (crop1_healthy/sum[0]*100);
+        height[10] = (crop1_sick/sum[0]*100);
+        height[11] = (crop2_healthy/sum[0]*100);
+        height[12] = (crop2_sick/sum[0]*100);
+        height[13] = (crop3_healthy/sum[0]*100);
+        height[14] = (crop3_sick/sum[0]*100);
+    }
+    if(sum[1]!=0)
+    {
+        height[15] = (locust/sum[1])*100;
+        height[16] = (ladybug/sum[1])*100;
+    }
+    if(sum[2]!=0)
+    {
+        height[17] = (field/sum[2])*100;
+        height[18] = (water/sum[2])*100;
+    }
+    
 
     setfillstyle(SOLID_FILL,WHITE);
     bar(105,0,640,480);
@@ -1031,46 +1046,64 @@ void show_chart(int record[21][26],char* now_field)
     outtextxy(160,450,"RICE");
     outtextxy(220,450,"CORN");
     outtextxy(280,450,"CANE");
+    outtextxy(455,450,"FIELD");
+    outtextxy(515,450,"WATER");
 
     setfillstyle(SOLID_FILL,RED);
     bar(530,40,540,50);
-    bar(420,200-((int)height[0])*2,435,200);
-    bar(485,200-((int)height[3])*2,500,200);
-    bar(550,200-((int)height[6])*2,565,200);
+    bar(420,200-(int)(height[0]*1.5),435,200);
+    bar(485,200-(int)(height[3]*1.5),500,200);
+    bar(550,200-(int)(height[6]*1.5),565,200);
 
     setfillstyle(SOLID_FILL,BLUE);
     bar(530,51,540,60);
-    bar(436,200-((int)height[1])*2,450,200);
-    bar(501,200-((int)height[4])*2,515,200);
-    bar(566,200-((int)height[7])*2,580,200);
+    bar(436,200-(int)(height[1]*1.5),450,200);
+    bar(501,200-(int)(height[4]*1.5),515,200);
+    bar(566,200-(int)(height[7]*1.5),580,200);
 
     setfillstyle(SOLID_FILL,LIGHTGREEN);
     bar(530,61,540,70);
-    bar(451,200-((int)height[3])*2,465,200);
-    bar(516,200-((int)height[5])*2,530,200);
-    bar(581,200-((int)height[8])*2,595,200);
+    bar(451,200-(int)(height[3]*1.5),465,200);
+    bar(516,200-(int)(height[5]*1.5),530,200);
+    bar(581,200-(int)(height[8]*1.5),595,200);
 
     setfillstyle(SOLID_FILL,CYAN);
-    bar(190,200-((int)height[15]),205,200);
-    bar(270,200-((int)height[16]),285,200);
+    bar(190,200-(int)(height[15]*1.5),205,200);
+    bar(270,200-(int)(height[16]*1.5),285,200);
 
     setfillstyle(SOLID_FILL,MAGENTA);
     bar(280,290,290,300);
-    bar(160,440-((int)height[9])*2,175,440);
-    bar(220,440-((int)height[11])*2,235,440);
-    bar(280,440-((int)height[13])*2,295,440);
+    bar(160,440-(int)(height[9]*1.5),175,440);
+    bar(220,440-(int)(height[11]*1.5),235,440);
+    bar(280,440-(int)(height[13]*1.5),295,440);
 
     setfillstyle(SOLID_FILL,LIGHTBLUE);
     bar(280,301,290,310);
-    bar(176,440-((int)height[10])*2,190,440);
-    bar(236,440-((int)height[12])*2,250,440);
-    bar(296,440-((int)height[14])*2,310,440);
+    bar(176,440-(int)(height[10]*1.5),190,440);
+    bar(236,440-(int)(height[12]*1.5),250,440);
+    bar(296,440-(int)(height[14]*1.5),310,440);
+
+    setfillstyle(SOLID_FILL,GREEN);
+    bar(455,440-(int)(height[17]*1.5),470,440);
+
+    setfillstyle(SOLID_FILL,BLUE);
+    bar(515,440-(int)(height[18]*1.5),530,440);
+    
 
 
 
     
     setcolor(DARKGRAY);
     setlinestyle(SOLID_LINE,0,THICK_WIDTH);
+    line(130,50,140,50);
+    line(130,125,140,125);
+    line(395,50,405,50);
+    line(395,125,405,125);
+    line(130,290,140,290);
+    line(130,365,140,365);
+    line(395,290,405,290);
+    line(395,365,405,365);
+
     line(130,200,355,200);
     line(130,200,130,40);
     line(395,200,620,200);
@@ -1101,7 +1134,8 @@ void show_chart(int record[21][26],char* now_field)
     outtextxy(200,20,"PEST RATE");
     outtextxy(435,20,"CROP SITUATION RATE");
     outtextxy(185,260,"SICK CROP RATE");
-    outtextxy(455,260,"SPROUTING RATE");
+    outtextxy(455,260,"FIELD RATE");
+    
 
     mouseinit();
     while(1)
@@ -1125,6 +1159,120 @@ void show_chart(int record[21][26],char* now_field)
             {
                 MouseS = 0;
                 flag = 0;
+            }
+        }
+    }
+}
+
+void setinfo(char *username,struct droneinfo record[])
+{
+    int i;
+    int flag = 0;
+    char string[80] = "c:\\DATA";
+    char stringnow[80];
+    FILE* fp;
+    clrmous(MouseX,MouseY);
+    setfillstyle(SOLID_FILL,BLUE);
+    bar(100,100,540,400);
+    setfillstyle(SOLID_FILL,LIGHTBLUE);
+    bar(100,100,540,105);
+    bar(100,100,105,400);
+    bar(100,395,540,400);
+    bar(535,100,540,400);
+    for(i=0;i<5;i++)
+    {
+        bar(100,100+50*(i+1),540,105+50*(i+1));
+    }
+    bar(260,100,265,400);
+
+    settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
+    outtextxy(110,120,"HOUSE1");
+    outtextxy(110,170,"HOUSE2");
+    outtextxy(110,220,"HOUSE3");
+    outtextxy(110,270,"HOUSE4");
+
+    strcat(string,"\\");
+    strcat(string,username);
+    strcat(string,"\\");
+
+    mouseinit();
+    while(1)
+    {
+        newmouse(&MouseX,&MouseY,&press);
+        if(mouse_press(270,105,535,150)==2)
+        {
+            if(flag!=1)
+            {
+                MouseS = 2;
+                flag = 1;
+            }
+        }
+        else if(mouse_press(270,105,535,150)==1)
+        {
+            temp_input(record[0].name,280,119,5,25,20,BLUE,3);
+            strcpy(stringnow,string);
+            strcat(stringnow,"DRONE\\");
+            strcat(stringnow,record[0].name);
+            strcat(stringnow,".dat");
+            if((fp=fopen(stringnow,"rb"))!=NULL)
+            {
+                fread(&record[0],sizeof(DRONEINFO),1,fp);
+                
+            }
+            else
+            {
+                warning("NOT EXIST!",280,255,1);
+                delay(100);
+                setfillstyle(SOLID_FILL,BLUE);
+                bar(280,110,525,140);
+                memset(record[0].name,0,sizeof(record[0].name));
+            }
+            settextstyle(DEFAULT_FONT,HORIZ_DIR,3);
+                outtextxy(320,100,record[0].name);
+                outtextxy(320,100,record[0].weight);
+        }
+        else if(mouse_press(270,155,535,200)==2)
+        {
+            if(flag!=2)
+            {
+                MouseS = 2;
+                flag = 2;
+            }
+        }
+        else if(mouse_press(270,155,535,200)==1)
+        {
+            temp_input(record[1].name,280,169,5,25,20,BLUE,3);
+        }
+        else if(mouse_press(270,205,535,250)==2)
+        {
+            if(flag!=3)
+            {
+                MouseS = 2;
+                flag = 3;
+            }
+        }
+        else if(mouse_press(270,205,535,250)==1)
+        {
+            temp_input(record[2].name,280,219,5,25,20,BLUE,3);
+        }
+        else if(mouse_press(270,255,535,300)==2)
+        {
+            if(flag!=4)
+            {
+                MouseS = 2;
+                flag = 4;
+            }
+        }
+        else if(mouse_press(270,255,535,300)==1)
+        {
+            temp_input(record[3].name,280,119,5,25,20,BLUE,3);
+        }
+        else
+        {
+            if(flag!=0)
+            {
+                flag = 0;
+                MouseS = 0;
             }
         }
     }
