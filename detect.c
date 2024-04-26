@@ -251,11 +251,14 @@ int detect_page(char *username ,char *nowfield,int language)
     int route[100][2];
     char date[10] = "1" , compare[10] ;
     char weather[10] = "cloud" ;
+    struct droneinfo drone_record[5];
 
     memset(record , 0 , sizeof(record));
     memset(route,-1, sizeof(route));
     memset(compare , 0 , sizeof(compare));
     memset(presentmode,0,sizeof(presentmode));
+    memset(num,0,sizeof(num));
+    memset(drone_record,0,sizeof(drone_record));  
 
     strcat(path,username);
     strcat(path,"\\FIELD\\");
@@ -278,7 +281,19 @@ int detect_page(char *username ,char *nowfield,int language)
     mouseinit();
     if( strlen(date) != 0 ) {
         put_calender_number(date);
-        change_weather(weather);
+        random_weather = rand() % 100 ;
+        if(random_weather <= 20 ) {
+            strcpy(weather,"sun");
+        }
+        else if(random_weather >20 && random_weather <= 40 ) {
+            strcpy(weather,"rain");
+        }
+        else if(random_weather > 40 && random_weather <=50 ) {
+            strcpy(weather,"snow");
+        }
+        else {
+            strcpy(weather,"cloud");
+        }
         put_calender_weather(weather);
     }
     
@@ -325,8 +340,13 @@ int detect_page(char *username ,char *nowfield,int language)
             start_button(PAINT);
             pause_button(PAINT);
             chart_button(PAINT);
-            if(presentmode[0]=='a') set_button(PAINT);
-            else if(presentmode[0]=='h') route_button(PAINT);
+            if(presentmode[0]=='a') {
+                set_button(PAINT);
+            }
+            else {
+                if(presentmode[0]=='h') route_button(PAINT);
+            }
+            delay(100);//防止下拉菜单选择后连点
             
         }
         else if( mouse_press(5,180,95,219)==2 )//start未点击
@@ -416,7 +436,19 @@ int detect_page(char *username ,char *nowfield,int language)
             put_calender_number(date);
             if(strcmp(compare , date )!= 0  ) {
 
-                change_weather(weather);
+                random_weather = rand() % 100 ;
+                if(random_weather <= 20 ) {
+                    strcpy(weather,"sun");
+                }
+                else if(random_weather >20 && random_weather <= 40 ) {
+                    strcpy(weather,"rain");
+                }
+                else if(random_weather > 40 && random_weather <=50 ) {
+                    strcpy(weather,"snow");
+                }
+                else {
+                    strcpy(weather,"cloud");
+                }
 
                 put_calender_weather(weather);
                 recover_field(record,username,nowfield);
@@ -434,7 +466,19 @@ int detect_page(char *username ,char *nowfield,int language)
             temp_date++ ;
             itoa(temp_date , date , 10 );
             put_calender_number(date);
-            change_weather(weather);
+            random_weather = rand() % 100 ;
+            if(random_weather <= 20 ) {
+                strcpy(weather,"sun");
+            }
+            else if(random_weather >20 && random_weather <= 40 ) {
+                strcpy(weather,"rain");
+            }
+            else if(random_weather > 40 && random_weather <=50 ) {
+                strcpy(weather,"snow");
+            }
+            else {
+                strcpy(weather,"cloud");
+            }
             put_calender_weather(weather);
             if(temp_date == 2 )
             {
@@ -461,7 +505,19 @@ int detect_page(char *username ,char *nowfield,int language)
             temp_date-- ;
             itoa(temp_date , date , 10 );
             put_calender_number(date);
-            change_weather(weather);
+            random_weather = rand() % 100 ;
+            if(random_weather <= 20 ) {
+                strcpy(weather,"sun");
+            }
+            else if(random_weather >20 && random_weather <= 40 ) {
+                strcpy(weather,"rain");
+            }
+            else if(random_weather > 40 && random_weather <=50 ) {
+                strcpy(weather,"snow");
+            }
+            else {
+                strcpy(weather,"cloud");
+            }
             put_calender_weather(weather);
             if(strcmp(compare , date )!= 0  ) {
                 grow(record , atoi(date));//每次日期改变时,都刷新右侧地图
@@ -494,6 +550,24 @@ int detect_page(char *username ,char *nowfield,int language)
 
             mode = 1 ;
             delay(200);
+        }
+        else if( mouse_press(5,330,95,369)==2 && presentmode[0]=='a') //set
+        {
+            if( flag != 6 )
+            {
+                MouseS = 1 ;
+                flag = 6 ;
+                num[6] = 1;
+                clrmous(MouseX,MouseY);
+                set_button(LIGHT);
+            }
+        }
+        else if( mouse_press(5,330,95,369)==1  && presentmode[0]=='a')//set点击
+        {
+            MouseS = 0;
+            clrmous(MouseX,MouseY);
+            setinfo(username , drone_record );
+
         }
         else 
         {
@@ -676,7 +750,19 @@ void auto_simulate(int record[21][26], char *date_char ,char *username , char *n
         {
             itoa(date , date_temp , 10);
             put_calender_number(date_temp);
-            change_weather(weather);
+            random_weather = rand() % 100 ;
+            if(random_weather <= 20 ) {
+                strcpy(weather,"sun");
+            }
+            else if(random_weather >20 && random_weather <= 40 ) {
+                strcpy(weather,"rain");
+            }
+            else if(random_weather > 40 && random_weather <=50 ) {
+                strcpy(weather,"snow");
+            }
+            else {
+                strcpy(weather,"cloud");
+            }
             put_calender_weather(weather);
             
             grow_oneday(record,date);
@@ -684,8 +770,8 @@ void auto_simulate(int record[21][26], char *date_char ,char *username , char *n
             if(date % 3 == 0) //侦测天数
             {
                 // fly_detect( record , find_closest_house(record) );
-                // fly_spray(record,housenumber);
-                fly_one_round(record,find_closest_house(record));
+                fly_spray(record,housenumber);
+                // fly_one_round(record,find_closest_house(record));
             }
 
             time = 0;
@@ -760,14 +846,38 @@ void auto_simulate(int record[21][26], char *date_char ,char *username , char *n
             put_calender_number(date_temp);
             if( date+1 == atoi( date_temp ) ) {
                 date = date+1 ;
-                change_weather(weather);
+                random_weather = rand() % 100 ;
+                if(random_weather <= 20 ) {
+                    strcpy(weather,"sun");
+                }
+                else if(random_weather >20 && random_weather <= 40 ) {
+                    strcpy(weather,"rain");
+                }
+                else if(random_weather > 40 && random_weather <=50 ) {
+                    strcpy(weather,"snow");
+                }
+                else {
+                    strcpy(weather,"cloud");
+                }
                 put_calender_weather(weather);
                 grow_oneday(record,date);
             }
             else {
                 recover_field(record,username,nowfield);
                 date = atoi(date_temp);
-                change_weather(weather);
+                random_weather = rand() % 100 ;
+                if(random_weather <= 20 ) {
+                    strcpy(weather,"sun");
+                }
+                else if(random_weather >20 && random_weather <= 40 ) {
+                    strcpy(weather,"rain");
+                }
+                else if(random_weather > 40 && random_weather <=50 ) {
+                    strcpy(weather,"snow");
+                }
+                else {
+                    strcpy(weather,"cloud");
+                }
                 put_calender_weather(weather);
                 grow(record , date );
             }
