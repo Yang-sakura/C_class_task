@@ -602,5 +602,4 @@ void fly_one_round(int record[21][26] , Point A)
         bar(50,350,60,360);
         move_drone1(record ,route[i].x+10,route[i].y+10,route[i+1].x+10,route[i+1].y+10) ;
     }
-
 }
