@@ -14,5 +14,13 @@ void move_drone1(int record[21][26], int x1,int y1,int x2,int y2 );
 void simulate( int record[21][26] ,char *nowfield);
 
 void simulate_handmode(int record[21][26] , int route[100][2] );
+void fly_detect(int record[21][26] , Point start );
+void fly_spray(int record[21][26], int n );
+
+double dis_a_to_b(Point a ,Point b );
+double relative_position(Point A ,Point B ,Point C);
+double projection(Point A, Point B, Point C) ;
+void fly_one_round(int record[21][26] , Point A);
+
 
 #endif
