@@ -35,8 +35,8 @@ void save_bk_drone(int nx, int ny)
 	drone_buffer = malloc(size);
 	if (drone_buffer != NULL)
 		getimage(nx-10, ny-10, nx + 20, ny + 20 , drone_buffer);
-	else
-		printf("Error");
+	// else
+		//printf("Error");
 }
 void clear_drone(int nx, int ny) 
 {
@@ -169,17 +169,9 @@ void fly_spray(int record[21][26], int n )
             }
             if((record[i][j] % 10 ) != 0 && record[i][j] >= 10) {
                 count ++ ;//多少株植物得病了
-                record[i][j]-- ;//喷洒了一次
-                // setlinestyle(SOLID_LINE,0,NORM_WIDTH);
-                // setcolor(RED);
-                // line(x,y+20,x+20,y+20);
             }
         }
     }
-    setfillstyle(SOLID_FILL,WHITE);
-    bar(480,20,530,40);
-    itoa(count,temp_out,10);
-    outtextxy(500,30,temp_out);
     if(count==0) return ;
 
     //计算病虫
@@ -227,16 +219,6 @@ void fly_spray(int record[21][26], int n )
         route[k][num[k]-1].x  = route[k][0].x;
         route[k][num[k]-1].y  = route[k][0].y;
     }
-
-    // for(k=0;k<4;k++)
-    // {
-    //     for(i=0;i<num[k];i++) {
-    //         itoa(route[k][i].x,temp_out,10);
-    //         outtextxy(15+100*k,300+i*10,temp_out);
-    //         itoa(route[k][i].y,temp_out,10);
-    //         outtextxy(75+100*k,300+i*10,temp_out);
-    //     }
-    // }
     
     flying = 0 ;
     for( k = 0 ; k < n ; k++)
@@ -287,29 +269,29 @@ void fly_spray(int record[21][26], int n )
                 drone_buffer0 = malloc(size);
                 if (drone_buffer0 != NULL)
                     getimage(nx-10, ny-10, nx + 10, ny + 10 , drone_buffer0);
-                else
-                    printf("Error");
+                // else
+                    //printf("Error");
             }
             else if(k==1) {
                 drone_buffer1 = malloc(size);
                 if (drone_buffer1 != NULL)
                     getimage(nx-10, ny-10, nx + 10, ny + 10 , drone_buffer1);
-                else
-                    printf("Error");
+                // else
+                    //printf("Error");
             }
             else if(k==2) {
                 drone_buffer2 = malloc(size);
                 if (drone_buffer2 != NULL)
                     getimage(nx-10, ny-10, nx + 10, ny + 10 , drone_buffer2);
-                else
-                    printf("Error");
+                // else
+                    //printf("Error");
             }
             else if(k==3) {
                 drone_buffer3 = malloc(size);
                 if (drone_buffer3 != NULL)
                     getimage(nx-10, ny-10, nx + 10, ny + 10 , drone_buffer3);
-                else
-                    printf("Error");
+                // else
+                    //printf("Error");
             }
             
         }
@@ -322,7 +304,7 @@ void fly_spray(int record[21][26], int n )
                 drone_flag_n[k] = 1 ;
             }
         }
-        delay(100);
+        delay(150);
         
         for( k = 0 ; k < n ; k++) 
         {
@@ -384,6 +366,18 @@ void fly_spray(int record[21][26], int n )
         }
         
     }
+
+    for(i=0;i<21;i++)//y
+    {
+        for(j=0;j<26;j++)//x
+        {
+            x = 110 + j*20 ;
+            y = 450 - i*20 ;
+            if((record[i][j] % 10 ) != 0 && record[i][j] >= 10) {
+                record[i][j]-- ;//喷洒了一次
+            }
+        }
+    }
     return ;
 }
 
@@ -424,16 +418,6 @@ void fly_one_round(int record[21][26] , Point A)
     memset(route,0,sizeof(route));
     memset(flag,0,sizeof(flag));
 
-    setfillstyle(SOLID_FILL,RED);
-    bar(50,300,60,310);
-
-    settextstyle(DEFAULT_FONT,HORIZ_DIR,1);
-    setcolor(DARKGRAY);
-    itoa(A.x,temp_out,10);
-    outtextxy(500,10,temp_out);
-    itoa(A.y,temp_out,10);
-    outtextxy(500,20,temp_out);
-
     k = 0 ;
     for(i=0;i<21;i++)//y
     {
@@ -450,21 +434,6 @@ void fly_one_round(int record[21][26] , Point A)
         }
     }
 
-    settextstyle(DEFAULT_FONT,HORIZ_DIR,1);
-    setcolor(DARKGRAY);
-    for(i=1;i<=k;i++)//points: 1 - k
-    {
-        itoa(points[i].x,temp_out,10);
-        outtextxy(15,300+i*10,temp_out);
-        itoa(points[i].y,temp_out,10);
-        outtextxy(75,300+i*10,temp_out);
-    }
-    setfillstyle(SOLID_FILL,CYAN);
-    bar(50,310,60,320);
-
-    itoa(k,temp_out,10);
-    outtextxy(500,5,temp_out);
-
     for(i=1 ; i <= k ; i++)
     {
         dist = dis_a_to_b(A,points[i]);
@@ -474,15 +443,6 @@ void fly_one_round(int record[21][26] , Point A)
             B_index = i ;
         }
     }
-
-    itoa(B.x,temp_out,10);
-    outtextxy(500,35,temp_out);
-    itoa(B.y,temp_out,10);
-    outtextxy(500,45,temp_out);
-    itoa(B_index,temp_out,10);
-    outtextxy(500,55,temp_out);
-    setfillstyle(SOLID_FILL,GREEN);
-    bar(50,320,60,330);
 
     positive = negative = 0 ;
     for(i=1 ;i <= k ;i++)
@@ -504,24 +464,6 @@ void fly_one_round(int record[21][26] , Point A)
             negative ++ ;
         }
     }
-    settextstyle(DEFAULT_FONT,HORIZ_DIR,1);
-    setcolor(DARKGRAY);
-    itoa(positive,temp_out,10);
-    outtextxy(530,35,temp_out);
-    itoa(negative,temp_out,10);
-    outtextxy(530,45,temp_out);
-
-    settextstyle(DEFAULT_FONT,HORIZ_DIR,1);
-    setcolor(DARKGRAY);
-    for(i=1;i<=k;i++)
-    {
-        itoa(pos[i],temp_out,10);
-        outtextxy(5,400+i*10,temp_out);
-        itoa(proj[i],temp_out,10);
-        outtextxy(120,400+i*10,temp_out);
-    }
-    setfillstyle(SOLID_FILL,BLUE);
-    bar(50,330,60,340);
 
     temp = 99999.99 ;
     t = 0 ;
@@ -549,10 +491,6 @@ void fly_one_round(int record[21][26] , Point A)
         route[t].y = T.y ;
         positive -- ;
     }
-    itoa(t,temp_out,10);
-    outtextxy(540,35,temp_out);
-    itoa(positive,temp_out,10);
-    outtextxy(540,45,temp_out);
     temp = 0 ;
 
     while( negative )
@@ -575,31 +513,12 @@ void fly_one_round(int record[21][26] , Point A)
         route[t].y = T.y ;
         negative -- ;
     }
-    itoa(t,temp_out,10);
-    outtextxy(540,45,temp_out);
-    // settextstyle(DEFAULT_FONT,HORIZ_DIR,1);
-    // setcolor(DARKGRAY);
-    // itoa(positive,temp_out,10);
-    // outtextxy(530,35,temp_out);
-    // itoa(negative,temp_out,10);
-    // outtextxy(530,45,temp_out);
-    for(i=0;i<=k;i++)
-    {
-        itoa(route[i].x,temp_out,10);
-        outtextxy(25,400+i*10,temp_out);
-        itoa(route[i].y,temp_out,10);
-        outtextxy(75,400+i*10,temp_out);
-    }
-    setfillstyle(SOLID_FILL,YELLOW);
-    bar(50,340,60,350);
-
     t++ ;
     route[t].x = A.x ;
     route[t].y = A.y ;
     for(i=0;i<t;i++)
     {
-        setfillstyle(SOLID_FILL,LIGHTBLUE);
-        bar(50,350,60,360);
+        
         move_drone1(record ,route[i].x+10,route[i].y+10,route[i+1].x+10,route[i+1].y+10) ;
     }
 }
