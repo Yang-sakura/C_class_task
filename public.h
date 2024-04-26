@@ -85,12 +85,12 @@
 #define MAX 0x3f3f3f3f
 
 void printline(int x,int y,int len,int n,int flag,int COLOR,int wid,int gap);
-//x,y是第一个小方块左上角起始点，flag=0横着向右，flag=1竖着向下，len每格长度是宽度的多少倍数，n记录画多少个,COLOR是画线颜色
+//x,y鏄涓€涓皬鏂瑰潡宸︿笂瑙掕捣濮嬬偣锛宖lag=0妯潃鍚戝彸锛宖lag=1绔栫潃鍚戜笅锛宭en姣忔牸闀垮害鏄搴︾殑澶氬皯鍊嶆暟锛宯璁板綍鐢诲灏戜釜,COLOR鏄敾绾块鑹?
 void printbox(int x1,int y1,int x2,int y2,int COLOR,int len,int wid,int gap);
 void back_button(int flag);
 void string_limitation(char *string , int len);
-void warning(char *msg,int nx,int ny,int lettersize);
-void drop_down_menu(int x,int y,int wide,int h,int n,int lettersize,char **msgs,int lightcolor,int darkcolor,char *record);
+void warning(char *msg,int nx,int ny,int size);
+void drop_down_menu(int x,int y,int wide,int h,int n,int size,char **msgs,int lightcolor,int darkcolor,char *record);
 
 typedef struct userinfo
 {
