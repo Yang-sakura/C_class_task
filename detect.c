@@ -1129,3 +1129,27 @@ void setinfo(char *username,struct droneinfo record[])
     }
 }
 
+
+void setinfo_button(int flag)
+{
+    if(flag == PAINT)
+    {
+        clrmous(MouseX,MouseY);
+        printbox(5,380,95,419,DARKGRAY,1,3,3);
+        setcolor(DARKGRAY);
+        settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
+        outtextxy(13,391," SET ");
+    }
+    else if(flag == LIGHT)
+    {
+        clrmous(MouseX,MouseY);
+        printbox(5,380,95,419,BLUE,1,3,3);
+        setcolor(CYAN);
+        settextstyle(DEFAULT_FONT,HORIZ_DIR,2);
+        outtextxy(13,391," SET ");
+    }
+    else if(flag == RECOVER)
+    {
+        setinfo_button(PAINT);
+    }
+}
